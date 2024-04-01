@@ -1,0 +1,89 @@
+---
+layout: default
+title: "Simon Gooder, designer with a heart of soil."
+---
+<section class="grid-2 container">
+
+    <aside class="grid-container-sidebar">
+        <img src="/assets/img/me.jpg" alt="A picture of a handsome old man in a toque." class="img-avatar">
+        <h1>Simon Gooder</h1>
+        <h4>Building cool things with blocks since 1986.</h4>
+        <div class="">
+            <a href="https://dribbble.com/simongooder" class="btn d-b mar-b-sm" title="A slightly out of date Dribbble portfolio">
+                🏀 Dribbble
+            </a>
+            <a href="https://twitter.com/slimgoober" class="btn d-b mar-b-sm" title="The rantings and experimentation of a gardening-obsessed lunatic">
+                🐦 Twitter
+            </a>
+            <a href="https://www.linkedin.com/in/simongooder/" title="NetWORK" class="btn d-b mar-b-sm">🧑‍💻 LinkedIn</a>
+            <a href="assets/simon_gooder_resume_2024.pdf" title="My resumé (CV) in a PDF" class="btn d-b mar-b-sm">📥 Resumé</a>
+        </div>
+    </aside>
+
+    <section class="grid-container">
+
+        <article class="mar-b-lg">
+
+            <h2>Work experience</h2>
+            <p>
+                I've been working design roles in tech since I completed my New Media Certification at BCIT in 2013. Since then, I've worked on magazines and pitch decks, designed marketing materials, managed online presence for small businesses, designed and built websites, developed brand identities, designed app UIs, coded front-ends, launched side projects, managed development teams, and built apps.
+            </p>
+
+            {% assign sorted = site.work | sort: 'from' | reverse %}
+            {% for w in sorted %}
+            <div class="content-block">
+                <div class="row">
+                    <div class="row">
+                        <figure class="img-avatar-sm">
+                            <img src="{{w.logo}}" alt="{{w.title}} logo">
+                        </figure>
+                        <div>
+                        <h3>{{w.title}}</h3>
+                        <small>{{w.role}}</small>
+                        </div>
+                    </div>
+                    <time datetime="{{w.to}}">{{w.from}} - {{w.to}}</time>
+                </div>
+                <p>{{w.desc}}</p>
+
+                <div>
+                    <a href="{{w.url}}" class="link">Read more →</a>
+                </div>
+            </div>
+            {% endfor %}
+
+        </article>
+
+        <article class="mar-b-lg">
+            <h2>Personal passion projects</h2>
+            <p>
+                In my spare time, I like to play in the dirt, grow things, hunt for mushrooms, and build stuff.
+            </p>
+            {% for p in site.projects %}
+            <div class="content-block">
+                <h3>{{p.title}}</h3>
+                <small>{{p.role}}</small>
+                <p>{{p.desc}}</p>
+
+                <div>
+                    <a target="_blank" href="{{p.web}}" class="link">Check it out ↗</a>
+                </div>
+            </div>
+            {% endfor %}
+        </article>
+
+        <article>
+            <h2>Posts</h2>
+            {% for post in site.posts %}
+            <div class="content-block">
+                <h3>{{post.title}}</h3>
+                <div>
+                    <a target="_blank" href="{{post.url}}" class="link">Check it out ↗</a>
+                </div>
+            </div>
+            {% endfor %}
+        </article>
+
+    </section>
+
+</section>

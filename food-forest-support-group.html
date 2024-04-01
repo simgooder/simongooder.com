@@ -1,0 +1,20 @@
+---
+layout: default
+title: "Food forest support group"
+---
+
+<div class="container-prose">
+    <h1>Food Forest Support Group 2024 🌱</h1>
+
+    {% for p in site.food-forest-support-group %}
+    <div class="content-block">
+        <h3>{{p.title}}</h3>
+        <small>{{p.role}}</small>
+        <p>{{p.desc}}</p>
+
+        <div>
+            <a href="{{p.url}}" class="link">Notes →</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>

@@ -1,0 +1,29 @@
+{% if page.collection %}
+  {% assign posts = site[page.collection] | sort: 'date' %}
+
+  {% if posts.size > 1 %}
+    {% assign prevurl = posts.last.url %}
+    {% assign nexturl = posts.first.url %}
+  {% endif %}
+
+  {% for links in posts %}
+    {% if links.title == page.title %}
+      {% unless forloop.first %}
+        {% assign prevurl = prev.url %}
+      {% endunless %}
+      {% unless forloop.last %}
+        {% assign next = posts[forloop.index] %}
+        {% assign nexturl = next.url %}
+      {% endunless %}
+    {% endif %}
+    {% assign prev = links %}
+  {% endfor %}
+
+  <p class="row">
+      {% if posts.size > 1 %}
+        {% if prevurl %}<a href="{{prevurl}}" class="btn">👈 Previous</a>{% endif %}
+        <a href="/" class="btn">🏠 Home</a>
+        {% if nexturl %}<a href="{{nexturl}}" class="btn">Next 👉</a>{% endif %}
+      {% endif %}
+  </p>
+{% endif %}
