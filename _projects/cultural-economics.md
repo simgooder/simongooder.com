@@ -6,7 +6,8 @@ desc: Cult/Econ is a collection of guides for folks wanting to learn or hone tra
 from: December 2023
 to: Current
 web: https://cultecon.com/
-logo:
+icon: 🛠
+order: 4
 ---
 
  I'm a big fan of open an accessible resources, and a proponent of learning traditional skills. I spend a lot of time learning from such a collection of resources for my hobbies, so I had the idea to put it all together in one place.

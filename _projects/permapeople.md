@@ -1,12 +1,13 @@
 ---
 layout: project
 title: Permapeople
-role: Co-founder
+role: Co-founder, Developer, Designer
 desc: Permapeople started as a pandemic project, and is now a living, breathing community
 from: October 2021
 to: Current
-logo: 🌱✌️
+icon: ✌️
 web: https://permapeople.org/
+order: 1
 ---
 
 After I left Spotful, I decided to do some upskilling in my downtime. I was playing around the MEAN stack, and wanted to compile some gardening data. I came up with the idea of a plant database, and started building it out, pulling from the Wikipedia API and making it searchable. Doing some research one day, I came across a posting from someone else, who was looking for a partner to build a plant database. I shot him a message, and we've been friends ever since.

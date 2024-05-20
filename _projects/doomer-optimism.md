@@ -7,6 +7,8 @@ from: 2023
 to: Current
 web: https://www.doomeroptimism.com/
 logo: https://lh4.googleusercontent.com/ZZx3-wyZpuswFKOvwCpnvZGMbEr355x8QHfbnRKbVw9T7HOMpnFWEkfsNeKhI4rih5mL-f19BT2bKseo2bEg5gs=w16383
+icon: 🎙
+order: 2
 ---
 
 Doomer Optimism is the idea that things may be shit, but we if we remain optimistic, we can build a way through it. It's a loose collective of people focused on doing things and making real-world impact. Most are hobbyists with day-jobs, but all focus their free time around family, community, and regenerative pursuits.
