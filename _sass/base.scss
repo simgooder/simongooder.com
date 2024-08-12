@@ -27,6 +27,18 @@ figure {
     margin: 0;
 }
 
+blockquote {
+    margin: 1rem 0;
+    padding-left: 1rem;
+    border-left: 2px solid $c-highlight;
+
+    p {
+        margin: 0;
+        font-style: italic;
+        font-weight: 600;
+    }
+}
+
 // Grid and layout ----------------
 .container {
     max-width: 78rem;

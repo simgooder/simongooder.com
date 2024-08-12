@@ -3,7 +3,7 @@ layout: project
 title: RareCircles
 role: Product manager
 desc: Bringing ideas to fruition and managing a team
-from: July 2021
+from: 2021
 to: 2024
 web: https://www.rarecircles.com/
 logo: assets/img/logo-rarecircles.svg

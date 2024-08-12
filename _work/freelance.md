@@ -4,7 +4,7 @@ title: Freelance
 role: Designer, Front-end developer
 desc: Production-level user interface design across a number of different client projects.
 from: 2017
-to: 2021
+to: Current
 web:
 logo: assets/img/logo-freelance.png
 ---

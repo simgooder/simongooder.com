@@ -1,0 +1,220 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: #F6F9F6;
+  color: #000;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+img {
+  max-width: 100%;
+}
+
+figure {
+  margin: 0;
+}
+
+.container {
+  max-width: 78rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.container-prose {
+  max-width: 38rem;
+  margin: 0 auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media screen and (min-width: 780px) {
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1.5fr 3fr;
+    gap: 2rem;
+  }
+}
+.grid-stack {
+  display: flex;
+  flex-flow: row wrap;
+  column-gap: 0.5rem;
+}
+
+.grid-stack .btn {
+  width: calc(50% - 0.5rem);
+}
+
+.row {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: start;
+}
+
+.align-top {
+  align-items: flex-start;
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
+footer {
+  margin-top: 4rem;
+  border-top: 1px solid #666;
+}
+
+.content-block {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  backdrop-filter: blur(1rem);
+  background-color: rgba(230, 233, 230, 0.8);
+}
+.content-block h3 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.content-block small {
+  display: block;
+  margin-top: 0.25rem;
+  color: #666;
+}
+@media (hover: hover) {
+  .content-block:hover .img-avatar-sm {
+    filter: grayscale(0);
+  }
+}
+
+.img-avatar-wrapper {
+  width: 100%;
+  padding: 0.5rem 0.5rem 0.25rem 0.5rem;
+  position: relative;
+  border-radius: 1rem;
+  overflow: hidden;
+  text-align: center;
+}
+
+.img-avatar {
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.img-avatar-bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  filter: blur(6px);
+  z-index: -1;
+  background-size: 100%;
+  opacity: 0.5;
+}
+
+.img-avatar-sm {
+  width: 3.5rem;
+  min-width: 3.5rem;
+  max-width: 3.5rem;
+  height: 3.5rem;
+  margin-right: 0.25rem;
+  overflow: hidden;
+  text-align: center;
+  font-size: 2.5rem;
+}
+@media (hover: hover) {
+  .img-avatar-sm {
+    filter: grayscale(100%);
+    transition: filter 0.5s ease;
+  }
+}
+
+.container-prose p, .container-prose li {
+  line-height: 1.5;
+}
+.container-prose img {
+  max-width: 100%;
+}
+
+time {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border: 1px solid #c3c3c0;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  text-align: center;
+  color: #666;
+  backdrop-filter: blur(1rem);
+  background-color: rgba(246, 249, 246, 0.5);
+}
+.btn:hover {
+  box-shadow: 0 0.1rem 0 0.1rem #558B54;
+}
+
+.link {
+  color: #000;
+  opacity: 1;
+  transition: opacity 0.2s ease;
+}
+.link:hover {
+  opacity: 0.5;
+}
+.link:visited {
+  color: #558B54;
+}
+
+.d-b {
+  display: block;
+}
+
+.mar-b-sm {
+  margin-bottom: 0.5rem;
+}
+
+.mar-b-lg {
+  margin-bottom: 4rem;
+}
+
+h1 {
+  margin: 1rem 0;
+  font-size: 2rem;
+}
+
+h1, h2, h3 {
+  font-family: "Source Serif 4", serif;
+}
+
+h4 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  font-weight: 400;
+  font-size: 1.5rem;
+}
+
+.container-prose a,
+.container-prose a:visited {
+  color: #558B54;
+}
+
+.container-prose li {
+  margin-bottom: 0.5rem;
+}
+
+.container-prose ul ul {
+  margin-top: 0.5rem;
+}
+
+.text-meta {
+  color: #666;
+}
+
+/*# sourceMappingURL=main.css.map */
