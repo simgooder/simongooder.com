@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cold email tmpltr 🐧</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+<body class="p-4">
+
+    <section class="md:flex md:flex-row gap-12">
+
+        <article class="w-full max-w-3xl">
+
+            <div>
+                <h1 class="text-3xl font-bold">Cold email tmpltr 🐧</h1>
+                <p class="mt-4 mb-8">A playground to easily generate cold emails based on a CSV list of contacts.</p>
+            </div>
+
+            <!-- Textarea for email template -->
+            <div class="block mb-8">
+                <label for="emailTemplate" class="block text-slate-500 font-medium mb-1">
+                    Email Template <br>
+                    <small class="font-sm font-normal">
+                        Use curly braces to template your placeholders, like {{first_name}}, etc
+                    </small>
+                </label>
+
+                <textarea id="emailTemplate" rows="6" class="border border-slate-400 py-2 px-3 w-full">
+Hello {{owner_name}},
+Congratulations on the launch of {{shop_name}}! It's an exciting time, and with your new venture, there's a golden opportunity to boost your growth from the start. Have you considered how a loyalty program could contribute to your success?
+
+Why a Loyalty Program?
+Growing trend: Canadian consumers report they're most likely to try offerings like in-person loyalty programs (62%)
+Boost Spending: Customers in loyalty programs spend 53% more on average.
+Increase Visits: These customers visit 40% more frequently than those not enrolled.
+Gather Insights: Collect essential data to understand and cater to your customer base effectively.
+
+Introducing CHCKN:
+Our digital platform, CHCKN, is tailored for new businesses like yours, ensuring your loyalty program kicks off smoothly and powerfully.
+
+Exclusive Offer for New Businesses:
+We're excited to offer {{shop_name}} a complimentary 2-month trial of CHCKN. Experience how our platform can increase customer retention and enhance your sales.
+Interested? Let's discuss how we can support the rapid growth of {{shop_name}} with CHCKN.
+
+Best regards,
+{{partner}}
+{{partner_email}}
+                </textarea>
+            </div>
+
+            <!-- Textarea for headers input -->
+            <div class="block mb-8">
+                <label for="headersInput" class="block text-slate-500 font-medium mb-1">
+                    Comma-separated list of headers
+                    <br>
+                    <small class="font-sm font-normal">
+                        The first value in this header list will be used as the output identifier
+                    </small>
+                </label>
+
+                <input id="headersInput" type="text" placeholder="email,first_name,last_name,message" value="owner_name, shop_name, partner, partner_email" class="border border-slate-400 py-2 px-3 w-full">
+            </div>
+
+            <!-- Textarea for CSV data paste -->
+            <div class="block mb-8">
+                <label for="csvData" class="block text-slate-500 font-medium mb-1">
+                    CSV data
+                    <br>
+                    <small class="font-sm font-normal">
+                        Rows should be separated by a newline ( <kbd>Enter</kbd> )
+                    </small>
+                </label>
+
+                <textarea id="csvData" rows="6" placeholder="example@example.com,Simon,Gooder,Your order has shipped.\n..." class="border border-slate-400 py-2 px-3 w-full">
+Mr. Chckn, CHCKN Café, Simon, simon@chckn.to
+                </textarea>
+            </div>
+
+            <button id="generateButton" class="bg-blue-800 text-white font-medium text-lg py-4 px-6">Generate emails</button>
+
+        </article>
+
+
+        <!-- Container for generated output -->
+        <article class="mt-12 md:mt-0 mb-6 w-full">
+            <h2 class="text-xl font-bold text-blue-800 mb-4">Output</h2>
+            <div id="output"></div>
+        </article>
+
+
+    </section>
+
+    <script>
+        document.getElementById('generateButton').addEventListener('click', generateEmails);
+
+        function generateEmails() {
+            const emailTemplate = document.getElementById('emailTemplate').value.trim();
+            const headersInput = document.getElementById('headersInput').value.trim();
+            const csvData = document.getElementById('csvData').value.trim();
+
+            if (!emailTemplate || !headersInput || !csvData) {
+                alert("Please provide an email template, CSV headers, and CSV data.");
+                return;
+            }
+
+            // Split headers and CSV data into rows
+            const headers = headersInput.split(',').map(header => header.trim());
+            const rows = csvData.split('\n').map(row => row.split(',').map(item => item.trim()));
+
+            // Check if rows have data
+            if (rows.length < 1 || headers.length < 2) {
+                alert("CSV data is empty or formatted incorrectly.");
+                return;
+            }
+
+            const outputContainer = document.getElementById('output');
+            outputContainer.innerHTML = ''; // Clear previous output
+
+            // Process each row
+            rows.forEach((row, rowIndex) => {
+                const email = row[0];
+                if (!email) {
+                    console.warn(`Missing email in row ${rowIndex + 1}`);
+                    return;
+                }
+
+                // Create an object to map headers to their corresponding values
+                const dataMapping = {};
+                headers.forEach((header, index) => {
+                    // Only map values if the row has a corresponding index
+                    if (index < row.length) {
+                        dataMapping[header] = row[index] || ''; // Handle missing data gracefully
+                    } else {
+                        dataMapping[header] = ''; // If there's no data, set as empty
+                    }
+                });
+
+                let personalizedText = emailTemplate;
+
+                // Replace placeholders in the template using the dataMapping
+                headers.forEach(header => {
+                    const regex = new RegExp(`{{${header}}}`, 'g');
+                    personalizedText = personalizedText.replace(regex, dataMapping[header] || '');
+                });
+
+                // Create a copyable output block
+                const outputBlock = document.createElement('div');
+                outputBlock.className = 'border-t border-slate-400 mb-10';
+
+                const outputHeader = document.createElement('div');
+                outputHeader.className = 'font-bold border-b border-slate-400 py-4 flex flex-row justify-between items-center';
+                outputHeader.textContent = `${email}`;
+                outputBlock.appendChild(outputHeader);
+
+                const outputContent = document.createElement('pre');
+                outputContent.className = 'py-8 whitespace-break-spaces max-w[100%]'
+                outputContent.textContent = personalizedText;
+                outputBlock.appendChild(outputContent);
+
+                const copyButton = document.createElement('button');
+                copyButton.className = 'border border-blue-800 py-1 px-2 text-blue-800'
+                copyButton.textContent = "Copy"
+                copyButton.addEventListener('click', function() {
+                    navigator.clipboard.writeText(personalizedText);
+
+                    copyButton.textContent = "Copied!"
+                    // setTimeout(() => {
+                    //     copyButton.textContent = "Copied!"
+                    // }, 2000);
+                })
+                outputHeader.appendChild(copyButton);
+
+                outputContainer.appendChild(outputBlock);
+            });
+
+            // Add title attributes to placeholders in the email template textarea
+            const examples = rows[0]; // Assuming the first data row is examples
+            const titleTemplate = headers.map((header, index) => {
+                return `{{${header}}} (example: ${examples[index]})`;
+            }).join(', ');
+
+            document.getElementById('emailTemplate').setAttribute('title', titleTemplate);
+        }
+    </script>
+
+</body>
+</html>
