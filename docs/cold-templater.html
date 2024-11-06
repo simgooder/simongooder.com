@@ -7,6 +7,12 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <style>
+        pre a {
+            color: #ff3d00;
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body class="p-4">
 
@@ -24,30 +30,22 @@
                 <label for="emailTemplate" class="block text-slate-500 font-medium mb-1">
                     Email Template <br>
                     <small class="font-sm font-normal">
-                        Use curly braces to template your placeholders, like {{first_name}}, etc
+                        Use curly braces to template your placeholders, like <code>{{first_name}}</code> and markdown links like <code>[my link!](https://link.com)</code>
                     </small>
                 </label>
 
                 <textarea id="emailTemplate" rows="6" class="border border-slate-400 py-2 px-3 w-full">
-Hello {{owner_name}},
-Congratulations on the launch of {{shop_name}}! It's an exciting time, and with your new venture, there's a golden opportunity to boost your growth from the start. Have you considered how a loyalty program could contribute to your success?
+Hey {{first_name}},
 
-Why a Loyalty Program?
-Growing trend: Canadian consumers report they're most likely to try offerings like in-person loyalty programs (62%)
-Boost Spending: Customers in loyalty programs spend 53% more on average.
-Increase Visits: These customers visit 40% more frequently than those not enrolled.
-Gather Insights: Collect essential data to understand and cater to your customer base effectively.
+I wanted to reach out because I noticed that {{company}} has a great vibe, and I think you might be interested in what we’re doing at CHCKN.
 
-Introducing CHCKN:
-Our digital platform, CHCKN, is tailored for new businesses like yours, ensuring your loyalty program kicks off smoothly and powerfully.
+We've built a digital stamp card experience  that helps shops like yours better understand their customers. With CHCKN, you can track customer habits, reward your VIPs and regulars and create a more personalized experience—something you just can't do with paper cards.
 
-Exclusive Offer for New Businesses:
-We're excited to offer {{shop_name}} a complimentary 2-month trial of CHCKN. Experience how our platform can increase customer retention and enhance your sales.
-Interested? Let's discuss how we can support the rapid growth of {{shop_name}} with CHCKN.
+Do you have 10 minutes this week for a quick call to see how this could work for you?
 
-Best regards,
-{{partner}}
-{{partner_email}}
+Cheers,
+Simon
+[Book a call](https://simon-gooder.neetocal.com/meeting-with-simon-gooder)
                 </textarea>
             </div>
 
@@ -61,7 +59,7 @@ Best regards,
                     </small>
                 </label>
 
-                <input id="headersInput" type="text" placeholder="email,first_name,last_name,message" value="owner_name, shop_name, partner, partner_email" class="border border-slate-400 py-2 px-3 w-full">
+                <input id="headersInput" type="text" placeholder="email,first_name,last_name,message" value="first_name, company" class="border border-slate-400 py-2 px-3 w-full">
             </div>
 
             <!-- Textarea for CSV data paste -->
@@ -75,7 +73,7 @@ Best regards,
                 </label>
 
                 <textarea id="csvData" rows="6" placeholder="example@example.com,Simon,Gooder,Your order has shipped.\n..." class="border border-slate-400 py-2 px-3 w-full">
-Mr. Chckn, CHCKN Café, Simon, simon@chckn.to
+Gabrielle, Cass Café
                 </textarea>
             </div>
 
@@ -83,13 +81,11 @@ Mr. Chckn, CHCKN Café, Simon, simon@chckn.to
 
         </article>
 
-
         <!-- Container for generated output -->
         <article class="mt-12 md:mt-0 mb-6 w-full">
             <h2 class="text-xl font-bold text-blue-800 mb-4">Output</h2>
             <div id="output"></div>
         </article>
-
 
     </section>
 
@@ -146,6 +142,9 @@ Mr. Chckn, CHCKN Café, Simon, simon@chckn.to
                     personalizedText = personalizedText.replace(regex, dataMapping[header] || '');
                 });
 
+                // Convert markdown links to HTML anchor tags
+                personalizedText = personalizedText.replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+
                 // Create a copyable output block
                 const outputBlock = document.createElement('div');
                 outputBlock.className = 'border-t border-slate-400 mb-10';
@@ -157,7 +156,7 @@ Mr. Chckn, CHCKN Café, Simon, simon@chckn.to
 
                 const outputContent = document.createElement('pre');
                 outputContent.className = 'py-8 whitespace-break-spaces max-w[100%]'
-                outputContent.textContent = personalizedText;
+                outputContent.innerHTML = personalizedText;  // Use innerHTML to render HTML tags
                 outputBlock.appendChild(outputContent);
 
                 const copyButton = document.createElement('button');
@@ -175,14 +174,6 @@ Mr. Chckn, CHCKN Café, Simon, simon@chckn.to
 
                 outputContainer.appendChild(outputBlock);
             });
-
-            // Add title attributes to placeholders in the email template textarea
-            const examples = rows[0]; // Assuming the first data row is examples
-            const titleTemplate = headers.map((header, index) => {
-                return `{{${header}}} (example: ${examples[index]})`;
-            }).join(', ');
-
-            document.getElementById('emailTemplate').setAttribute('title', titleTemplate);
         }
     </script>
 
