@@ -159,16 +159,36 @@ Gabrielle, Cass Café
                 outputContent.innerHTML = personalizedText;  // Use innerHTML to render HTML tags
                 outputBlock.appendChild(outputContent);
 
+                function copyToClip(str) {
+                    function listener(e) {
+                        e.clipboardData.setData("text/html", str);
+                        e.clipboardData.setData("text/plain", str);
+                        e.preventDefault();
+                    }
+                    document.addEventListener("copy", listener);
+                    document.execCommand("copy");
+                    document.removeEventListener("copy", listener);
+                };
+
                 const copyButton = document.createElement('button');
                 copyButton.className = 'border border-blue-800 py-1 px-2 text-blue-800'
                 copyButton.textContent = "Copy"
                 copyButton.addEventListener('click', function() {
-                    navigator.clipboard.writeText(personalizedText);
+
+                    function listener(e) {
+                        e.clipboardData.setData("text/html", personalizedText);
+                        e.clipboardData.setData("text/plain", personalizedText);
+                        e.preventDefault();
+                    }
+                    document.addEventListener("copy", listener);
+                    document.execCommand("copy");
+                    document.removeEventListener("copy", listener);
 
                     copyButton.textContent = "Copied!"
-                    // setTimeout(() => {
-                    //     copyButton.textContent = "Copied!"
-                    // }, 2000);
+
+                    setTimeout(() => {
+                        copyButton.textContent = "Copied!"
+                    }, 30000);
                 })
                 outputHeader.appendChild(copyButton);
 
