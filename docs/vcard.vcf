@@ -1,0 +1,15 @@
+BEGIN:VCARD
+VERSION:3.0
+FN;CHARSET=UTF-8:Simon Gooder
+N;CHARSET=UTF-8:Gooder;Simon;;;
+EMAIL;CHARSET=UTF-8;type=HOME,INTERNET:simgooder@gmail.com
+EMAIL;CHARSET=UTF-8;type=WORK,INTERNET:simon.gooder@fcm.digital
+TEL;TYPE=CELL:15148829079
+ADR;CHARSET=UTF-8;TYPE=HOME:;;;;Quebec;;Canada
+ROLE;CHARSET=UTF-8:Innovation Product Manager
+ORG;CHARSET=UTF-8:Flight Centre Digital
+X-SOCIALPROFILE;TYPE=twitter:https://www.linkedin.com/in/slimgoober
+X-SOCIALPROFILE;TYPE=linkedin:https://www.linkedin.com/in/simongooder/
+X-SOCIALPROFILE;TYPE=Website:https://simongoder.com
+REV:2024-11-19T15:43:30.194Z
+END:VCARD
