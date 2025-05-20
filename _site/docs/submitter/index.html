@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Form</title>
+  <style>
+    body { font-family: sans-serif; max-width: 400px; margin: 2rem auto; }
+    label { display: block; margin-top: 1rem; }
+    input, button { width: 100%; padding: 8px; margin-top: 4px; }
+    #preview { margin-top: 1rem; max-width: 100%; display: none; }
+    #status { margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <h2>Upload your photo</h2>
+  <form id="uploadForm">
+    <label>Name:<input type="text" name="name" required></label>
+    <label>Email:<input type="email" name="email" required></label>
+    <label>Image:<input type="file" name="image" accept="image/*" required></label>
+    <img id="preview" alt="Image preview" />
+    <button type="submit">Submit</button>
+    <p id="status"></p>
+  </form>
+
+  <script>
+    const form = document.getElementById('uploadForm');
+    const preview = document.getElementById('preview');
+    const status = document.getElementById('status');
+
+    form.image.addEventListener('change', () => {
+      const file = form.image.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          preview.src = e.target.result;
+          preview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      status.textContent = 'Submitting...';
+
+      const file = form.image.files[0];
+      const reader = new FileReader();
+
+      reader.onload = async () => {
+        const payload = {
+          name: form.name.value,
+          email: form.email.value,
+          imageBase64: reader.result
+        };
+
+        try {
+          const res = await fetch('YOUR_WEB_APP_URL_HERE', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          const result = await res.json();
+          if (result.result === 'success') {
+            status.innerHTML = `Submitted! <a href="${result.imageUrl}" target="_blank">View Image</a>`;
+            form.reset();
+            preview.style.display = 'none';
+          } else {
+            status.textContent = 'Submission failed: ' + result.message;
+          }
+        } catch (err) {
+          console.error(err);
+          status.textContent = 'Submission error.';
+        }
+      };
+
+      reader.readAsDataURL(file);
+    });
+  </script>
+</body>
+</html>
