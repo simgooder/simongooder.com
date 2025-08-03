@@ -5,7 +5,7 @@
     "currency": "CAD"
   },
   "trip": {
-    "name": "TRIP TO MALAGA!!",
+    "name": "Spanish Vacation 2025",
     "description": "A multi-city trip through Spain, including Barcelona, Malaga, and Seville.",
     "currency": "EUR",
     "timezone": "Europe/Madrid",
@@ -63,8 +63,8 @@
         "note": "Contact: Telephone: 932150899, Email: reservas@eurostarsbarcelonacentral.com."
     },
     {
-        "name": "",
-        "type": "Train",
+        "name": "TO BE DETERMINED",
+        "type": "Flight",
         "origin": "Barcelona",
         "destination": "Malaga",
         "departure_date": "2025-09-21",
@@ -109,13 +109,13 @@
         "note": "Contact: juderia@casasypalacios.com"
       },
       {
-        "name": "",
-        "type": "Train",
+        "name": "TO BE DETERMINED",
+        "type": "Flight",
         "origin": "Seville",
         "destination": "Barcelona",
-        "departure_date": "2025-09-29",
+        "departure_date": "2025-09-30",
         "departure_time": "7:05 AM",
-        "arrival_date": "2025-09-29",
+        "arrival_date": "2025-09-30",
         "arrival_time": "2:55 PM",
         "note": ""
       },
