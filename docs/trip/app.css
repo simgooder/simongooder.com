@@ -1,0 +1,50 @@
+body {
+    width: 100%;
+    margin: 0;
+    overflow-x: hidden;
+    font-family: sans-serif;
+    background: #fff;
+}
+
+
+
+.horizontal-timeline-calendar {
+    overflow-x: scroll;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+.calendar-day-label {
+    text-align:center;
+    padding:0.7em;
+    font-size: 1.08em;
+}
+/* Segment block for all views */
+.segment-block {
+    background: #fff;
+    box-shadow: 0 2px 8px #0002;
+
+    margin: 0 4px 0.7em 4px;
+    padding: 0.7em 1em;
+    min-height: 44px;
+
+    position: relative;
+    z-index: 2;
+
+    border-left:4px solid #1a5dab;
+    border: 1px solid #000;
+    border-radius: 0.5rem;
+    cursor:pointer;
+    position:relative;
+}
+
+
+
+
+
+/* Modal styles */
+.detail-row {
+    font-size: 1.08em;
+    line-height: 1.4;
+    color: #2c3e50;
+    padding: 0.2em 0;
+}

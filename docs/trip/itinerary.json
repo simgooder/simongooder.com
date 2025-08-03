@@ -1,0 +1,163 @@
+
+{
+  "profile": {
+    "timezone": "America/Toronto",
+    "currency": "CAD"
+  },
+  "trip": {
+    "name": "TRIP TO MALAGA!!",
+    "description": "A multi-city trip through Spain, including Barcelona, Malaga, and Seville.",
+    "currency": "EUR",
+    "timezone": "Europe/Madrid",
+
+    "segments": [
+      {
+        "name": "",
+        "type": "Flight",
+        "flight_number": "AC822",
+        "airline_name": "Air Canada",
+        "origin": "Montreal",
+        "destination": "Barcelona",
+        "departure_date": "2025-09-16",
+        "departure_time": "7:05 AM",
+        "arrival_date": "2025-09-16",
+        "arrival_time": "2:55 PM",
+        "note": ""
+      },
+      {
+        "name": "Flight from Kelowna to Calgary",
+        "type": "Flight",
+        "flight_number": "WS 3162",
+        "airline_name": "Westjet",
+        "origin": "Kelowna",
+        "destination": "Calgary",
+        "departure_date": "2025-09-16",
+        "departure_time": "14:00",
+        "arrival_date": "2025-09-16",
+        "arrival_time": "16:12",
+        "note": "Seats: Mr Stephen Ross Gooder: 02A, Mrs Brenda Gooder: 02B"
+    },
+    {
+        "name": "Flight from Calgary to Barcelona",
+        "type": "Flight",
+        "flight_number": "WS 8",
+        "airline_name": "Westjet",
+        "origin": "Calgary",
+        "destination": "Barcelona",
+        "departure_date": "2025-09-16",
+        "departure_time": "19:00",
+        "arrival_date": "2025-09-17",
+        "arrival_time": "12:25",
+        "note": "Seats: Mr Stephen Ross Gooder: 02F, Mrs Brenda Gooder: 03K"
+    },
+    {
+        "name": "Eurostars Barcelona Central Barcelona",
+        "type": "Hotel",
+        "hotel_name": "Eurostars Barcelona Central",
+        "address": "Carrer d'Aragó, 300 Barcelona 08009 Spain",
+        "destination": "Barcelona",
+        "check_in_date": "2025-09-17",
+        "check_in_time": "3:00 PM",
+        "check_out_date": "2025-09-21",
+        "check_out_time": "12:00 PM",
+        "note": "Contact: Telephone: 932150899, Email: reservas@eurostarsbarcelonacentral.com."
+    },
+    {
+        "name": "",
+        "type": "Train",
+        "origin": "Barcelona",
+        "destination": "Malaga",
+        "departure_date": "2025-09-21",
+        "departure_time": "7:05 AM",
+        "arrival_date": "2025-09-21",
+        "arrival_time": "2:55 PM",
+        "note": ""
+      },
+      {
+        "name": "Hotel Molina Lario Malaga",
+        "type": "Hotel",
+        "hotel_name": "Hotel Molina Lario",
+        "address": "Molina Lario 22 29015 - Málaga",
+        "destination": "Malaga",
+        "check_in_date": "2025-09-21",
+        "check_in_time": "3:00 PM",
+        "check_out_date": "2025-09-26",
+        "check_out_time": "11:00 AM",
+        "note": "Telephone: +34 952 06 20 02, Email: info@hotelmolinalario.com"
+      },
+      {
+        "name": "",
+        "type": "Train",
+        "origin": "Malaga",
+        "destination": "Seville",
+        "departure_date": "2025-09-26",
+        "departure_time": "7:05 AM",
+        "arrival_date": "2025-09-26",
+        "arrival_time": "2:55 PM",
+        "note": ""
+      },
+      {
+        "name": "Hotel Las Casas de la Juderia Sevilla",
+        "type": "Hotel",
+        "hotel_name": "Hotel Las Casas de la Juderia",
+        "address": "Calle Santa María la Blanca, 5 41004 - Seville",
+        "destination": "Seville",
+        "check_in_date": "2025-09-26",
+        "check_in_time": "3:00 PM",
+        "check_out_date": "2025-09-29",
+        "check_out_time": "11:00 AM",
+        "note": "Contact: juderia@casasypalacios.com"
+      },
+      {
+        "name": "",
+        "type": "Train",
+        "origin": "Seville",
+        "destination": "Barcelona",
+        "departure_date": "2025-09-29",
+        "departure_time": "7:05 AM",
+        "arrival_date": "2025-09-29",
+        "arrival_time": "2:55 PM",
+        "note": ""
+      },
+      {
+        "name": "",
+        "type": "Flight",
+        "flight_number": "AC823",
+        "airline_name": "Air Canada",
+        "origin": "Barcelona",
+        "destination": "Montreal",
+        "departure_date": "2025-09-30",
+        "departure_time": "7:05 AM",
+        "arrival_date": "2025-09-30",
+        "arrival_time": "2:55 PM",
+        "note": ""
+      },
+       {
+        "name": "Flight from Barcelona to Calgary",
+        "type": "Flight",
+        "flight_number": "WS 7",
+        "airline_name": "WestJet",
+        "origin": "Barcelona",
+        "destination": "Calgary",
+        "departure_date": "2025-10-01",
+        "departure_time": "14:25",
+        "arrival_date": "2025-10-01",
+        "arrival_time": "16:35",
+        "note": "Seats: Mr Stephen Ross Gooder: 03D, Mrs Brenda Gooder: 03F"
+      },
+      {
+        "name": "Flight from Calgary to Kelowna",
+        "type": "Flight",
+        "flight_number": "WS 399",
+        "airline_name": "WestJet",
+        "origin": "Calgary",
+        "destination": "Kelowna",
+        "departure_date": "2025-10-01",
+        "departure_time": "19:15",
+        "arrival_date": "2025-10-01",
+        "arrival_time": "19:24",
+        "note": "Seats: Mr Stephen Ross Gooder: 02A, Mrs Brenda Gooder: 02C"
+      }
+    ]
+  }
+}
