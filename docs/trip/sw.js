@@ -1,13 +1,14 @@
 const CACHE_NAME = 'travlr-cache-v1';
-const OFFLINE_URL = '/offline.html';
+const BASE_PATH = '/trip';
+const OFFLINE_URL = BASE_PATH + '/offline.html';
 const urlsToCache = [
-    '/',
-    '/index.html',
-    '/app.js',
-    '/app.css',
-    '/js/db.js',
-    '/manifest.json',
-    '/itinerary.json',
+    BASE_PATH + '/',
+    BASE_PATH + '/index.html',
+    BASE_PATH + '/app.js',
+    BASE_PATH + '/app.css',
+    BASE_PATH + '/js/db.js',
+    BASE_PATH + '/manifest.json',
+    BASE_PATH + '/itinerary.json',
     'https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4',
     'https://cdn.jsdelivr.net/npm/dayjs@1.11.10/dayjs.min.js',
   'https://cdn.jsdelivr.net/npm/dayjs@1.11.10/plugin/advancedFormat.js'
