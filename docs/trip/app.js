@@ -276,8 +276,7 @@ function renderDayView(view) {
 
   // Horizontal clickable day timeline (navigation)
   const dayTimeline = document.createElement('div');
-  dayTimeline.className = 'day-timeline';
-  dayTimeline.style.cssText = 'display:flex;gap:0.5em;justify-content:center;align-items:center;margin-bottom:1.5em;flex-wrap:wrap;';
+  dayTimeline.className = 'day-timeline flex gap-1 justify-start flex-wrap:none mb-1 overflow-x-auto px-2';
   allDays.forEach(day => {
     const anchor = document.createElement('a');
     anchor.href = `#day-${day}`;
@@ -295,7 +294,7 @@ function renderDayView(view) {
     const dayContainer = document.createElement('div');
     const dayHeader = document.createElement('h2');
     dayHeader.id = `day-${day}`;
-    dayHeader.className = 'text-3xl font-medium mb-2 mt-12 sticky top-0 z-10 bg-white';
+    dayHeader.className = 'text-2xl font-medium mb-2 mt-12 sticky top-0 z-10 bg-white';
     dayHeader.innerText = formatTimelineDate(day);
     view.appendChild(dayContainer);
     dayContainer.appendChild(dayHeader);
@@ -575,12 +574,13 @@ function getAllDays(itinerary) {
  * @returns {string} The formatted date string.
  */
 function formatTimelineDate(dateStr) {
-  const dt = new Date(dateStr + 'T12:00:00Z');  // Parse at noon UTC like other date handling
-  if (isNaN(dt.getTime())) return dateStr;
-  const day = String(dt.getUTCDate()).padStart(2, '0');
-  const month = String(dt.getUTCMonth() + 1).padStart(2, '0');
-  const year = dt.getUTCFullYear();
-  return `${day}/${month}/${year}`;
+  // Initialize dayjs's advanced format plugin for ordinal formatting (1st, 2nd, etc)
+  dayjs.extend(window.dayjs_plugin_advancedFormat);
+
+  const dt = dayjs(dateStr + 'T12:00:00Z');  // Parse at noon UTC like other date handling
+  if (!dt.isValid()) return dateStr;
+
+  return dt.format('dddd, MMMM D, YYYY'); // Tuesday, August 5th, 2025
 }
 
 /**
