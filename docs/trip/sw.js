@@ -1,13 +1,15 @@
-const CACHE_NAME = 'trip-planner-v1';
-const ASSETS_TO_CACHE = [
-  '/',
-  '/index.html',
-  '/app.js',
-  '/app.css',
-  '/manifest.json',
-  '/itinerary.json',
-  'https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4',
-  'https://cdn.jsdelivr.net/npm/dayjs@1.11.10/dayjs.min.js',
+const CACHE_NAME = 'travlr-cache-v1';
+const OFFLINE_URL = '/offline.html';
+const urlsToCache = [
+    '/',
+    '/index.html',
+    '/app.js',
+    '/app.css',
+    '/js/db.js',
+    '/manifest.json',
+    '/itinerary.json',
+    'https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4',
+    'https://cdn.jsdelivr.net/npm/dayjs@1.11.10/dayjs.min.js',
   'https://cdn.jsdelivr.net/npm/dayjs@1.11.10/plugin/advancedFormat.js'
 ];
 
