@@ -11,24 +11,57 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/trip/icons/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="Travlr" />
     <link rel="manifest" href="/trip/icons/site.webmanifest" />
-    <link rel="manifest" href="/trip/manifest.json">
-    <link rel="stylesheet" href="/trip/app.css">
+    <link rel="stylesheet" href="app.css">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.10/dayjs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.10/plugin/advancedFormat.js"></script>
     <script>
+        // Detect environment and set base path
+        const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+        const basePath = isProduction ? '/trip' : '';
+
+        // Set manifest dynamically based on environment
+        const manifestPath = isProduction ? '/trip/manifest.json' : '/manifest-dev.json';
+        const manifestLink = document.createElement('link');
+        manifestLink.rel = 'manifest';
+        manifestLink.href = manifestPath;
+        document.head.appendChild(manifestLink);
+
         // Register service worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/trip/sw.js', {
-                    scope: '/trip/'
+                navigator.serviceWorker.register(`${basePath}/sw.js`, {
+                    scope: `${basePath}/`
                 })
-                    .then(registration => {
-                        console.log('ServiceWorker registration successful with scope:', registration.scope);
-                    })
-                    .catch(err => {
-                        console.log('ServiceWorker registration failed: ', err);
+                .then(registration => {
+                    console.log('ServiceWorker registration successful with scope:', registration.scope);
+
+                    // Check for updates every 30 seconds
+                    setInterval(() => {
+                        registration.update();
+                    }, 30000);
+
+                    // Listen for updates
+                    registration.addEventListener('updatefound', () => {
+                        const newWorker = registration.installing;
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                // New version available
+                                if (confirm('A new version is available. Reload to update?')) {
+                                    window.location.reload();
+                                }
+                            }
+                        });
                     });
+                })
+                .catch(err => {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+
+                // Listen for controlling service worker change
+                navigator.serviceWorker.addEventListener('controllerchange', () => {
+                    window.location.reload();
+                });
             });
         }
     </script>
@@ -47,6 +80,7 @@
         <button onclick="showTimeModal()" class="w-full text-sm font-bold">🕒<br/> Time</button>
     </nav>
 
+    <script src="js/db.js"></script>
     <script src="app.js"></script>
 
 </body>

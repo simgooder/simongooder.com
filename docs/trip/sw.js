@@ -1,5 +1,8 @@
-const CACHE_NAME = 'travlr-cache-v1';
-const BASE_PATH = '/trip';
+// Detect environment
+const isProduction = self.location.hostname !== 'localhost' && self.location.hostname !== '127.0.0.1';
+const BASE_PATH = isProduction ? '/trip' : '';
+
+const CACHE_NAME = 'travlr-cache-v2';
 const OFFLINE_URL = BASE_PATH + '/offline.html';
 const urlsToCache = [
     BASE_PATH + '/',
@@ -16,23 +19,38 @@ const urlsToCache = [
 
 // Install event - cache assets
 self.addEventListener('install', (event) => {
+  console.log('Service Worker installing...');
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(urlsToCache))
+      .then((cache) => {
+        console.log('Caching app shell');
+        return cache.addAll(urlsToCache);
+      })
+      .then(() => {
+        console.log('Service Worker installed');
+        // Force the waiting service worker to become the active service worker
+        return self.skipWaiting();
+      })
   );
 });
 
 // Activate event - cleanup old caches
 self.addEventListener('activate', (event) => {
+  console.log('Service Worker activating...');
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
           if (cacheName !== CACHE_NAME) {
+            console.log('Deleting old cache:', cacheName);
             return caches.delete(cacheName);
           }
         })
       );
+    }).then(() => {
+      console.log('Service Worker activated');
+      // Claim control of all clients immediately
+      return self.clients.claim();
     })
   );
 });
