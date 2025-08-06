@@ -100,11 +100,11 @@
         "name": "Hotel Las Casas de la Juderia Sevilla",
         "type": "Hotel",
         "hotel_name": "Hotel Las Casas de la Juderia",
-        "address": "Calle Santa María la Blanca, 5 41004 - Seville",
+        "address": "Calle Santa María la Blanca, 5 41004",
         "destination": "Seville",
         "check_in_date": "2025-09-26",
         "check_in_time": "3:00 PM",
-        "check_out_date": "2025-09-29",
+        "check_out_date": "2025-09-30",
         "check_out_time": "11:00 AM",
         "note": "Contact: juderia@casasypalacios.com"
       },
