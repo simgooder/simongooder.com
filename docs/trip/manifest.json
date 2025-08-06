@@ -6,7 +6,7 @@
   "scope": "/trip/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#e0f2fe",
+  "theme_color": "#ffffff",
   "icons": [
     {
       "src": "/trip/icons/icon-192.png",
