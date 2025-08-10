@@ -702,7 +702,14 @@ function loadItinerary(jsonFile) {
 function extractTripIdFromUrl(path) {
   // Handle both local and production URLs
   const match = path.match(/\/trip\/([^\/]+)$/) || path.match(/^\/([^\/]+)$/);
-  return match ? match[1] : null;
+  const tripId = match ? match[1] : null;
+
+  // If we're at the base /trip/ URL (no specific trip), return null to use default logic
+  if (path === '/trip/' || path === '/trip') {
+    return null;
+  }
+
+  return tripId;
 }
 
 /**
@@ -735,8 +742,17 @@ function getCurrentTripId() {
 function loadTrip(tripId) {
   const trip = allTrips.find(t => t.id === tripId);
   if (!trip) {
-    console.error('Trip not found:', tripId);
-    return;
+    console.error('Trip not found:', tripId, 'Available trips:', allTrips.map(t => t.id));
+    // Redirect to first available trip
+    if (allTrips.length > 0) {
+      const fallbackTrip = allTrips[0];
+      console.log('Redirecting to fallback trip:', fallbackTrip.id);
+      loadTrip(fallbackTrip.id);
+      return;
+    } else {
+      console.error('No trips available');
+      return;
+    }
   }
 
   currentTripId = tripId;
