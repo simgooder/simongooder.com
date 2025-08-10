@@ -396,8 +396,8 @@ function createSegmentBlock(seg, idx) {
     }
   }
 
-  if (seg.airline_name) {
-    logoUrl = `<img width="20" style="margin-right:8px" src=${createLogoUrl(seg.airline_name)}>`
+  if (seg.vendor_name && seg.type != 'Hotel') {
+    logoUrl = `<img width="20" style="margin-right:8px" src=${createLogoUrl(seg.vendor_name)}>`
   }
 
 
