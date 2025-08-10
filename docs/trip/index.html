@@ -91,17 +91,17 @@
 </head>
 <body>
 
-    <header class="bg-white p-3 rounded-b-lg">
+    <header class="p-3">
         <h1 id="tripName" class="text-xl font-bold"></h1>
     </header>
 
     <main id="main" class="pb-24"></main>
 
-    <nav class="flex items-center gap-2 py-4 bg-white fixed left-[1%] bottom-0 w-[98%] z-10 border-solid border-1 rounded-xl">
-        <button id="toggleViewBtn" onclick="toggleView()" class="w-full text-sm font-bold">🔁<br/> Day View</button>
-        <button onclick="showCurrencyModal()" class="w-full text-sm font-bold">💱<br/> Currency</button>
-        <button onclick="showTimeModal()" class="w-full text-sm font-bold">🕒<br/> Time</button>
-        <button onclick="showTripsMenu()" class="w-full text-sm font-bold">📋<br/> Trips</button>
+    <nav class="flex items-center gap-2 py-4 bg-white fixed left-[1%] bottom-0 w-[98%] z-10 border-solid border-1 border-slate-100 rounded-xl">
+        <button id="toggleViewBtn" onclick="toggleView()" class="w-full text-sm font-medium text-[#0000f7]">🔁<br/> Day View</button>
+        <button onclick="showCurrencyModal()" class="w-full text-sm font-medium text-[#0000f7]">💱<br/> Currency</button>
+        <button onclick="showTimeModal()" class="w-full text-sm font-medium text-[#0000f7]">🕒<br/> Time</button>
+        <button onclick="showTripsMenu()" class="w-full text-sm font-medium text-[#0000f7]">📋<br/> Trips</button>
     </nav>
 
     <script src="js/db.js"></script>

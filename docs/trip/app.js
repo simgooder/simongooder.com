@@ -229,7 +229,7 @@ function renderTimelineView(view) {
   // Day labels (first row)
   allDays.forEach((day, i) => {
     const dayLabel = document.createElement('div');
-    dayLabel.className = 'calendar-day-label min-w-[100vw] w-full md:min-w-80 md:w-80 snap-center text-black border-[#0000f7] border-b-2 bg-white';
+    dayLabel.className = 'calendar-day-label min-w-[100vw] w-full md:min-w-80 md:w-80 snap-center text-black border-[#0000f7] border-b-2';
     dayLabel.innerText = formatTimelineDate(day);
     dayLabel.style.gridColumn = (i + 1).toString();
     timeline.appendChild(dayLabel);
@@ -283,9 +283,10 @@ function renderDayView(view) {
     const anchor = document.createElement('a');
     anchor.href = `#day-${day}`;
     anchor.style.textDecoration = 'none';
+    anchor.className = "min-w-1/4 max-w-32"
     const btn = document.createElement('button');
     btn.innerText = formatTimelineDate(day);
-    btn.className="py-1 px-3 rounded-sm border-1 border-violet-400 border-solid cursor-pointer"
+    btn.className="py-1 px-3 rounded-sm border-1 border-[#0000f7] border-solid cursor-pointer bg-white"
     anchor.appendChild(btn);
     dayTimeline.appendChild(anchor);
   });
@@ -296,7 +297,7 @@ function renderDayView(view) {
     const dayContainer = document.createElement('div');
     const dayHeader = document.createElement('h2');
     dayHeader.id = `day-${day}`;
-    dayHeader.className = 'text-2xl font-medium mb-2 mt-12 sticky top-0 z-10 bg-white';
+    dayHeader.className = 'text-xl text-black font-medium mb-2 py-2 px-2 mt-12 sticky top-0 z-10 bg-white shadow-lg';
     dayHeader.innerText = formatTimelineDate(day);
     view.appendChild(dayContainer);
     dayContainer.appendChild(dayHeader);
@@ -354,7 +355,7 @@ window.renderItinerary = renderItinerary;
  */
 function createSegmentBlock(seg, idx) {
   const segDiv = document.createElement('div');
-  segDiv.className = 'segment-block';
+  segDiv.className = 'segment-block shadow-md';
 
   const typeIcons = { 'Hotel': '🏨', 'Flight': '✈️', 'Train': '🚉', 'Drive': '🚙', 'Bus': '🚌' };
   const typeIcon = typeIcons[seg.type] || '';
@@ -582,7 +583,7 @@ function formatTimelineDate(dateStr) {
   const dt = dayjs(dateStr + 'T12:00:00Z');  // Parse at noon UTC like other date handling
   if (!dt.isValid()) return dateStr;
 
-  return dt.format('dddd, MMMM D, YYYY'); // Tuesday, August 5th, 2025
+  return dt.format('ddd, MMM D, YYYY'); // Tuesday, August 5th, 2025
 }
 
 /**
