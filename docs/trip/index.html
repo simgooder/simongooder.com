@@ -36,23 +36,35 @@
                 .then(registration => {
                     console.log('ServiceWorker registration successful with scope:', registration.scope);
 
-                    // Check for updates every 30 seconds
+                    // Check for updates every 10 seconds
                     setInterval(() => {
                         registration.update();
-                    }, 30000);
+                    }, 1200000);
 
                     // Listen for updates
                     registration.addEventListener('updatefound', () => {
                         const newWorker = registration.installing;
+                        console.log('New service worker found, installing...');
+
                         newWorker.addEventListener('statechange', () => {
-                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                // New version available
-                                if (confirm('A new version is available. Reload to update?')) {
-                                    window.location.reload();
+                            console.log('Service worker state changed to:', newWorker.state);
+                            if (newWorker.state === 'installed') {
+                                if (navigator.serviceWorker.controller) {
+                                    // New version available
+                                    console.log('New version available!');
+                                    if (confirm('A new version is available. Reload to update?')) {
+                                        window.location.reload();
+                                    }
+                                } else {
+                                    // First install
+                                    console.log('App is ready for offline use');
                                 }
                             }
                         });
                     });
+
+                    // Also check immediately and every page load
+                    registration.update();
                 })
                 .catch(err => {
                     console.log('ServiceWorker registration failed: ', err);
@@ -60,7 +72,18 @@
 
                 // Listen for controlling service worker change
                 navigator.serviceWorker.addEventListener('controllerchange', () => {
+                    console.log('Service worker controller changed, reloading...');
                     window.location.reload();
+                });
+
+                // Listen for messages from service worker
+                navigator.serviceWorker.addEventListener('message', (event) => {
+                    if (event.data && event.data.type === 'SW_UPDATED') {
+                        console.log('Service worker notified of update');
+                        if (confirm('App has been updated! Reload to get the latest version?')) {
+                            window.location.reload();
+                        }
+                    }
                 });
             });
         }

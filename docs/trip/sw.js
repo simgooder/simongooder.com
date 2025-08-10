@@ -2,7 +2,7 @@
 const isProduction = self.location.hostname !== 'localhost' && self.location.hostname !== '127.0.0.1';
 const BASE_PATH = isProduction ? '/trip' : '';
 
-const CACHE_NAME = 'travlr-cache-v3';
+const CACHE_NAME = 'travlr-cache-v4';
 const OFFLINE_URL = BASE_PATH + '/offline.html';
 const urlsToCache = [
     BASE_PATH + '/',
@@ -29,7 +29,16 @@ self.addEventListener('install', (event) => {
       .then(() => {
         console.log('Service Worker installed');
         // Force the waiting service worker to become the active service worker
-        return self.skipWaiting();
+        self.skipWaiting();
+        // Notify clients of the update
+        self.clients.matchAll().then(clients => {
+          clients.forEach(client => {
+            client.postMessage({
+              type: 'SW_UPDATED',
+              message: 'Service worker updated'
+            });
+          });
+        });
       })
   );
 });

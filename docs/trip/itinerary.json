@@ -165,9 +165,9 @@
     ]
     },
     {
-      "id": "weekend-getaway-2025",
-      "name": "Weekend Getaway 2025",
-      "description": "A quick weekend trip to Vancouver",
+      "id": "whereto-vancouver-2025",
+      "name": "Simon @ WhereTo Vancouver",
+      "description": "WhereTo Conference",
       "currency": "CAD",
       "timezone": "America/Vancouver",
       "segments": [
