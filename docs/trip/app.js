@@ -227,7 +227,7 @@ function renderTimelineView(view) {
   // Day labels (first row)
   allDays.forEach((day, i) => {
     const dayLabel = document.createElement('div');
-    dayLabel.className = 'calendar-day-label min-w-[100vw] w-full md:min-w-80 md:w-80 snap-center text-violet-600 border-violet-200 border-b-2';
+    dayLabel.className = 'calendar-day-label min-w-[100vw] w-full md:min-w-80 md:w-80 snap-center text-black border-[#0000f7] border-b-2 bg-white';
     dayLabel.innerText = formatTimelineDate(day);
     dayLabel.style.gridColumn = (i + 1).toString();
     timeline.appendChild(dayLabel);
@@ -498,7 +498,7 @@ function viewSegmentDetails(idx) {
             <strong>Destination:</strong><br/> ${seg.destination}
         </div>
         ${seg.address ? `<div class="detail-row">
-            <strong>Address:</strong><br/> ${seg.address}
+            <strong>Address:</strong><br/> <a href="https://maps.google.com/?q=${encodeURIComponent(seg.address)}" target="_blank" rel="noopener noreferrer" class="text-[#0000f7] underline">${seg.address}</a>
         </div>` : ''}
         ${flightLinkHtml}
         ${dateTimeDetails}
