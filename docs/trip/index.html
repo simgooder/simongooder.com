@@ -17,7 +17,7 @@
     <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.10/plugin/advancedFormat.js"></script>
     <script>
         // Detect environment and set base path
-        const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+        const isProduction = window.location.hostname !== 'localhost';
         const basePath = isProduction ? '/trip' : '';
 
         // Set manifest dynamically based on environment
@@ -78,6 +78,7 @@
         <button id="toggleViewBtn" onclick="toggleView()" class="w-full text-sm font-bold">🔁<br/> Day View</button>
         <button onclick="showCurrencyModal()" class="w-full text-sm font-bold">💱<br/> Currency</button>
         <button onclick="showTimeModal()" class="w-full text-sm font-bold">🕒<br/> Time</button>
+        <button onclick="showTripsMenu()" class="w-full text-sm font-bold">📋<br/> Trips</button>
     </nav>
 
     <script src="js/db.js"></script>

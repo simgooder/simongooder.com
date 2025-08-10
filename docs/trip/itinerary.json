@@ -4,11 +4,13 @@
     "timezone": "America/Toronto",
     "currency": "CAD"
   },
-  "trip": {
-    "name": "Spanish Vacation 2025",
-    "description": "A multi-city trip through Spain, including Barcelona, Malaga, and Seville.",
-    "currency": "EUR",
-    "timezone": "Europe/Madrid",
+  "trips": [
+    {
+      "id": "spanish-vacation-2025",
+      "name": "Spanish Vacation 2025",
+      "description": "A multi-city trip through Spain, including Barcelona, Malaga, and Seville.",
+      "currency": "EUR",
+      "timezone": "Europe/Madrid",
 
     "segments": [
       {
@@ -161,5 +163,65 @@
         "note": "Seats: Mr Stephen Ross Gooder: 02A, Mrs Brenda Gooder: 02C"
       }
     ]
-  }
+    },
+    {
+      "id": "weekend-getaway-2025",
+      "name": "Weekend Getaway 2025",
+      "description": "A quick weekend trip to Vancouver",
+      "currency": "CAD",
+      "timezone": "America/Vancouver",
+      "segments": [
+        {
+            "name": "Sheraton Montreal Airport",
+            "type": "Hotel",
+            "vendor_name": "Sheraton",
+            "address": "",
+            "destination": "Montreal",
+            "check_in_date": "2025-09-30",
+            "check_in_time": "3:00 PM",
+            "check_out_date": "2025-10-01",
+            "check_out_time": "11:00 AM",
+            "note": ""
+        },
+        {
+          "name": "Flight to Vancouver",
+          "type": "Flight",
+          "flight_number": "AC 1234",
+          "vendor_name": "Air Canada",
+          "origin": "Montreal",
+          "destination": "Vancouver",
+          "departure_date": "2025-10-01",
+          "departure_time": "09:00",
+          "arrival_date": "2025-10-01",
+          "arrival_time": "10:30",
+          "note": ""
+        },
+        {
+          "name": "Hotel Vancouver",
+          "type": "Hotel",
+          "vendor_name": "Fairmont Hotel Vancouver",
+          "address": "900 W Georgia St, Vancouver, BC V6C 2W6",
+          "destination": "Vancouver",
+          "check_in_date": "2025-10-01",
+          "check_in_time": "3:00 PM",
+          "check_out_date": "2025-10-03",
+          "check_out_time": "11:00 AM",
+          "note": "Downtown location"
+        },
+        {
+          "name": "Return Flight",
+          "type": "Flight",
+          "flight_number": "AC 5678",
+          "vendor_name": "Air Canada",
+          "origin": "Vancouver",
+          "destination": "Montreal",
+          "departure_date": "2025-10-03",
+          "departure_time": "08:00",
+          "arrival_date": "2025-10-03",
+          "arrival_time": "16:40",
+          "note": "Return home"
+        }
+      ]
+    }
+  ]
 }

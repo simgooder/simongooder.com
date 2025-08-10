@@ -186,6 +186,8 @@ function renderTimeWidget(homeTz, destTz) {
 }
 // Global state variables
 let itinerary = [];
+let allTrips = [];
+let currentTripId = null;
 let currentView = 'timeline';
 
 /**
@@ -664,17 +666,151 @@ function loadItinerary(jsonFile) {
       return res.json();
     })
     .then(data => {
-      if (data && data.trip && Array.isArray(data.trip.segments)) {
-        itinerary = data.trip.segments;
+      if (data && data.trips && Array.isArray(data.trips)) {
+        allTrips = data.trips;
+
+        // Determine which trip to load
+        const urlPath = window.location.pathname;
+        const tripIdFromUrl = extractTripIdFromUrl(urlPath);
+
+        if (tripIdFromUrl && allTrips.find(trip => trip.id === tripIdFromUrl)) {
+          currentTripId = tripIdFromUrl;
+        } else {
+          // Default to first trip or current trip
+          currentTripId = getCurrentTripId() || (allTrips.length > 0 ? allTrips[0].id : null);
+        }
+
+        if (currentTripId) {
+          loadTrip(currentTripId);
+        } else {
+          throw new Error('No trips found');
+        }
       } else {
-        throw new Error('Invalid itinerary JSON structure');
+        throw new Error('Invalid itinerary JSON structure - trips array required');
       }
-      renderItinerary();
     })
     .catch(err => {
       console.error("Error loading itinerary:", err);
       document.body.innerHTML = `<div style="color:#c00;padding:2em;">Error loading itinerary: ${err.message}. Please check console for details.</div>`;
     });
+}
+
+/**
+ * Extract trip ID from URL path
+ */
+function extractTripIdFromUrl(path) {
+  // Handle both local and production URLs
+  const match = path.match(/\/trip\/([^\/]+)$/) || path.match(/^\/([^\/]+)$/);
+  return match ? match[1] : null;
+}
+
+/**
+ * Get current trip ID (for detecting which trip is currently active)
+ */
+function getCurrentTripId() {
+  // This could be enhanced to detect current trip based on dates
+  const today = new Date();
+  const currentTrip = allTrips.find(trip => {
+    if (!trip.segments || trip.segments.length === 0) return false;
+
+    const tripDates = trip.segments.map(seg => {
+      const startDate = new Date(seg.departure_date || seg.check_in_date);
+      const endDate = new Date(seg.arrival_date || seg.check_out_date);
+      return { start: startDate, end: endDate };
+    });
+
+    const tripStart = new Date(Math.min(...tripDates.map(d => d.start)));
+    const tripEnd = new Date(Math.max(...tripDates.map(d => d.end)));
+
+    return today >= tripStart && today <= tripEnd;
+  });
+
+  return currentTrip ? currentTrip.id : null;
+}
+
+/**
+ * Load a specific trip by ID
+ */
+function loadTrip(tripId) {
+  const trip = allTrips.find(t => t.id === tripId);
+  if (!trip) {
+    console.error('Trip not found:', tripId);
+    return;
+  }
+
+  currentTripId = tripId;
+  itinerary = trip.segments || [];
+
+  // Update currencies and timezone
+  window.tripCurrency = trip.currency || 'EUR';
+  window.destTz = trip.timezone || 'Europe/Amsterdam';
+
+  // Update page title and trip name
+  document.title = `${trip.name} - Travlr`;
+  const titleSlot = document.getElementById('tripName');
+  if (titleSlot) {
+    titleSlot.innerText = trip.name;
+  }
+
+  // Update URL without page reload
+  const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+  const newPath = isProduction ? `/trip/${tripId}` : `/${tripId}`;
+  window.history.pushState({ tripId }, trip.name, newPath);
+
+  renderItinerary();
+}
+
+/**
+ * Show trips menu modal
+ */
+function showTripsMenu() {
+  const modal = document.createElement('div');
+  modal.id = 'tripsModal';
+  modal.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:#0008;z-index:100;display:flex;align-items:center;justify-content:center;';
+
+  const tripsList = allTrips.map(trip => {
+    const isActive = trip.id === currentTripId;
+    return `
+      <div class="trip-item" style="padding: 1rem; border: 2px solid ${isActive ? '#0000f7' : '#e5e7eb'}; border-radius: 8px; margin-bottom: 0.5rem; cursor: pointer; background: ${isActive ? '#eff6ff' : '#fff'};" onclick="selectTrip('${trip.id}')">
+        <h3 style="font-weight: bold; margin-bottom: 0.25rem;">${trip.name}</h3>
+        <p style="color: #6b7280; font-size: 0.875rem;">${trip.description || 'No description'}</p>
+        ${isActive ? '<span style="color: #0000f7; font-size: 0.75rem; font-weight: bold;">CURRENT</span>' : ''}
+      </div>
+    `;
+  }).join('');
+
+  modal.innerHTML = `
+    <div style="background:#fff;padding:2em;border-radius:12px;max-width:420px;min-width:300px;box-shadow:0 2px 16px #0003;position:relative;max-height:80vh;overflow-y:auto;" onclick="event.stopPropagation()">
+      <h2 class="text-lg font-bold mb-4">📋 Select Trip</h2>
+      <div>
+        ${tripsList}
+      </div>
+      <button onclick="closeTripsModal()" style="position:absolute;top:10px;right:10px;background:none;border:none;font-size:1.5em;cursor:pointer;">&times;</button>
+    </div>
+  `;
+
+  modal.onclick = closeTripsModal;
+  document.body.appendChild(modal);
+}
+
+/**
+ * Select a trip from the menu
+ */
+function selectTrip(tripId) {
+  closeTripsModal();
+  if (tripId !== currentTripId) {
+    loadTrip(tripId);
+  }
+}
+
+/**
+ * Close trips menu modal
+ */
+function closeTripsModal() {
+  const modal = document.getElementById('tripsModal');
+  if (modal) {
+    modal.remove();
+  }
 }
 
 /**
@@ -704,15 +840,28 @@ window.addEventListener('DOMContentLoaded', () => {
   fetch('itinerary.json')
     .then(res => res.json())
     .then(data => {
-      let title = data.trip.name || 'My trip';
+      let title = '';
       let homeTz = 'America/Toronto'; // fallback
       let destTz = 'Europe/Amsterdam'; // fallback
       let baseCurrency = 'USD';
       let tripCurrency = 'EUR';
+
       if (data && data.profile && data.profile.timezone) homeTz = data.profile.timezone;
-      if (data && data.trip && data.trip.timezone) destTz = data.trip.timezone;
       if (data && data.profile && data.profile.currency) baseCurrency = data.profile.currency;
-      if (data && data.trip && data.trip.currency) tripCurrency = data.trip.currency;
+
+      // Handle both old and new data structures
+      if (data && data.trips && Array.isArray(data.trips)) {
+        // New multi-trip structure
+        const urlPath = window.location.pathname;
+        const tripIdFromUrl = extractTripIdFromUrl(urlPath);
+        const targetTrip = tripIdFromUrl ? data.trips.find(t => t.id === tripIdFromUrl) : data.trips[0];
+
+        if (targetTrip) {
+          title = targetTrip.name || 'My trip';
+          destTz = targetTrip.timezone || destTz;
+          tripCurrency = targetTrip.currency || tripCurrency;
+        }
+      }
 
       // Store initial values
       window.homeTz = homeTz;
@@ -722,7 +871,10 @@ window.addEventListener('DOMContentLoaded', () => {
       // Now load itinerary as before
       loadItinerary('itinerary.json');
 
-      titleSlot.innerText = title;
+      const titleSlot = document.getElementById('tripName');
+      if (titleSlot) {
+        titleSlot.innerText = title;
+      }
     })
     .catch(() => {
       // Set default values
@@ -732,4 +884,23 @@ window.addEventListener('DOMContentLoaded', () => {
       window.tripCurrency = 'EUR';
       loadItinerary('itinerary.json');
     });
+});
+
+// Handle browser back/forward navigation
+window.addEventListener('popstate', (event) => {
+  if (event.state && event.state.tripId) {
+    // Load the trip from the browser state
+    const tripId = event.state.tripId;
+    if (tripId !== currentTripId && allTrips.find(t => t.id === tripId)) {
+      currentTripId = tripId;
+      loadTrip(tripId);
+    }
+  } else {
+    // Handle initial page load or navigation without state
+    const urlPath = window.location.pathname;
+    const tripIdFromUrl = extractTripIdFromUrl(urlPath);
+    if (tripIdFromUrl && tripIdFromUrl !== currentTripId && allTrips.find(t => t.id === tripIdFromUrl)) {
+      loadTrip(tripIdFromUrl);
+    }
+  }
 });
