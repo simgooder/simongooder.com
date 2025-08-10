@@ -63,15 +63,15 @@
         "note": "Contact: Telephone: 932150899, Email: reservas@eurostarsbarcelonacentral.com."
     },
     {
-        "name": "TO BE DETERMINED",
-        "type": "Flight",
+        "name": "",
+        "type": "Train",
         "origin": "Barcelona",
         "destination": "Malaga",
         "departure_date": "2025-09-21",
         "departure_time": "7:05 AM",
         "arrival_date": "2025-09-21",
         "arrival_time": "2:55 PM",
-        "note": ""
+        "note": "Renfe, Coach (coche) 23, Plaza 2c, 2b, 2a, 3c, 3b. https://www.google.com/maps/place/Sants,+Sants-Montju%C3%AFc,+Barcelona,+Spain/@41.3782484,2.1257289,3753m/data=!3m2!1e3!4b1!4m6!3m5!1s0x12a498863a0819fd:0xfdb69df66dad168c!8m2!3d41.3754426!4d2.1355003!16s%2Fm%2F02rg8xp?entry=ttu&g_ep=EgoyMDI1MDgwNi4wIKXMDSoASAFQAw%3D%3D"
       },
       {
         "name": "Hotel Molina Lario Malaga",
