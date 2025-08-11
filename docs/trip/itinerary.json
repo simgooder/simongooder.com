@@ -128,6 +128,19 @@
         "note": ""
       },
       {
+        "name": "Steve/Brenda",
+        "type": "Flight",
+        "origin": "Seville",
+        "flight_number": "VY2219",
+        "vendor_name": "Vueling",
+        "destination": "Barcelona",
+        "departure_date": "2025-09-30",
+        "departure_time": "13:05",
+        "arrival_date": "2025-09-30",
+        "arrival_time": "14:45",
+        "note": "Steve: seat 4D, Brenda: seat 4E"
+      },
+      {
         "name": "Kelly/Ophelia/Simon",
         "type": "Flight",
         "flight_number": "AC823",
