@@ -114,18 +114,20 @@
         "note": "Contact: juderia@casasypalacios.com"
       },
       {
-        "name": "TO BE DETERMINED",
+        "name": "Kelly/Ophelia/Simon",
         "type": "Flight",
         "origin": "Seville",
+        "flight_number": "VY2213",
+        "vendor_name": "Vueling",
         "destination": "Barcelona",
         "departure_date": "2025-09-30",
-        "departure_time": "7:05 AM",
+        "departure_time": "06:30",
         "arrival_date": "2025-09-30",
-        "arrival_time": "2:55 PM",
+        "arrival_time": "08:05",
         "note": ""
       },
       {
-        "name": "",
+        "name": "Kelly/Ophelia/Simon",
         "type": "Flight",
         "flight_number": "AC823",
         "vendor_name": "Air Canada",
@@ -138,7 +140,7 @@
         "note": ""
       },
        {
-        "name": "Flight from Barcelona to Calgary",
+        "name": "Steve/Brenda",
         "type": "Flight",
         "flight_number": "WS 7",
         "vendor_name": "WestJet",
@@ -151,7 +153,7 @@
         "note": "Seats: Mr Stephen Ross Gooder: 03D, Mrs Brenda Gooder: 03F"
       },
       {
-        "name": "Flight from Calgary to Kelowna",
+        "name": "Steve/Brenda",
         "type": "Flight",
         "flight_number": "WS 399",
         "vendor_name": "WestJet",
