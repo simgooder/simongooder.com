@@ -90,14 +90,15 @@
         "note": "Telephone: +34 952 06 20 02, Email: info@hotelmolinalario.com"
       },
       {
-        "name": "TO BE DETERMINED",
+        "name": "",
         "type": "Train",
+        "address": "s/n, 29002 Málaga, Spain",
         "origin": "Malaga",
         "destination": "Seville",
         "departure_date": "2025-09-26",
-        "departure_time": "7:05 AM",
+        "departure_time": "09:05",
         "arrival_date": "2025-09-26",
-        "arrival_time": "2:55 PM",
+        "arrival_time": "12:34",
         "note": ""
       },
       {
