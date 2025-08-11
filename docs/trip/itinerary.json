@@ -92,6 +92,7 @@
       {
         "name": "",
         "type": "Train",
+        "vendor_name": "Renfe",
         "address": "s/n, 29002 Málaga, Spain",
         "origin": "Malaga",
         "destination": "Seville",
