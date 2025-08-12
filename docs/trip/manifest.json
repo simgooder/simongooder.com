@@ -2,7 +2,7 @@
   "name": "Spanish Vacation 2025",
   "short_name": "Trip Planner",
   "description": "A travel itinerary app for viewing trip details, times, and currency conversion",
-  "start_url": "/trip/spanish-vacation-2025",
+  "start_url": "/trip/",
   "scope": "/trip/",
   "display": "standalone",
   "background_color": "#ffffff",

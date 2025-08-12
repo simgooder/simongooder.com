@@ -330,18 +330,27 @@ function renderDayView(view) {
  * Main function to render the itinerary based on the current view.
  */
 function renderItinerary() {
+  console.log('renderItinerary called');
+  console.log('Current itinerary:', itinerary);
+  console.log('Current view:', currentView);
+
   let view = document.getElementById('main');
   if (!view) {
+    console.log('main element not found, creating itineraryView');
     view = document.createElement('div');
     view.id = 'itineraryView';
     // Ensure the element is inserted in a logical place in your HTML
     document.body.insertBefore(view, document.querySelector('#currentTimeBar')?.nextElementSibling || null);
+  } else {
+    console.log('Found main element');
   }
   view.innerHTML = ''; // Clear previous view
 
   if (currentView === 'timeline') {
+    console.log('Rendering timeline view');
     renderTimelineView(view);
   } else {
+    console.log('Rendering day view');
     renderDayView(view);
   }
 }
@@ -669,21 +678,30 @@ function loadItinerary(jsonFile) {
     .then(data => {
       if (data && data.trips && Array.isArray(data.trips)) {
         allTrips = data.trips;
+        console.log('Loaded trips:', allTrips.map(t => t.id));
 
         // Determine which trip to load
         const urlPath = window.location.pathname;
+        console.log('Current URL path:', urlPath);
         const tripIdFromUrl = extractTripIdFromUrl(urlPath);
+        console.log('Trip ID from URL:', tripIdFromUrl);
 
         if (tripIdFromUrl && allTrips.find(trip => trip.id === tripIdFromUrl)) {
           currentTripId = tripIdFromUrl;
+          console.log('Using trip from URL:', currentTripId);
         } else {
           // Default to first trip or current trip
-          currentTripId = getCurrentTripId() || (allTrips.length > 0 ? allTrips[0].id : null);
+          const currentTrip = getCurrentTripId();
+          console.log('Current trip from date logic:', currentTrip);
+          currentTripId = currentTrip || (allTrips.length > 0 ? allTrips[0].id : null);
+          console.log('Selected trip ID:', currentTripId);
         }
 
         if (currentTripId) {
+          console.log('Loading trip:', currentTripId);
           loadTrip(currentTripId);
         } else {
+          console.error('No trips found to load');
           throw new Error('No trips found');
         }
       } else {
@@ -740,6 +758,9 @@ function getCurrentTripId() {
  * Load a specific trip by ID
  */
 function loadTrip(tripId) {
+  console.log('loadTrip called with tripId:', tripId);
+  console.log('Available trips:', allTrips.map(t => ({ id: t.id, name: t.name })));
+
   const trip = allTrips.find(t => t.id === tripId);
   if (!trip) {
     console.error('Trip not found:', tripId, 'Available trips:', allTrips.map(t => t.id));
@@ -755,25 +776,50 @@ function loadTrip(tripId) {
     }
   }
 
+  console.log('Found trip:', trip.name, 'with', (trip.segments || []).length, 'segments');
+
   currentTripId = tripId;
   itinerary = trip.segments || [];
+  console.log('Set itinerary to:', itinerary.length, 'segments');
 
   // Update currencies and timezone
   window.tripCurrency = trip.currency || 'EUR';
   window.destTz = trip.timezone || 'Europe/Amsterdam';
+  console.log('Set currency to:', window.tripCurrency, 'and timezone to:', window.destTz);
 
   // Update page title and trip name
   document.title = `${trip.name} - Travlr`;
   const titleSlot = document.getElementById('tripName');
   if (titleSlot) {
     titleSlot.innerText = trip.name;
+    console.log('Updated trip name in DOM to:', trip.name);
+  } else {
+    console.warn('tripName element not found in DOM');
   }
 
-  // Update URL without page reload
+  // Update URL without page reload (only if different from current)
   const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
-  const newPath = isProduction ? `/trip/${tripId}` : `/${tripId}`;
-  window.history.pushState({ tripId }, trip.name, newPath);
+  console.log('Is production environment:', isProduction);
 
+  // For local development, don't change URLs to avoid 404s
+  // For production, use the full /trip/tripId path
+  if (isProduction) {
+    const expectedPath = `/trip/${tripId}`;
+    const currentPath = window.location.pathname;
+
+    // Only update URL if it's different and we're not on the base path
+    if (currentPath !== expectedPath && currentPath !== '/trip/' && currentPath !== '/trip') {
+      window.history.replaceState({ tripId }, trip.name, expectedPath);
+      console.log('Updated URL to:', expectedPath);
+    } else if (currentPath === '/trip/' || currentPath === '/trip') {
+      // If we're on the base path, use replaceState instead of pushState
+      window.history.replaceState({ tripId }, trip.name, expectedPath);
+      console.log('Updated URL from base path to:', expectedPath);
+    }
+  }
+  // For local development, we don't change the URL to avoid routing issues
+
+  console.log('About to render itinerary with', itinerary.length, 'segments');
   renderItinerary();
 }
 

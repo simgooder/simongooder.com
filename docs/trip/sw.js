@@ -2,7 +2,7 @@
 const isProduction = self.location.hostname !== 'localhost' && self.location.hostname !== '127.0.0.1';
 const BASE_PATH = isProduction ? '/trip' : '';
 
-const CACHE_NAME = 'travlr-cache-v11';
+const CACHE_NAME = 'travlr-cache-v14';
 const OFFLINE_URL = BASE_PATH + '/offline.html';
 const urlsToCache = [
     BASE_PATH + '/',
@@ -66,18 +66,28 @@ self.addEventListener('activate', (event) => {
 
 // Fetch event - serve from cache, falling back to network
 self.addEventListener('fetch', (event) => {
-  // Handle navigation requests (like /trip/spanish-vacation-2025)
+  // Handle navigation requests (like /trip/ or /trip/spanish-vacation-2025)
   if (event.request.mode === 'navigate') {
-    event.respondWith(
-      caches.match(BASE_PATH + '/index.html')
-        .then((response) => {
-          return response || fetch(BASE_PATH + '/index.html');
-        })
-        .catch(() => {
-          return caches.match(OFFLINE_URL);
-        })
-    );
-    return;
+    const url = new URL(event.request.url);
+
+    // For any navigation to /trip/* paths, serve index.html
+    if (url.pathname.startsWith('/trip')) {
+      event.respondWith(
+        caches.match(BASE_PATH + '/index.html')
+          .then((response) => {
+            if (response) {
+              return response;
+            }
+            // If not in cache, try to fetch it
+            return fetch(BASE_PATH + '/index.html')
+              .catch(() => {
+                // If that fails, try the offline page
+                return caches.match(OFFLINE_URL);
+              });
+          })
+      );
+      return;
+    }
   }
 
   // Handle other requests
