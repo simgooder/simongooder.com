@@ -3,7 +3,7 @@
   "short_name": "Travlr",
   "description": "A travel itinerary app for viewing trip details, times, and currency conversion",
   "start_url": "/trip/",
-  "scope": "/",
+  "scope": "/trip/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ffffff",

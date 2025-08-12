@@ -680,22 +680,11 @@ function loadItinerary(jsonFile) {
         allTrips = data.trips;
         console.log('Loaded trips:', allTrips.map(t => t.id));
 
-        // Determine which trip to load
-        const urlPath = window.location.pathname;
-        console.log('Current URL path:', urlPath);
-        const tripIdFromUrl = extractTripIdFromUrl(urlPath);
-        console.log('Trip ID from URL:', tripIdFromUrl);
-
-        if (tripIdFromUrl && allTrips.find(trip => trip.id === tripIdFromUrl)) {
-          currentTripId = tripIdFromUrl;
-          console.log('Using trip from URL:', currentTripId);
-        } else {
-          // Default to first trip or current trip
-          const currentTrip = getCurrentTripId();
-          console.log('Current trip from date logic:', currentTrip);
-          currentTripId = currentTrip || (allTrips.length > 0 ? allTrips[0].id : null);
-          console.log('Selected trip ID:', currentTripId);
-        }
+        // Default to current trip based on date logic, or first trip
+        const currentTrip = getCurrentTripId();
+        console.log('Current trip from date logic:', currentTrip);
+        currentTripId = currentTrip || (allTrips.length > 0 ? allTrips[0].id : null);
+        console.log('Selected trip ID:', currentTripId);
 
         if (currentTripId) {
           console.log('Loading trip:', currentTripId);
@@ -712,23 +701,6 @@ function loadItinerary(jsonFile) {
       console.error("Error loading itinerary:", err);
       document.body.innerHTML = `<div style="color:#c00;padding:2em;">Error loading itinerary: ${err.message}. Please check console for details.</div>`;
     });
-}
-
-/**
- * Extract trip ID from URL path
- */
-function extractTripIdFromUrl(path) {
-  // Handle both local and production URLs
-  // Match patterns like /trip/spanish-vacation-2025 or /spanish-vacation-2025 (for PWA)
-  const match = path.match(/\/trip\/([^\/]+)$/) || path.match(/^\/([^\/]+)$/) || path.match(/\/([^\/]+)$/);
-  const tripId = match ? match[1] : null;
-
-  // If we're at the base /trip/ URL or root (no specific trip), return null to use default logic
-  if (path === '/trip/' || path === '/trip' || path === '/') {
-    return null;
-  }
-
-  return tripId;
 }
 
 /**
@@ -798,25 +770,7 @@ function loadTrip(tripId) {
     console.warn('tripName element not found in DOM');
   }
 
-  // Update URL without page reload (only if different from current)
-  const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
-  console.log('Is production environment:', isProduction);
-
-  // For production, use the full /trip/tripId path
-  // For local development, don't change URLs to avoid 404s
-  if (isProduction) {
-    const expectedPath = `/trip/${tripId}`;
-    const currentPath = window.location.pathname;
-
-    // Only update URL if it's different and not already at expected path
-    if (currentPath !== expectedPath) {
-      // Use replaceState to avoid adding to browser history
-      window.history.replaceState({ tripId }, trip.name, expectedPath);
-      console.log('Updated URL to:', expectedPath);
-    }
-  }
-  // For local development, we don't change the URL to avoid routing issues
-
+  // No URL manipulation - running as pure SPA
   console.log('About to render itinerary with', itinerary.length, 'segments');
   renderItinerary();
 }
@@ -947,21 +901,5 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Handle browser back/forward navigation
-window.addEventListener('popstate', (event) => {
-  if (event.state && event.state.tripId) {
-    // Load the trip from the browser state
-    const tripId = event.state.tripId;
-    if (tripId !== currentTripId && allTrips.find(t => t.id === tripId)) {
-      currentTripId = tripId;
-      loadTrip(tripId);
-    }
-  } else {
-    // Handle initial page load or navigation without state
-    const urlPath = window.location.pathname;
-    const tripIdFromUrl = extractTripIdFromUrl(urlPath);
-    if (tripIdFromUrl && tripIdFromUrl !== currentTripId && allTrips.find(t => t.id === tripIdFromUrl)) {
-      loadTrip(tripIdFromUrl);
-    }
-  }
-});
+// No URL routing - pure SPA approach
+// Trip switching handled through UI only
