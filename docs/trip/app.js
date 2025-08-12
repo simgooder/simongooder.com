@@ -719,11 +719,12 @@ function loadItinerary(jsonFile) {
  */
 function extractTripIdFromUrl(path) {
   // Handle both local and production URLs
-  const match = path.match(/\/trip\/([^\/]+)$/) || path.match(/^\/([^\/]+)$/);
+  // Match patterns like /trip/spanish-vacation-2025 or /spanish-vacation-2025 (for PWA)
+  const match = path.match(/\/trip\/([^\/]+)$/) || path.match(/^\/([^\/]+)$/) || path.match(/\/([^\/]+)$/);
   const tripId = match ? match[1] : null;
 
-  // If we're at the base /trip/ URL (no specific trip), return null to use default logic
-  if (path === '/trip/' || path === '/trip') {
+  // If we're at the base /trip/ URL or root (no specific trip), return null to use default logic
+  if (path === '/trip/' || path === '/trip' || path === '/') {
     return null;
   }
 
@@ -801,20 +802,17 @@ function loadTrip(tripId) {
   const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
   console.log('Is production environment:', isProduction);
 
-  // For local development, don't change URLs to avoid 404s
   // For production, use the full /trip/tripId path
+  // For local development, don't change URLs to avoid 404s
   if (isProduction) {
     const expectedPath = `/trip/${tripId}`;
     const currentPath = window.location.pathname;
 
-    // Only update URL if it's different and we're not on the base path
-    if (currentPath !== expectedPath && currentPath !== '/trip/' && currentPath !== '/trip') {
+    // Only update URL if it's different and not already at expected path
+    if (currentPath !== expectedPath) {
+      // Use replaceState to avoid adding to browser history
       window.history.replaceState({ tripId }, trip.name, expectedPath);
       console.log('Updated URL to:', expectedPath);
-    } else if (currentPath === '/trip/' || currentPath === '/trip') {
-      // If we're on the base path, use replaceState instead of pushState
-      window.history.replaceState({ tripId }, trip.name, expectedPath);
-      console.log('Updated URL from base path to:', expectedPath);
     }
   }
   // For local development, we don't change the URL to avoid routing issues

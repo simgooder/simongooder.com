@@ -1,9 +1,9 @@
 {
-  "name": "Spanish Vacation 2025",
-  "short_name": "Trip Planner",
+  "name": "Travel Itinerary",
+  "short_name": "Travlr",
   "description": "A travel itinerary app for viewing trip details, times, and currency conversion",
   "start_url": "/trip/",
-  "scope": "/trip/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ffffff",

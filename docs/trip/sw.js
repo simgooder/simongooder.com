@@ -2,7 +2,7 @@
 const isProduction = self.location.hostname !== 'localhost' && self.location.hostname !== '127.0.0.1';
 const BASE_PATH = isProduction ? '/trip' : '';
 
-const CACHE_NAME = 'travlr-cache-v14';
+const CACHE_NAME = 'travlr-cache-v16';
 const OFFLINE_URL = BASE_PATH + '/offline.html';
 const urlsToCache = [
     BASE_PATH + '/',
@@ -12,6 +12,7 @@ const urlsToCache = [
     BASE_PATH + '/js/db.js',
     BASE_PATH + '/manifest.json',
     BASE_PATH + '/itinerary.json',
+    '/', // Add root path for PWA navigation
     'https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4',
     'https://cdn.jsdelivr.net/npm/dayjs@1.11.10/dayjs.min.js',
   'https://cdn.jsdelivr.net/npm/dayjs@1.11.10/plugin/advancedFormat.js'
@@ -70,8 +71,8 @@ self.addEventListener('fetch', (event) => {
   if (event.request.mode === 'navigate') {
     const url = new URL(event.request.url);
 
-    // For any navigation to /trip/* paths, serve index.html
-    if (url.pathname.startsWith('/trip')) {
+    // For any navigation to /trip/* paths OR root path, serve index.html
+    if (url.pathname.startsWith('/trip') || url.pathname === '/') {
       event.respondWith(
         caches.match(BASE_PATH + '/index.html')
           .then((response) => {
