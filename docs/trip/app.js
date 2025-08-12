@@ -297,7 +297,7 @@ function renderDayView(view) {
     const dayContainer = document.createElement('div');
     const dayHeader = document.createElement('h2');
     dayHeader.id = `day-${day}`;
-    dayHeader.className = 'text-xl text-black font-medium mb-2 py-2 px-2 mt-12 sticky top-0 z-10 bg-white shadow-lg';
+    dayHeader.className = 'text-lg text-black font-bold mb-2 py-2 px-2 mt-12 sticky top-0 z-10  backdrop-blur-xl bg-white/30 shadow-lg';
     dayHeader.innerText = formatTimelineDate(day);
     view.appendChild(dayContainer);
     dayContainer.appendChild(dayHeader);
