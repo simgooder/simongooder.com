@@ -153,6 +153,18 @@
         "arrival_time": "14:10",
         "note": ""
       },
+      {
+        "name": "Stay at Hyatt Regency Barcelona Fira",
+        "type": "Hotel",
+        "hotel_name": "Hyatt Regency Barcelona Fira",
+        "address": "Avinguda de la Granvia de l'Hospitalet, 144, Barcelona, ES, 08907",
+        "destination": "Barcelona",
+        "check_in_date": "2025-09-30",
+        "check_in_time": "3:00 PM",
+        "check_out_date": "2025-10-01",
+        "check_out_time": "12:00 PM",
+        "note": "Contact: +34 934 13 50 00. Hotel Website: https://www.hyatt.com/hyatt-regency/en-US/bcnrb-hyatt-regency-barcelona-tower. Confirmation #: 38549574."
+       },
        {
         "name": "Steve/Brenda",
         "type": "Flight",
