@@ -2,7 +2,7 @@
 const isProduction = self.location.hostname !== 'localhost' && self.location.hostname !== '127.0.0.1';
 const BASE_PATH = isProduction ? '/trip' : '';
 
-const CACHE_NAME = 'travlr-cache-v20';
+const CACHE_NAME = 'travlr-cache-v21';
 const OFFLINE_URL = BASE_PATH + '/offline.html';
 const urlsToCache = [
     BASE_PATH + '/',

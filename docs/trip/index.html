@@ -91,17 +91,18 @@
 </head>
 <body>
 
-    <header class="p-3">
+    <header class="p-3 flex justify-between">
         <h1 id="tripName" class="text-xl font-bold"></h1>
+        <button id="toggleViewBtn" onclick="toggleView()" class="">🔁</button>
     </header>
 
     <main id="main" class="pb-24"></main>
 
     <nav class="flex items-center gap-2 py-4 fixed left-[1%] bottom-0 w-[98%] z-10 border-solid border-1 border-slate-100 rounded-xl backdrop-blur-xl bg-white/30">
-        <button id="toggleViewBtn" onclick="toggleView()" class="w-full text-sm font-medium text-[#0000f7]">🔁<br/> Day View</button>
         <button onclick="showCurrencyModal()" class="w-full text-sm font-medium text-[#0000f7]">💱<br/> Currency</button>
         <button onclick="showTimeModal()" class="w-full text-sm font-medium text-[#0000f7]">🕒<br/> Time</button>
-        <button onclick="showTripsMenu()" class="w-full text-sm font-medium text-[#0000f7]">📋<br/> Trips</button>
+        <button onclick="showNotesModal()" class="w-full text-sm font-medium text-[#0000f7]">📔<br/> Notes</button>
+        <button onclick="showTripsMenu()" class="w-full text-sm font-medium text-[#0000f7]">✈️<br/> Trips</button>
     </nav>
 
     <script src="js/db.js"></script>

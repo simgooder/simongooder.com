@@ -184,6 +184,101 @@ function renderTimeWidget(homeTz, destTz) {
     }, msToNextMinute);
   });
 }
+
+// --- Notes Widget Logic ---
+/**
+ * Shows the notes modal for the current trip
+ */
+function showNotesModal() {
+  const modal = document.createElement('div');
+  modal.id = 'notesModal';
+  modal.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:#0008;z-index:100;display:flex;align-items:center;justify-content:center;';
+
+  modal.innerHTML = `
+    <div style="background:#fff;padding:2em;border-radius:12px;max-width:500px;min-width:350px;max-height:80vh;overflow-y:auto;box-shadow:0 2px 16px #0003;position:relative;" onclick="event.stopPropagation()">
+      <h2 class="text-lg font-bold mb-4">📔 Trip Notes</h2>
+      <div id="notesWidget"><span>Loading notes...</span></div>
+      <button onclick="closeNotesModal()" style="position:absolute;top:10px;right:10px;background:none;border:none;font-size:1.5em;cursor:pointer;">&times;</button>
+    </div>
+  `;
+
+  modal.onclick = closeNotesModal;
+  document.body.appendChild(modal);
+
+  renderNotesWidget();
+}
+
+function closeNotesModal() {
+  document.getElementById('notesModal')?.remove();
+}
+
+function renderNotesWidget() {
+  const widget = document.getElementById('notesWidget');
+  if (!widget) return;
+
+  // Get current trip
+  const currentTrip = allTrips.find(trip => trip.id === currentTripId);
+  if (!currentTrip || !currentTrip.notes) {
+    widget.innerHTML = '<div class="text-gray-500 italic">No notes available for this trip.</div>';
+    return;
+  }
+
+  const notes = currentTrip.notes;
+  if (!Array.isArray(notes) || notes.length === 0) {
+    widget.innerHTML = '<div class="text-gray-500 italic">No notes available for this trip.</div>';
+    return;
+  }
+
+  // Render all notes
+  let notesHtml = '';
+  notes.forEach((note, index) => {
+    if (note.title || note.body) {
+      notesHtml += '<div style="margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid #e5e7eb;">';
+
+      // Add title if it exists
+      if (note.title && note.title.trim()) {
+        notesHtml += `<h3 style="font-weight: bold; font-size: 1.125rem; margin-bottom: 0.75rem; color: #374151;">${escapeHtml(note.title)}</h3>`;
+      }
+
+      // Add body if it exists
+      if (note.body && note.body.trim()) {
+        // Process the body to handle newlines and basic HTML
+        let processedBody = note.body
+          // First escape any HTML except allowed tags
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          // Then restore allowed tags
+          .replace(/&lt;a\s+href=(['"])(.*?)\1&gt;(.*?)&lt;\/a&gt;/gi, '<a href="$2" target="_blank" rel="noopener noreferrer" style="color: #0000f7; text-decoration: underline;">$3</a>')
+          .replace(/&lt;b&gt;(.*?)&lt;\/b&gt;/gi, '<strong>$1</strong>')
+          .replace(/&lt;strong&gt;(.*?)&lt;\/strong&gt;/gi, '<strong>$1</strong>')
+          .replace(/&lt;br\s*\/?&gt;/gi, '<br>')
+          // Convert newlines to <br> tags
+          .replace(/\n/g, '<br>');
+
+        notesHtml += `<div style="line-height: 1.6; color: #4b5563;">${processedBody}</div>`;
+      }
+
+      notesHtml += '</div>';
+    }
+  });
+
+  if (notesHtml) {
+    widget.innerHTML = notesHtml;
+  } else {
+    widget.innerHTML = '<div class="text-gray-500 italic">No notes available for this trip.</div>';
+  }
+}
+
+/**
+ * Utility function to escape HTML to prevent XSS attacks
+ */
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
 // Global state variables
 let itinerary = [];
 let allTrips = [];
@@ -194,11 +289,11 @@ let currentView = 'timeline';
  * Toggles between 'timeline' and 'day' views and re-renders the itinerary.
  */
 const viewBtn = document.getElementById('toggleViewBtn');
-viewBtn.innerHTML = `🔁<br/> ${(currentView === 'timeline') ? 'day' : 'timeline'}`
+// viewBtn.innerHTML = `🔁<br/> ${(currentView === 'timeline') ? 'day' : 'timeline'}`
 
 function toggleView() {
     currentView = (currentView === 'timeline') ? 'day' : 'timeline';
-    viewBtn.innerHTML = `🔁<br/> ${(currentView === 'timeline') ? 'day' : 'timeline'}`
+    // viewBtn.innerHTML = `🔁<br/> ${(currentView === 'timeline') ? 'day' : 'timeline'}`
 
   renderItinerary();
 }
@@ -324,6 +419,30 @@ function renderDayView(view) {
       dayContainer.appendChild(segDiv);
     });
   });
+
+  // Add "BACK TO TOP" link if trip is longer than 4 days
+  if (allDays.length > 4) {
+    const backToTopContainer = document.createElement('div');
+    backToTopContainer.style.cssText = 'text-align: center; margin-top: 2rem; padding: 1rem;';
+
+    const backToTopLink = document.createElement('a');
+    backToTopLink.href = '#';
+    backToTopLink.innerHTML = '⬆️ <br/> Back to top';
+    backToTopLink.className = 'text-center text-[#0000f7]'
+
+
+    // Smooth scroll to top when clicked
+    backToTopLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+
+    backToTopContainer.appendChild(backToTopLink);
+    view.appendChild(backToTopContainer);
+  }
 }
 
 /**
@@ -331,26 +450,21 @@ function renderDayView(view) {
  */
 function renderItinerary() {
   console.log('renderItinerary called');
-  console.log('Current itinerary:', itinerary);
-  console.log('Current view:', currentView);
 
   let view = document.getElementById('main');
   if (!view) {
-    console.log('main element not found, creating itineraryView');
     view = document.createElement('div');
     view.id = 'itineraryView';
     // Ensure the element is inserted in a logical place in your HTML
     document.body.insertBefore(view, document.querySelector('#currentTimeBar')?.nextElementSibling || null);
-  } else {
-    console.log('Found main element');
   }
   view.innerHTML = ''; // Clear previous view
 
   if (currentView === 'timeline') {
-    console.log('Rendering timeline view');
+    // console.log('Rendering timeline view');
     renderTimelineView(view);
   } else {
-    console.log('Rendering day view');
+    // console.log('Rendering day view');
     renderDayView(view);
   }
 }
@@ -678,16 +792,13 @@ function loadItinerary(jsonFile) {
     .then(data => {
       if (data && data.trips && Array.isArray(data.trips)) {
         allTrips = data.trips;
-        console.log('Loaded trips:', allTrips.map(t => t.id));
+        // console.log('Loaded trips:', allTrips.map(t => t.id));
 
         // Default to current trip based on date logic, or first trip
         const currentTrip = getCurrentTripId();
-        console.log('Current trip from date logic:', currentTrip);
         currentTripId = currentTrip || (allTrips.length > 0 ? allTrips[0].id : null);
-        console.log('Selected trip ID:', currentTripId);
 
         if (currentTripId) {
-          console.log('Loading trip:', currentTripId);
           loadTrip(currentTripId);
         } else {
           console.error('No trips found to load');
@@ -731,7 +842,7 @@ function getCurrentTripId() {
  * Load a specific trip by ID
  */
 function loadTrip(tripId) {
-  console.log('loadTrip called with tripId:', tripId);
+//   console.log('loadTrip called with tripId:', tripId);
   console.log('Available trips:', allTrips.map(t => ({ id: t.id, name: t.name })));
 
   const trip = allTrips.find(t => t.id === tripId);
@@ -740,38 +851,30 @@ function loadTrip(tripId) {
     // Redirect to first available trip
     if (allTrips.length > 0) {
       const fallbackTrip = allTrips[0];
-      console.log('Redirecting to fallback trip:', fallbackTrip.id);
       loadTrip(fallbackTrip.id);
       return;
     } else {
-      console.error('No trips available');
       return;
     }
   }
 
-  console.log('Found trip:', trip.name, 'with', (trip.segments || []).length, 'segments');
 
   currentTripId = tripId;
   itinerary = trip.segments || [];
-  console.log('Set itinerary to:', itinerary.length, 'segments');
 
   // Update currencies and timezone
   window.tripCurrency = trip.currency || 'EUR';
   window.destTz = trip.timezone || 'Europe/Amsterdam';
-  console.log('Set currency to:', window.tripCurrency, 'and timezone to:', window.destTz);
 
   // Update page title and trip name
   document.title = `${trip.name} - Travlr`;
   const titleSlot = document.getElementById('tripName');
   if (titleSlot) {
     titleSlot.innerText = trip.name;
-    console.log('Updated trip name in DOM to:', trip.name);
-  } else {
-    console.warn('tripName element not found in DOM');
   }
 
   // No URL manipulation - running as pure SPA
-  console.log('About to render itinerary with', itinerary.length, 'segments');
+//   console.log('About to render itinerary with', itinerary.length, 'segments');
   renderItinerary();
 }
 
@@ -900,6 +1003,3 @@ window.addEventListener('DOMContentLoaded', () => {
       loadItinerary('itinerary.json');
     });
 });
-
-// No URL routing - pure SPA approach
-// Trip switching handled through UI only

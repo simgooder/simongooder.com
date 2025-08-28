@@ -6,11 +6,26 @@
   },
   "trips": [
     {
-      "id": "spanish-vacation-2025",
-      "name": "Spanish Vacation 2025",
-      "description": "A multi-city trip through Spain, including Barcelona, Malaga, and Seville.",
-      "currency": "EUR",
-      "timezone": "Europe/Madrid",
+    "id": "spanish-vacation-2025",
+    "name": "Spanish Vacation 2025",
+    "description": "A multi-city trip through Spain, including Barcelona, Malaga, and Seville.",
+    "currency": "EUR",
+    "timezone": "Europe/Madrid",
+    "notes": [
+        {
+            "title": "Things to do in Barcelona",
+            "body": "• <a href='https://www.tripadvisor.ca/Attractions-g616242-Activities-c61-t194-Costa_Brava_Province_of_Girona_Catalonia.html'>Snorkeling at Costa Brava</a>\n• <a href='https://parkguell.barcelona/en'>Park Guell</a>\n• <a href='https://sagradafamilia.org/en/'>Basílica de la Sagrada Família</a>\n• <a href='https://www.tripadvisor.ca/Attraction_Review-g187497-d190162-Reviews-Gothic_Quarter_Barri_Gotic-Barcelona_Catalonia.html'>Gothic Quarter</a>\n• <a href='https://maps.app.goo.gl/hbgxsx6RgREuJg8Z6'>Mercat de la Boqueria</a>\n• <a href='https://museupicassobcn.cat/en'>Picasso museum</a>\n• <a href='https://23robadors.com/'>Flamenco show</a>"
+        },
+        {
+            "title": "Things to do in Malaga",
+            "body": "• <a href='https://www.museopicassomalaga.org/en/'>Picasso museum</a>\n• <a href='https://laconcepcion.malaga.eu/en/'>Botanical garden</a>\n• <a href='https://www.alcazabamalaga.com/'>Alcazaba fort</a>\n• <a href='https://maps.app.goo.gl/n4etw7RrfEQMwMar6'>Frigiliana: beautiful mountain village</a>\n• <a href='https://maps.app.goo.gl/S9jeUoJ9w2zVftBP9'>Ronda: cliffy bridge place with bull fighting</a>\n• <a href='https://maps.app.goo.gl/qoL3wcn8Lye5ZZD1A'>Granada - town</a>\n• <a href='https://maps.app.goo.gl/e9DcDJJmjA9sPnCp6'>Beach</a>"
+        },
+        {
+            "title": "Things to do in Seville",
+            "body": "• <a href='https://maps.app.goo.gl/4PEWUACyivGpdNzY8'>Plaza de España</a>\n• <a href='https://maps.app.goo.gl/N6WXsMj41q25zi2P9'>Royal Alcázar of Seville</a>\n• <a href='https://setasdesevilla.com/en/'>Setas de Sevilla</a>\n• <a href='https://palaciodelebrija.com/'>Palace of the Countess of Lebrija</a>\n• <a href='https://www.museosdeandalucia.es/web/conjuntoarqueologicodeitalica'>Itálica Seville: Roman city</a>\n• <a href='https://maps.app.goo.gl/259RhZAGJaNN5LV7A'>Barrio Santa Cruz neighbourhood</a>"
+
+        }
+    ],
 
     "segments": [
       {
@@ -199,6 +214,12 @@
       "description": "WhereTo Conference",
       "currency": "CAD",
       "timezone": "America/Vancouver",
+      "notes": [
+        {
+            "title": "",
+            "body": ""
+        }
+        ],
       "segments": [
         {
             "name": "Sheraton Montreal Airport",
