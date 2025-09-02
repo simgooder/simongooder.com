@@ -792,7 +792,18 @@ function loadItinerary(jsonFile) {
     .then(data => {
       if (data && data.trips && Array.isArray(data.trips)) {
         allTrips = data.trips;
-        // console.log('Loaded trips:', allTrips.map(t => t.id));
+
+        // Extract and store profile data for timezone and currency widgets
+        if (data.profile) {
+          window.homeTz = data.profile.timezone || 'America/Toronto';
+          window.baseCurrency = data.profile.currency || 'CAD';
+          console.log('Loaded profile - Home timezone:', window.homeTz, 'Base currency:', window.baseCurrency);
+        } else {
+          // Fallback values
+          window.homeTz = 'America/Toronto';
+          window.baseCurrency = 'CAD';
+          console.warn('No profile found in itinerary data, using fallback values');
+        }
 
         // Default to current trip based on date logic, or first trip
         const currentTrip = getCurrentTripId();
@@ -903,6 +914,10 @@ function showTripsMenu() {
       <div>
         ${tripsList}
       </div>
+      <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #e5e7eb;">
+        <button onclick="showNewTripForm()" style="width: 100%; padding: 0.75rem; margin-bottom: 0.5rem; background: #0000f7; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">➕ New Trip</button>
+        <button onclick="showEditTripForm()" style="width: 100%; padding: 0.75rem; background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; border-radius: 6px; font-weight: bold; cursor: pointer;">✏️ Edit Current Trip</button>
+      </div>
       <button onclick="closeTripsModal()" style="position:absolute;top:10px;right:10px;background:none;border:none;font-size:1.5em;cursor:pointer;">&times;</button>
     </div>
   `;
@@ -932,6 +947,819 @@ function closeTripsModal() {
 }
 
 /**
+ * Show new trip form
+ */
+function showNewTripForm() {
+  closeTripsModal();
+  const modal = document.createElement('div');
+  modal.id = 'tripFormModal';
+  modal.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:#0008;z-index:100;display:flex;align-items:center;justify-content:center;';
+
+  modal.innerHTML = `
+    <div style="background:#fff;padding:2em;border-radius:12px;max-width:500px;min-width:300px;max-height:90vh;overflow-y:auto;box-shadow:0 2px 16px #0003;position:relative;" onclick="event.stopPropagation()">
+      <h2 class="text-lg font-bold mb-4">➕ New Trip</h2>
+      <form id="tripForm" onsubmit="submitTripForm(event, false)">
+        ${generateTripFormFields()}
+        <div style="margin-top: 1.5rem; display: flex; gap: 0.5rem;">
+          <button type="submit" style="flex: 1; padding: 0.75rem; background: #0000f7; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">Create Trip</button>
+          <button type="button" onclick="closeTripFormModal()" style="flex: 1; padding: 0.75rem; background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; border-radius: 6px; font-weight: bold; cursor: pointer;">Cancel</button>
+        </div>
+      </form>
+      <button onclick="closeTripFormModal()" style="position:absolute;top:10px;right:10px;background:none;border:none;font-size:1.5em;cursor:pointer;">&times;</button>
+    </div>
+  `;
+
+  modal.onclick = closeTripFormModal;
+  document.body.appendChild(modal);
+}
+
+/**
+ * Show edit trip form for current trip
+ */
+function showEditTripForm() {
+  closeTripsModal();
+  const currentTrip = allTrips.find(trip => trip.id === currentTripId);
+  if (!currentTrip) {
+    alert('No trip selected to edit');
+    return;
+  }
+
+  const modal = document.createElement('div');
+  modal.id = 'tripFormModal';
+  modal.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:#0008;z-index:100;display:flex;align-items:center;justify-content:center;';
+
+  modal.innerHTML = `
+    <div style="background:#fff;padding:2em;border-radius:12px;max-width:500px;min-width:300px;max-height:90vh;overflow-y:auto;box-shadow:0 2px 16px #0003;position:relative;" onclick="event.stopPropagation()">
+      <h2 class="text-lg font-bold mb-4">✏️ Edit Trip</h2>
+      <form id="tripForm" onsubmit="submitTripForm(event, true)">
+        ${generateTripFormFields(currentTrip)}
+        <div style="margin-top: 1.5rem; display: flex; gap: 0.5rem;">
+          <button type="submit" style="flex: 1; padding: 0.75rem; background: #0000f7; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">Update</button>
+          <button type="button" onclick="closeTripFormModal()" style="flex: 1; padding: 0.75rem; background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; border-radius: 6px; font-weight: bold; cursor: pointer;">Cancel</button>
+        </div>
+      </form>
+      <button onclick="closeTripFormModal()" style="position:absolute;top:10px;right:10px;background:none;border:none;font-size:1.5em;cursor:pointer;">&times;</button>
+    </div>
+  `;
+
+  modal.onclick = closeTripFormModal;
+  document.body.appendChild(modal);
+}
+
+/**
+ * Generate a trip ID from the trip name
+ */
+function generateTripId(name) {
+  if (!name) return '';
+
+  return name
+    .toLowerCase()
+    .trim()
+    // Replace spaces and special characters with hyphens
+    .replace(/[^a-z0-9]+/g, '-')
+    // Remove leading/trailing hyphens
+    .replace(/^-+|-+$/g, '')
+    // Collapse multiple hyphens
+    .replace(/-+/g, '-');
+}
+
+/**
+ * Generate form fields for trip creation/editing
+ */
+function generateTripFormFields(trip = null) {
+  const isEdit = trip !== null;
+
+  return `
+    <div class="">
+      ${isEdit ? `
+        <div class="input-group">
+          <label class="input-label">Trip ID:</label>
+          <input type="text" name="id" value="${escapeHtml(trip.id)}" readonly
+                 style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px; background: #f3f4f6;">
+          <small style="color: #6b7280;">Trip ID cannot be changed after creation</small>
+        </div>
+      ` : `
+        <div class="input-group">
+          <label class="input-label">Trip ID:</label>
+          <input type="text" name="id" id="tripIdField" readonly
+                 style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px; background: #f9fafb; color: #6b7280;">
+          <small style="color: #6b7280;">Generated automatically from trip name</small>
+        </div>
+      `}
+
+      <div class="input-group">
+        <label class="input-label">Trip Name:</label>
+        <input type="text" name="name" id="tripNameField" value="${isEdit ? escapeHtml(trip.name) : ''}" required
+               style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px;"
+               placeholder="e.g., Spanish Vacation 2025"
+               ${isEdit ? '' : 'oninput="updateTripId()"'}>
+      </div>
+
+      <div class="input-group">
+        <label class="input-label">Description:</label>
+        <textarea name="description" rows="2"
+                  style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px;"
+                  placeholder="Brief description of the trip">${isEdit ? escapeHtml(trip.description || '') : ''}</textarea>
+      </div>
+
+      <div class="input-group">
+        <label class="input-label">Currency:</label>
+        <select name="currency" required style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px;">
+          <option value="">Select Currency</option>
+          <option value="USD" ${isEdit && trip.currency === 'USD' ? 'selected' : ''}>USD - US Dollar</option>
+          <option value="EUR" ${isEdit && trip.currency === 'EUR' ? 'selected' : ''}>EUR - Euro</option>
+          <option value="GBP" ${isEdit && trip.currency === 'GBP' ? 'selected' : ''}>GBP - British Pound</option>
+          <option value="CAD" ${isEdit && trip.currency === 'CAD' ? 'selected' : ''}>CAD - Canadian Dollar</option>
+          <option value="JPY" ${isEdit && trip.currency === 'JPY' ? 'selected' : ''}>JPY - Japanese Yen</option>
+          <option value="AUD" ${isEdit && trip.currency === 'AUD' ? 'selected' : ''}>AUD - Australian Dollar</option>
+          <option value="CHF" ${isEdit && trip.currency === 'CHF' ? 'selected' : ''}>CHF - Swiss Franc</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label class="input-label">Timezone:</label>
+        <select name="timezone" required style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px;">
+          <option value="">Select Timezone</option>
+          <option value="America/New_York" ${isEdit && trip.timezone === 'America/New_York' ? 'selected' : ''}>Eastern Time (New York)</option>
+          <option value="America/Chicago" ${isEdit && trip.timezone === 'America/Chicago' ? 'selected' : ''}>Central Time (Chicago)</option>
+          <option value="America/Denver" ${isEdit && trip.timezone === 'America/Denver' ? 'selected' : ''}>Mountain Time (Denver)</option>
+          <option value="America/Los_Angeles" ${isEdit && trip.timezone === 'America/Los_Angeles' ? 'selected' : ''}>Pacific Time (Los Angeles)</option>
+          <option value="America/Toronto" ${isEdit && trip.timezone === 'America/Toronto' ? 'selected' : ''}>Eastern Time (Toronto)</option>
+          <option value="America/Vancouver" ${isEdit && trip.timezone === 'America/Vancouver' ? 'selected' : ''}>Pacific Time (Vancouver)</option>
+          <option value="Europe/London" ${isEdit && trip.timezone === 'Europe/London' ? 'selected' : ''}>GMT (London)</option>
+          <option value="Europe/Paris" ${isEdit && trip.timezone === 'Europe/Paris' ? 'selected' : ''}>CET (Paris)</option>
+          <option value="Europe/Madrid" ${isEdit && trip.timezone === 'Europe/Madrid' ? 'selected' : ''}>CET (Madrid)</option>
+          <option value="Europe/Rome" ${isEdit && trip.timezone === 'Europe/Rome' ? 'selected' : ''}>CET (Rome)</option>
+          <option value="Europe/Berlin" ${isEdit && trip.timezone === 'Europe/Berlin' ? 'selected' : ''}>CET (Berlin)</option>
+          <option value="Asia/Tokyo" ${isEdit && trip.timezone === 'Asia/Tokyo' ? 'selected' : ''}>JST (Tokyo)</option>
+          <option value="Asia/Shanghai" ${isEdit && trip.timezone === 'Asia/Shanghai' ? 'selected' : ''}>CST (Shanghai)</option>
+          <option value="Australia/Sydney" ${isEdit && trip.timezone === 'Australia/Sydney' ? 'selected' : ''}>AEST (Sydney)</option>
+        </select>
+      </div>
+
+      <div class="input-group mt-12">
+        <h3 class="text-lg">Trip segments:</h3>
+        <div id="segmentsContainer">
+          ${generateSegmentsSection(isEdit ? trip.segments || [] : [])}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+/**
+ * Generate the segments management section
+ */
+function generateSegmentsSection(segments = []) {
+  let html = '<div id="segmentsList">';
+
+  segments.forEach((segment, index) => {
+    html += generateSegmentForm(segment, index);
+  });
+
+  if (segments.length === 0) {
+    html += '<div class="no-segments" style="text-align: center; color: #6b7280; padding: 1rem; font-style: italic;">No segments added yet</div>';
+  }
+
+  html += '</div>';
+  html += `
+    <div style="margin-top: 1rem;">
+      <button type="button" onclick="addNewSegment()"
+              style="width: 100%; padding: 0.75rem; background: #f3f4f6; border: 2px dashed #d1d5db; border-radius: 6px; color: #6b7280; font-weight: bold; cursor: pointer;">
+        + Add Segment
+      </button>
+    </div>
+  `;
+
+  return html;
+}
+
+/**
+ * Generate form for a single segment
+ */
+function generateSegmentForm(segment = {}, index = 0) {
+  const segmentType = segment.type || 'Flight';
+
+  return `
+    <div class="segment-form" data-index="${index}" style="border: 1px solid #e5e7eb; border-radius: 6px; padding: 1rem; margin-bottom: 1rem; background: white;">
+      <div class="flex justify-between mb-4">
+        <h4 style="font-weight: bold; margin: 0;">Segment ${index + 1}</h4>
+        <button type="button" onclick="removeSegment(${index})"
+                style="background: #ef4444; color: white; border: none; border-radius: 4px; padding: 0.25rem 0.5rem; font-size: 0.75rem; cursor: pointer;">
+          Remove
+        </button>
+      </div>
+
+
+        <div class="input-group">
+          <label class="input-label">Type:</label>
+          <select name="segments[${index}][type]" onchange="updateSegmentFields(${index})" required
+                  style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px;">
+            <option value="Flight" ${segmentType === 'Flight' ? 'selected' : ''}>✈️ Flight</option>
+            <option value="Train" ${segmentType === 'Train' ? 'selected' : ''}>🚉 Train</option>
+            <option value="Bus" ${segmentType === 'Bus' ? 'selected' : ''}>🚌 Bus</option>
+            <option value="Drive" ${segmentType === 'Drive' ? 'selected' : ''}>🚙 Drive</option>
+            <option value="Hotel" ${segmentType === 'Hotel' ? 'selected' : ''}>🏨 Hotel</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">Name (optional):</label>
+          <input type="text" name="segments[${index}][name]" value="${escapeHtml(segment.name || '')}"
+                 style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px;"
+                 placeholder="e.g., Morning flight to Barcelona">
+        </div>
+
+
+      <div id="segmentFields${index}">
+        ${generateSegmentTypeFields(segment, index)}
+      </div>
+    </div>
+  `;
+}
+
+/**
+ * Generate fields specific to segment type
+ */
+function generateSegmentTypeFields(segment = {}, index = 0) {
+  const type = segment.type || 'Flight';
+
+  let html = `
+    <div class="input-group">
+      <div class="input-group">
+        <label class="input-label">Vendor:</label>
+        <input type="text" name="segments[${index}][vendor_name]" value="${escapeHtml(segment.vendor_name || '')}"
+               style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px;"
+               placeholder="e.g., Air Canada, Renfe, Marriott">
+      </div>
+  `;
+
+  if (type === 'Flight') {
+    html += `
+      <div class="input-group">
+        <label class="input-label">Flight Number:</label>
+        <input type="text" name="segments[${index}][flight_number]" value="${escapeHtml(segment.flight_number || '')}"
+               style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px;"
+               placeholder="e.g., AC822">
+      </div>
+    `;
+  } else {
+    // html += '<div></div>'; // Empty placeholder for grid
+  }
+
+  html += '</div>';
+
+  // Location fields
+  html += '<div class="input-group" id="location-fields">';
+
+  if (type !== 'Hotel') {
+    html += `
+      <div class="input-group">
+        <label class="input-label">Origin:</label>
+        <input type="text" name="segments[${index}][origin]" value="${escapeHtml(segment.origin || '')}" required
+               style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px;"
+               placeholder="e.g., Montreal">
+      </div>
+    `;
+  } else {
+    // html += '<div></div>'; // Empty for hotels
+  }
+
+  html += `
+    <div class="input-group">
+      <label class="input-label">Destination:</label>
+      <input type="text" name="segments[${index}][destination]" value="${escapeHtml(segment.destination || '')}" required
+             style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px;"
+             placeholder="e.g., Barcelona">
+    </div>
+  `;
+
+  html += '</div>';
+
+  // Address field for hotels and trains
+  if (type === 'Hotel' || type === 'Train') {
+    html += `
+      <div class="input-group">
+        <label class="input-label">Address:</label>
+        <input type="text" name="segments[${index}][address]" value="${escapeHtml(segment.address || '')}"
+               style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px;"
+               placeholder="Full address">
+      </div>
+    `;
+  }
+
+  // Date/Time fields
+  if (type === 'Hotel') {
+    html += `
+      <div class="input-group">
+        <div class="input-group">
+          <label class="input-label">Check-in Date:</label>
+          <input type="date" name="segments[${index}][check_in_date]" value="${segment.check_in_date || ''}" required
+                 style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px;">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Check-in Time:</label>
+          <input type="time" name="segments[${index}][check_in_time]" value="${segment.check_in_time || ''}" required
+                 style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px;">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Check-out Date:</label>
+          <input type="date" name="segments[${index}][check_out_date]" value="${segment.check_out_date || ''}" required
+                 style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px;">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Check-out Time:</label>
+          <input type="time" name="segments[${index}][check_out_time]" value="${segment.check_out_time || ''}" required
+                 style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px;">
+        </div>
+      </div>
+    `;
+  } else {
+    html += `
+      <div class="input-group">
+        <div class="input-group">
+          <label class="input-label">Departure Date:</label>
+          <input type="date" name="segments[${index}][departure_date]" value="${segment.departure_date || ''}" required
+                 style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px;">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Departure Time:</label>
+          <input type="time" name="segments[${index}][departure_time]" value="${segment.departure_time || ''}" required
+                 style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px;">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Arrival Date:</label>
+          <input type="date" name="segments[${index}][arrival_date]" value="${segment.arrival_date || ''}" required
+                 style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px;">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Arrival Time:</label>
+          <input type="time" name="segments[${index}][arrival_time]" value="${segment.arrival_time || ''}" required
+                 style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px;">
+        </div>
+      </div>
+    `;
+  }
+
+  // Notes field
+  html += `
+    <div class="input-group">
+      <label class="input-label">Notes:</label>
+      <textarea name="segments[${index}][note]" rows="2"
+                style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px;"
+                placeholder="Additional information about this segment">${escapeHtml(segment.note || '')}</textarea>
+    </div>
+  `;
+
+  return html;
+}
+
+/**
+ * Close trip form modal
+ */
+function closeTripFormModal() {
+  const modal = document.getElementById('tripFormModal');
+  if (modal) {
+    modal.remove();
+  }
+}
+
+/**
+ * Add a new segment to the trip form
+ */
+function addNewSegment() {
+  const segmentsList = document.getElementById('segmentsList');
+  const noSegmentsDiv = segmentsList.querySelector('.no-segments');
+
+  // Remove "no segments" message if it exists
+  if (noSegmentsDiv) {
+    noSegmentsDiv.remove();
+  }
+
+  // Get current segment count
+  const existingSegments = segmentsList.querySelectorAll('.segment-form');
+  const newIndex = existingSegments.length;
+
+  // Add new segment form
+  const segmentHtml = generateSegmentForm({}, newIndex);
+  segmentsList.insertAdjacentHTML('beforeend', segmentHtml);
+}
+
+/**
+ * Remove a segment from the trip form
+ */
+function removeSegment(index) {
+  const segmentForm = document.querySelector(`.segment-form[data-index="${index}"]`);
+  if (segmentForm) {
+    segmentForm.remove();
+
+    // Check if no segments left and add placeholder
+    const segmentsList = document.getElementById('segmentsList');
+    const remainingSegments = segmentsList.querySelectorAll('.segment-form');
+    if (remainingSegments.length === 0) {
+      segmentsList.innerHTML = '<div class="no-segments" style="text-align: center; color: #6b7280; padding: 1rem; font-style: italic;">No segments added yet</div>';
+    } else {
+      // Re-index remaining segments
+      reIndexSegments();
+    }
+  }
+}
+
+/**
+ * Re-index all segments after removal
+ */
+function reIndexSegments() {
+  const segmentForms = document.querySelectorAll('.segment-form');
+  segmentForms.forEach((form, newIndex) => {
+    form.setAttribute('data-index', newIndex);
+
+    // Update heading
+    const heading = form.querySelector('h4');
+    if (heading) heading.textContent = `Segment ${newIndex + 1}`;
+
+    // Update remove button
+    const removeBtn = form.querySelector('button[onclick^="removeSegment"]');
+    if (removeBtn) removeBtn.setAttribute('onclick', `removeSegment(${newIndex})`);
+
+    // Update onchange handler
+    const typeSelect = form.querySelector('select[name*="[type]"]');
+    if (typeSelect) typeSelect.setAttribute('onchange', `updateSegmentFields(${newIndex})`);
+
+    // Update all input/select names
+    const inputs = form.querySelectorAll('input, select, textarea');
+    inputs.forEach(input => {
+      const name = input.getAttribute('name');
+      if (name && name.includes('segments[')) {
+        const newName = name.replace(/segments\[\d+\]/, `segments[${newIndex}]`);
+        input.setAttribute('name', newName);
+      }
+    });
+  });
+}
+
+/**
+ * Update segment fields when type changes
+ */
+function updateSegmentFields(index) {
+  const typeSelect = document.querySelector(`select[name="segments[${index}][type]"]`);
+  const fieldsContainer = document.getElementById(`segmentFields${index}`);
+
+  if (typeSelect && fieldsContainer) {
+    const selectedType = typeSelect.value;
+
+    // Get existing values to preserve them
+    const existingData = getSegmentFormData(index);
+    existingData.type = selectedType;
+
+    // Regenerate fields
+    fieldsContainer.innerHTML = generateSegmentTypeFields(existingData, index);
+  }
+}
+
+/**
+ * Get current form data for a segment
+ */
+function getSegmentFormData(index) {
+  const data = {};
+  const form = document.querySelector(`.segment-form[data-index="${index}"]`);
+  if (form) {
+    const inputs = form.querySelectorAll('input, select, textarea');
+    inputs.forEach(input => {
+      const name = input.getAttribute('name');
+      if (name && name.includes(`segments[${index}]`)) {
+        const fieldName = name.match(/\[([^\]]+)\]$/)?.[1];
+        if (fieldName) {
+          data[fieldName] = input.value;
+        }
+      }
+    });
+  }
+  return data;
+}
+
+/**
+ * Update trip ID field based on trip name (for new trips only)
+ */
+function updateTripId() {
+  const nameField = document.getElementById('tripNameField');
+  const idField = document.getElementById('tripIdField');
+
+  if (nameField && idField) {
+    const generatedId = generateTripId(nameField.value);
+    idField.value = generatedId;
+
+    // Check for duplicate ID and show warning
+    if (generatedId && allTrips.find(trip => trip.id === generatedId)) {
+      idField.style.borderColor = '#ef4444';
+      idField.style.backgroundColor = '#fef2f2';
+      // Show warning message
+      let warning = document.getElementById('id-warning');
+      if (!warning) {
+        warning = document.createElement('small');
+        warning.id = 'id-warning';
+        warning.style.color = '#ef4444';
+        warning.textContent = 'Warning: A trip with this ID already exists';
+        idField.parentNode.appendChild(warning);
+      }
+    } else {
+      idField.style.borderColor = '#d1d5db';
+      idField.style.backgroundColor = '#f9fafb';
+      // Remove warning message
+      const warning = document.getElementById('id-warning');
+      if (warning) {
+        warning.remove();
+      }
+    }
+  }
+}
+
+/**
+ * Submit trip form (create or edit)
+ */
+function submitTripForm(event, isEdit) {
+  event.preventDefault();
+
+  const formData = new FormData(event.target);
+  let tripId = formData.get('id').trim();
+
+  // For new trips, generate ID from name if not already set
+  if (!isEdit && !tripId) {
+    tripId = generateTripId(formData.get('name').trim());
+  }
+
+  const tripData = {
+    id: tripId,
+    name: formData.get('name').trim(),
+    description: formData.get('description').trim(),
+    currency: formData.get('currency'),
+    timezone: formData.get('timezone'),
+    notes: [],
+    segments: []
+  };
+
+  // Process segments data
+  const segmentForms = document.querySelectorAll('.segment-form');
+  segmentForms.forEach((form, index) => {
+    const segmentData = {};
+    const inputs = form.querySelectorAll('input, select, textarea');
+
+    inputs.forEach(input => {
+      const name = input.getAttribute('name');
+      if (name && name.includes(`segments[${index}]`)) {
+        const fieldName = name.match(/\[([^\]]+)\]$/)?.[1];
+        if (fieldName && input.value.trim()) {
+          segmentData[fieldName] = input.value.trim();
+        }
+      }
+    });
+
+    // Only add segment if it has required fields
+    if (segmentData.type && segmentData.destination) {
+      // Ensure required fields are present based on type
+      if (segmentData.type === 'Hotel') {
+        if (segmentData.check_in_date && segmentData.check_out_date) {
+          tripData.segments.push(segmentData);
+        }
+      } else {
+        if (segmentData.origin && segmentData.departure_date && segmentData.arrival_date) {
+          tripData.segments.push(segmentData);
+        }
+      }
+    }
+  });
+
+  // Validate required fields
+  if (!tripData.id || !tripData.name || !tripData.currency || !tripData.timezone) {
+    alert('Please fill in all required fields');
+    return;
+  }
+
+  // Validate ID format
+  if (!/^[a-z0-9-]+$/.test(tripData.id)) {
+    alert('Generated trip ID contains invalid characters. Please modify the trip name.');
+    return;
+  }
+
+  // Check for duplicate ID when creating new trip
+  if (!isEdit && allTrips.find(trip => trip.id === tripData.id)) {
+    alert('A trip with this ID already exists. Please modify the trip name to generate a unique ID.');
+    return;
+  }
+
+  try {
+    if (isEdit) {
+      updateTrip(tripData);
+    } else {
+      createTrip(tripData);
+    }
+    closeTripFormModal();
+  } catch (error) {
+    alert('Error saving trip: ' + error.message);
+  }
+}
+
+/**
+ * Get complete itinerary data structure including profile
+ */
+function getCompleteItineraryData() {
+  return {
+    profile: {
+      timezone: window.homeTz || 'America/Toronto',
+      currency: window.baseCurrency || 'CAD'
+    },
+    trips: allTrips
+  };
+}
+
+/**
+ * Create a new trip
+ */
+function createTrip(tripData) {
+  // Show saving indicator
+  showSaveIndicator('Creating trip...');
+
+  // Add to allTrips array
+  allTrips.push(tripData);
+
+  // Save to localStorage as backup (with profile)
+  localStorage.setItem('itineraryData', JSON.stringify(getCompleteItineraryData()));
+
+  // Save to server
+  saveItineraryToServer()
+    .then(() => {
+      showSaveIndicator('Trip created and saved!', 'success');
+      // Switch to the new trip
+      loadTrip(tripData.id);
+    })
+    .catch(() => {
+      showSaveIndicator('Trip created (offline backup saved)', 'warning');
+      // Switch to the new trip even if server save failed
+      loadTrip(tripData.id);
+    });
+}
+
+/**
+ * Update an existing trip
+ */
+function updateTrip(tripData) {
+  const tripIndex = allTrips.findIndex(trip => trip.id === currentTripId);
+  if (tripIndex === -1) {
+    throw new Error('Trip not found');
+  }
+
+  // Show saving indicator
+  showSaveIndicator('Updating trip...');
+
+  // Preserve existing notes but use new segments if provided
+  const existingTrip = allTrips[tripIndex];
+  tripData.notes = existingTrip.notes || [];
+  // Don't override segments - they come from the form now
+
+  // Update the trip
+  allTrips[tripIndex] = tripData;
+
+  // Save to localStorage as backup (with profile)
+  localStorage.setItem('itineraryData', JSON.stringify(getCompleteItineraryData()));
+
+  // Save to server
+  saveItineraryToServer()
+    .then(() => {
+      showSaveIndicator('Trip updated and saved!', 'success');
+      // Reload the current trip to show changes
+      loadTrip(tripData.id);
+    })
+    .catch(() => {
+      showSaveIndicator('Trip updated (offline backup saved)', 'warning');
+      // Reload the current trip even if server save failed
+      loadTrip(tripData.id);
+    });
+}
+
+/**
+ * Save itinerary data to server
+ */
+function saveItineraryToServer() {
+  const data = getCompleteItineraryData();
+
+  // Try to save to server endpoint if available
+  return fetch('/api/save-itinerary', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  })
+  .then(response => response.json())
+  .then(result => {
+    if (result.success) {
+      console.log('Itinerary saved to server successfully');
+      return result;
+    } else {
+      throw new Error(result.error || 'Unknown server error');
+    }
+  })
+  .catch(error => {
+    console.warn('Could not save to server:', error.message);
+    console.log('Copy this JSON and manually save to itinerary.json:');
+    console.log(JSON.stringify(data, null, 2));
+
+    // Create a downloadable file as fallback
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'itinerary.json';
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    // Re-throw the error so calling functions can handle it
+    throw error;
+  });
+}
+
+/**
+ * Show save indicator to user
+ */
+function showSaveIndicator(message, type = 'info') {
+  // Remove any existing indicators
+  const existing = document.getElementById('save-indicator');
+  if (existing) {
+    existing.remove();
+  }
+
+  const indicator = document.createElement('div');
+  indicator.id = 'save-indicator';
+
+  let bgColor, textColor;
+  switch (type) {
+    case 'success':
+      bgColor = '#10b981';
+      textColor = '#ffffff';
+      break;
+    case 'warning':
+      bgColor = '#f59e0b';
+      textColor = '#ffffff';
+      break;
+    case 'error':
+      bgColor = '#ef4444';
+      textColor = '#ffffff';
+      break;
+    default: // info
+      bgColor = '#3b82f6';
+      textColor = '#ffffff';
+  }
+
+  indicator.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: ${bgColor};
+    color: ${textColor};
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    font-size: 14px;
+    max-width: 300px;
+    animation: slideIn 0.3s ease-out;
+  `;
+
+  indicator.textContent = message;
+  document.body.appendChild(indicator);
+
+  // Add CSS animation
+  if (!document.getElementById('save-indicator-styles')) {
+    const style = document.createElement('style');
+    style.id = 'save-indicator-styles';
+    style.textContent = `
+      @keyframes slideIn {
+        from {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  // Auto-remove after a few seconds
+  setTimeout(() => {
+    if (indicator && indicator.parentNode) {
+      indicator.style.animation = 'slideIn 0.3s ease-out reverse';
+      setTimeout(() => {
+        indicator.remove();
+      }, 300);
+    }
+  }, type === 'error' ? 5000 : 3000);
+}
+
+/**
  * Utility function to escape HTML to prevent XSS.
  * @param {string} str The string to escape.
  * @returns {string} The escaped string.
@@ -947,59 +1775,20 @@ function escapeHtml(str) {
 
 // Initialize the application once the DOM is fully loaded
 window.addEventListener('DOMContentLoaded', () => {
-    const titleSlot = document.getElementById('tripName');  // Ensure edit form container exists
+  // Ensure edit form container exists
   if (!document.getElementById('editFormContainer')) {
     const formDiv = document.createElement('div');
     formDiv.id = 'editFormContainer';
     formDiv.style.display = 'none';
     document.body.appendChild(formDiv);
   }
-  // Load initial itinerary data and render widgets
-  fetch('itinerary.json')
-    .then(res => res.json())
-    .then(data => {
-      let title = '';
-      let homeTz = 'America/Toronto'; // fallback
-      let destTz = 'Europe/Amsterdam'; // fallback
-      let baseCurrency = 'USD';
-      let tripCurrency = 'EUR';
 
-      if (data && data.profile && data.profile.timezone) homeTz = data.profile.timezone;
-      if (data && data.profile && data.profile.currency) baseCurrency = data.profile.currency;
+  // Initialize default values (will be overridden by profile data when loaded)
+  window.homeTz = 'America/Toronto';
+  window.destTz = 'Europe/Amsterdam';
+  window.baseCurrency = 'CAD';
+  window.tripCurrency = 'EUR';
 
-      // Handle both old and new data structures
-      if (data && data.trips && Array.isArray(data.trips)) {
-        // New multi-trip structure
-        const urlPath = window.location.pathname;
-        const tripIdFromUrl = extractTripIdFromUrl(urlPath);
-        const targetTrip = tripIdFromUrl ? data.trips.find(t => t.id === tripIdFromUrl) : data.trips[0];
-
-        if (targetTrip) {
-          title = targetTrip.name || 'My trip';
-          destTz = targetTrip.timezone || destTz;
-          tripCurrency = targetTrip.currency || tripCurrency;
-        }
-      }
-
-      // Store initial values
-      window.homeTz = homeTz;
-      window.destTz = destTz;
-      window.baseCurrency = baseCurrency;
-      window.tripCurrency = tripCurrency;
-      // Now load itinerary as before
-      loadItinerary('itinerary.json');
-
-      const titleSlot = document.getElementById('tripName');
-      if (titleSlot) {
-        titleSlot.innerText = title;
-      }
-    })
-    .catch(() => {
-      // Set default values
-      window.homeTz = 'America/Toronto';
-      window.destTz = 'Europe/Amsterdam';
-      window.baseCurrency = 'USD';
-      window.tripCurrency = 'EUR';
-      loadItinerary('itinerary.json');
-    });
+  // Load itinerary data (this will set proper profile values and load trips)
+  loadItinerary('itinerary.json');
 });
