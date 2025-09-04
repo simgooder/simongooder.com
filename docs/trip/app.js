@@ -914,10 +914,12 @@ function showTripsMenu() {
       <div>
         ${tripsList}
       </div>
-      <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #e5e7eb;">
-        <button onclick="showNewTripForm()" style="width: 100%; padding: 0.75rem; margin-bottom: 0.5rem; background: #0000f7; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">➕ New Trip</button>
-        <button onclick="showEditTripForm()" style="width: 100%; padding: 0.75rem; background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; border-radius: 6px; font-weight: bold; cursor: pointer;">✏️ Edit Current Trip</button>
-      </div>
+        <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #e5e7eb;">
+          ${window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? `
+            <button onclick="showNewTripForm()" style="width: 100%; padding: 0.75rem; margin-bottom: 0.5rem; background: #0000f7; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">➕ New Trip</button>
+            <button onclick="showEditTripForm()" style="width: 100%; padding: 0.75rem; background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; border-radius: 6px; font-weight: bold; cursor: pointer;">✏️ Edit Current Trip</button>
+          ` : ''}
+        </div>
       <button onclick="closeTripsModal()" style="position:absolute;top:10px;right:10px;background:none;border:none;font-size:1.5em;cursor:pointer;">&times;</button>
     </div>
   `;

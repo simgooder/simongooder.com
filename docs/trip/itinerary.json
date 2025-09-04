@@ -280,16 +280,29 @@
       "segments": [
         {
           "type": "Flight",
-          "name": "YUL > NRT",
+          "name": "YUL → NRT",
           "vendor_name": "Air Canada",
-          "flight_number": "AC 822",
+          "flight_number": "AC 5",
           "origin": "Montreal, Canada",
           "destination": "Tokyo, Japan",
-          "departure_date": "2025-09-10",
-          "departure_time": "10:00",
-          "arrival_date": "2025-09-11",
-          "arrival_time": "09:09",
-          "note": "First leg!"
+          "departure_date": "2025-12-09",
+          "departure_time": "12:30",
+          "arrival_date": "2025-12-09",
+          "arrival_time": "16:30",
+          "note": "A5N3RX"
+        },
+        {
+          "type": "Flight",
+          "name": "NRT → YUL",
+          "vendor_name": "Air Canada",
+          "flight_number": "AC 6",
+          "origin": "Montreal, Canada",
+          "destination": "Tokyo, Japan",
+          "departure_date": "2025-12-02",
+          "departure_time": "18:45",
+          "arrival_date": "2025-12-02",
+          "arrival_time": "17:05",
+          "note": "A5N3RX"
         }
       ]
     }
