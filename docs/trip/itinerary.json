@@ -298,9 +298,9 @@
           "flight_number": "AC 6",
           "origin": "Montreal, Canada",
           "destination": "Tokyo, Japan",
-          "departure_date": "2025-12-02",
+          "departure_date": "2025-12-22",
           "departure_time": "18:45",
-          "arrival_date": "2025-12-02",
+          "arrival_date": "2025-12-22",
           "arrival_time": "17:05",
           "note": "A5N3RX"
         }
