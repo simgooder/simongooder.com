@@ -279,30 +279,30 @@
       "notes": [],
       "segments": [
         {
-          "type": "Flight",
-          "name": "YUL → NRT",
-          "vendor_name": "Air Canada",
-          "flight_number": "AC 5",
-          "origin": "Montreal, Canada",
-          "destination": "Tokyo, Japan",
-          "departure_date": "2025-12-09",
-          "departure_time": "12:30",
-          "arrival_date": "2025-12-09",
-          "arrival_time": "16:30",
-          "note": "A5N3RX"
+        "type": "Flight",
+        "name": "YUL → NRT",
+        "vendor_name": "Air Canada",
+        "flight_number": "AC 005",
+        "origin": "Montréal, Canada",
+        "destination": "Tokyo, Japan",
+        "departure_date": "2025-12-05",
+        "departure_time": "12:30",
+        "arrival_date": "2025-12-06",
+        "arrival_time": "16:30",
+        "note": "Booking ref: A5N3RX"
         },
         {
-          "type": "Flight",
-          "name": "NRT → YUL",
-          "vendor_name": "Air Canada",
-          "flight_number": "AC 6",
-          "origin": "Montreal, Canada",
-          "destination": "Tokyo, Japan",
-          "departure_date": "2025-12-22",
-          "departure_time": "18:45",
-          "arrival_date": "2025-12-22",
-          "arrival_time": "17:05",
-          "note": "A5N3RX"
+        "type": "Flight",
+        "name": "NRT → YUL",
+        "vendor_name": "Air Canada",
+        "flight_number": "AC 006",
+        "origin": "Tokyo, Japan",
+        "destination": "Montréal, Canada",
+        "departure_date": "2025-12-16",
+        "departure_time": "18:45",
+        "arrival_date": "2025-12-16",
+        "arrival_time": "17:05",
+        "note": "Booking ref: A5N3RX"
         }
       ]
     }
