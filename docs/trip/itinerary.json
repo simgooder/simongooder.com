@@ -12,6 +12,10 @@
       "timezone": "Europe/Madrid",
       "notes": [
         {
+          "title": "Maps!",
+          "body": "<a href='https://maps.apple.com/guides?user=CgpTcGFpbiAyMDI1Eg4Irk0QksXw3OSGnY%2FbARIOCK5NEOXZ7arPpLvmggESDgiuTRDStbahoJjRz8sBEl4aL0NhbGxlIGRlIE1vbGluYSBMYXJpbywgMjIsIDI5MDE1IE3DoWxhZ2EsIFNwYWluIhIJtJ97xQlcQkARlU0UfC6uEcAqF%2FCfj6ggSG90ZWwgTW9saW5hIExhcmlvEmQaLENhcnJlciBkJ0FyYWfDsywgMzAwLCAwODAwOSBCYXJjZWxvbmEsIFNwYWluIhIJax1meWiyREARXMJG%2FgVXAUAqIPCfj6ggRXVyb3N0YXJzIEJhcmNlbG9uYSBDZW50cmFsEmgaN1BsYcOnYSBkZWxzIFBhw69zb3MgQ2F0YWxhbnMsIDEsIDA4MDE0IEJhcmNlbG9uYSwgU3BhaW4iEgmQVmsXibBEQBFADSlQ1R4BQCoZ8J%2BaiSBUcmFpbiBzdGF0aW9uIE1hbGFnYQ%3D%3D'>Apple Maps guide</a>"
+        },
+        {
           "title": "Things to do in Barcelona",
           "body": "• <a href='https://www.tripadvisor.ca/Attractions-g616242-Activities-c61-t194-Costa_Brava_Province_of_Girona_Catalonia.html'>Snorkeling at Costa Brava</a>\n• <a href='https://parkguell.barcelona/en'>Park Guell</a>\n• <a href='https://sagradafamilia.org/en/'>Basílica de la Sagrada Família</a>\n• <a href='https://www.tripadvisor.ca/Attraction_Review-g187497-d190162-Reviews-Gothic_Quarter_Barri_Gotic-Barcelona_Catalonia.html'>Gothic Quarter</a>\n• <a href='https://maps.app.goo.gl/hbgxsx6RgREuJg8Z6'>Mercat de la Boqueria</a>\n• <a href='https://museupicassobcn.cat/en'>Picasso museum</a>\n• <a href='https://23robadors.com/'>Flamenco show</a>"
         },
@@ -105,7 +109,7 @@
           "name": "",
           "type": "Train",
           "vendor_name": "Renfe",
-          "address": "s/n, 29002 Málaga, Spain",
+          "address": "Centro, 29002 Málaga, Spain",
           "origin": "Malaga",
           "destination": "Seville",
           "departure_date": "2025-09-26",
