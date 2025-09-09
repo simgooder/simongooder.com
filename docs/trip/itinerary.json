@@ -10,6 +10,7 @@
       "description": "A multi-city trip through Spain, including Barcelona, Malaga, and Seville.",
       "currency": "EUR",
       "timezone": "Europe/Madrid",
+      "travel_groups": [{"1": ["Sim", "Kel", "Oph"]},{"2": ["Steve", "Brenda"]}],
       "notes": [
         {
           "title": "Maps!",
@@ -30,6 +31,7 @@
       ],
       "segments": [
         {
+          "places_id": "",
           "name": "",
           "type": "Flight",
           "flight_number": "AC822",
@@ -40,9 +42,11 @@
           "departure_time": "6:30 PM",
           "arrival_date": "2025-09-17",
           "arrival_time": "7:50 AM",
-          "note": "Overnight"
+          "note": "Overnight",
+          "travellers": ["1"]
         },
         {
+          "places_id": "",
           "name": "Flight from Kelowna to Calgary",
           "type": "Flight",
           "flight_number": "WS 3162",
@@ -53,9 +57,11 @@
           "departure_time": "14:00",
           "arrival_date": "2025-09-16",
           "arrival_time": "16:12",
-          "note": "Seats: Mr Stephen Ross Gooder: 02A, Mrs Brenda Gooder: 02B"
+          "note": "Seats: Mr Stephen Ross Gooder: 02A, Mrs Brenda Gooder: 02B",
+          "travellers": ["2"]
         },
         {
+          "places_id": "",
           "name": "Flight from Calgary to Barcelona",
           "type": "Flight",
           "flight_number": "WS 8",
@@ -66,9 +72,11 @@
           "departure_time": "19:00",
           "arrival_date": "2025-09-17",
           "arrival_time": "12:25",
-          "note": "Seats: Mr Stephen Ross Gooder: 02F, Mrs Brenda Gooder: 03K"
+          "note": "Seats: Mr Stephen Ross Gooder: 02F, Mrs Brenda Gooder: 03K",
+          "travellers": ["2"]
         },
         {
+          "places_id": "",
           "name": "Eurostars Barcelona Central Barcelona",
           "type": "Hotel",
           "vendor_name": "Eurostars Barcelona Central",
@@ -78,9 +86,11 @@
           "check_in_time": "3:00 PM",
           "check_out_date": "2025-09-21",
           "check_out_time": "12:00 PM",
-          "note": "Contact: Telephone: 932150899, Email: reservas@eurostarsbarcelonacentral.com."
+          "note": "Contact: Telephone: 932150899, Email: reservas@eurostarsbarcelonacentral.com.",
+          "travellers": ["1", "2"]
         },
         {
+          "places_id": "",
           "name": "",
           "type": "Train",
           "origin": "Barcelona",
@@ -91,9 +101,11 @@
           "departure_time": "8:30 AM",
           "arrival_date": "2025-09-21",
           "arrival_time": "2:54 PM",
-          "note": "Renfe, Coach (coche) 23, Plaza 2c, 2b, 2a, 3c, 3b."
+          "note": "Renfe, Coach (coche) 23, Plaza 2c, 2b, 2a, 3c, 3b.",
+          "travellers": ["1", "2"]
         },
         {
+          "places_id": "",
           "name": "Hotel Molina Lario Malaga",
           "type": "Hotel",
           "vendor_name": "Hotel Molina Lario",
@@ -103,9 +115,11 @@
           "check_in_time": "3:00 PM",
           "check_out_date": "2025-09-26",
           "check_out_time": "11:00 AM",
-          "note": "Telephone: +34 952 06 20 02, Email: info@hotelmolinalario.com"
+          "note": "Telephone: +34 952 06 20 02, Email: info@hotelmolinalario.com",
+          "travellers": ["1", "2"]
         },
         {
+          "places_id": "",
           "name": "",
           "type": "Train",
           "vendor_name": "Renfe",
@@ -116,9 +130,11 @@
           "departure_time": "09:05",
           "arrival_date": "2025-09-26",
           "arrival_time": "12:34",
-          "note": ""
+          "note": "",
+          "travellers": ["1", "2"]
         },
         {
+          "places_id": "",
           "name": "Hotel Las Casas de la Juderia Sevilla",
           "type": "Hotel",
           "vendor_name": "Hotel Las Casas de la Juderia",
@@ -128,10 +144,12 @@
           "check_in_time": "3:00 PM",
           "check_out_date": "2025-09-30",
           "check_out_time": "11:00 AM",
-          "note": "Contact: juderia@casasypalacios.com"
+          "note": "Contact: juderia@casasypalacios.com",
+          "travellers": ["1", "2"]
         },
         {
-          "name": "Kelly/Ophelia/Simon",
+          "places_id": "",
+          "name": "",
           "type": "Flight",
           "origin": "Seville",
           "flight_number": "VY2213",
@@ -141,10 +159,12 @@
           "departure_time": "06:30",
           "arrival_date": "2025-09-30",
           "arrival_time": "08:05",
-          "note": ""
+          "note": "",
+          "travellers": ["1"]
         },
         {
-          "name": "Steve/Brenda",
+          "places_id": "",
+          "name": "",
           "type": "Flight",
           "origin": "Seville",
           "flight_number": "VY2219",
@@ -154,10 +174,12 @@
           "departure_time": "13:05",
           "arrival_date": "2025-09-30",
           "arrival_time": "14:45",
-          "note": "Steve: seat 4D, Brenda: seat 4E"
+          "note": "Steve: seat 4D, Brenda: seat 4E",
+          "travellers": ["2"]
         },
         {
-          "name": "Kelly/Ophelia/Simon",
+          "places_id": "",
+          "name": "",
           "type": "Flight",
           "flight_number": "AC823",
           "vendor_name": "Air Canada",
@@ -167,9 +189,11 @@
           "departure_time": "12:10",
           "arrival_date": "2025-09-30",
           "arrival_time": "14:10",
-          "note": ""
+          "note": "",
+          "travellers": ["1"]
         },
         {
+          "places_id": "",
           "name": "Stay at Hyatt Regency Barcelona Fira",
           "type": "Hotel",
           "hotel_name": "Hyatt Regency Barcelona Fira",
@@ -179,10 +203,12 @@
           "check_in_time": "3:00 PM",
           "check_out_date": "2025-10-01",
           "check_out_time": "12:00 PM",
-          "note": "Contact: +34 934 13 50 00. Hotel Website: https://www.hyatt.com/hyatt-regency/en-US/bcnrb-hyatt-regency-barcelona-tower. Confirmation #: 38549574."
+          "note": "Contact: +34 934 13 50 00. Hotel Website: https://www.hyatt.com/hyatt-regency/en-US/bcnrb-hyatt-regency-barcelona-tower. Confirmation #: 38549574.",
+          "travellers": ["2"]
         },
         {
-          "name": "Steve/Brenda",
+          "places_id": "",
+          "name": "",
           "type": "Flight",
           "flight_number": "WS 7",
           "vendor_name": "WestJet",
@@ -192,10 +218,12 @@
           "departure_time": "14:25",
           "arrival_date": "2025-10-01",
           "arrival_time": "16:35",
-          "note": "Seats: Mr Stephen Ross Gooder: 03D, Mrs Brenda Gooder: 03F"
+          "note": "Seats: Mr Stephen Ross Gooder: 03D, Mrs Brenda Gooder: 03F",
+          "travellers": ["2"]
         },
         {
-          "name": "Steve/Brenda",
+          "places_id": "",
+          "name": "",
           "type": "Flight",
           "flight_number": "WS 399",
           "vendor_name": "WestJet",
@@ -205,7 +233,8 @@
           "departure_time": "19:15",
           "arrival_date": "2025-10-01",
           "arrival_time": "19:24",
-          "note": "Seats: Mr Stephen Ross Gooder: 02A, Mrs Brenda Gooder: 02C"
+          "note": "Seats: Mr Stephen Ross Gooder: 02A, Mrs Brenda Gooder: 02C",
+          "travellers": ["2"]
         }
       ]
     },
@@ -217,12 +246,14 @@
       "timezone": "America/Vancouver",
       "notes": [
         {
+          "places_id": "",
           "title": "",
           "body": ""
         }
       ],
       "segments": [
         {
+          "places_id": "",
           "name": "Sheraton Montreal Airport",
           "type": "Hotel",
           "vendor_name": "Sheraton",

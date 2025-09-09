@@ -528,11 +528,32 @@ function createSegmentBlock(seg, idx) {
 
 
 
+  // Avatar rendering for travellers
+  let avatarsHtml = '';
+  if (Array.isArray(seg.travellers) && window.currentTrip && window.currentTrip.travel_groups) {
+    let allNames = [];
+    seg.travellers.forEach(groupName => {
+      const groupObj = window.currentTrip.travel_groups.find(g => g[groupName]);
+      if (groupObj) {
+        allNames = allNames.concat(groupObj[groupName]);
+      }
+    });
+    if (allNames.length > 0) {
+      avatarsHtml = `<div class="flex gap-[1px]">` +
+        allNames.map(name => {
+          const initials = name.slice(0,2).toUpperCase();
+          return `<span class="border-[#8080FB] border-1 text-xs rounded-full text-center text-[#8080FB] w-6 h-6 pt-1">${initials}</span>`;
+        }).join('') + '</div>';
+    }
+  }
+
+  segDiv.style.position = 'relative';
   segDiv.innerHTML = `
     <div class="sticky left-0"><strong>${typeIcon} ${segmentName}</strong></div>
     <div style="font-size:0.95em; color:#666;">${formatSegmentDate(seg)}</div>
     <div class="flex items-start py-1">${logoUrl} ${routeDisplay}</div>
     ${extraDetails}
+    ${avatarsHtml}
   `;
   segDiv.onclick = () => viewSegmentDetails(idx);
 
@@ -612,6 +633,22 @@ function viewSegmentDetails(idx) {
 
   // Apply default name if empty
   const segmentName = seg.name?.trim() ? seg.name : getDefaultName(seg.type, seg.destination);
+  // List travellers if defined
+  let travellersHtml = '';
+  if (Array.isArray(seg.travellers) && window.currentTrip && window.currentTrip.travel_groups) {
+    let allNames = [];
+    seg.travellers.forEach(groupName => {
+      const groupObj = window.currentTrip.travel_groups.find(g => g[groupName]);
+      if (groupObj) {
+        allNames = allNames.concat(groupObj[groupName]);
+      }
+    });
+    if (allNames.length > 0) {
+      travellersHtml = `<div class="detail-row" style="margin-top:0.5em;"><strong>Travellers:</strong><br/>` +
+        allNames.map(name => `<span style="display:inline-block;margin:2px 6px 2px 0;padding:2px 8px;border-radius:12px;background:#0000f7;color:#fff;font-size:0.9em;font-weight:500;">${escapeHtml(name)}</span>`).join('') + '</div>';
+    }
+  }
+
   modal.innerHTML = `
     <div style="background:#fff;padding:2em 2em 1em 2em;border-radius:12px;max-width:420px;min-width:260px;box-shadow:0 2px 16px #0003;position:relative;" onclick="event.stopPropagation()">
       <h2 class="text-lg font-bold mb-2">${typeIcon} ${segmentName}</h2>
@@ -628,6 +665,7 @@ function viewSegmentDetails(idx) {
         </div>` : ''}
         ${flightLinkHtml}
         ${dateTimeDetails}
+        ${travellersHtml}
         <div class="detail-row" style="margin-top:0.5em;">
             <strong>Note:</strong><br>${note ? escapeHtml(note) : '<em>No note for this segment.</em>'}
         </div>
@@ -872,6 +910,7 @@ function loadTrip(tripId) {
 
   currentTripId = tripId;
   itinerary = trip.segments || [];
+  window.currentTrip = trip;
 
   // Update currencies and timezone
   window.tripCurrency = trip.currency || 'EUR';
