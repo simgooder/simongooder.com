@@ -146,4 +146,37 @@ class TravelrMap {
 
     if (!bounds.isEmpty()) this.map.fitBounds(bounds);
   }
+
+
+  async addUserLocationMarker() {
+        if (!navigator.geolocation) {
+            console.warn("Geolocation not supported by this browser");
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition(
+            (pos) => {
+            const { latitude, longitude } = pos.coords;
+            const position = { lat: latitude, lng: longitude };
+
+            // Create marker for user
+            const userMarker = new google.maps.marker.AdvancedMarkerElement({
+                map: this.map,
+                position,
+                title: "You are here",
+            });
+
+            // Optionally center map on user
+            this.map.setCenter(position);
+            this.map.setZoom(12);
+
+            // Store marker if needed later
+            this.userMarker = userMarker;
+            },
+            (err) => {
+            console.warn("Could not fetch location:", err.message);
+            }
+        );
+    }
+
 }
