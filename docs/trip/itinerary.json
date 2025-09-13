@@ -11,52 +11,10 @@
       "currency": "EUR",
       "timezone": "Europe/Madrid",
       "travel_groups": [{"1": ["Sim", "Kel", "Oph"]},{"2": ["Steve", "Brenda"]}],
-      "places": [
-       {
-        "location": "Barcelona",
-        "spots": [
-            {
-                "name": "Basílica de la Sagrada Família",
-                "places_id": "ChIJu-I1TgCZpBIRww8UMWCBUwk",
-                "note": "Beautiful basilica. Buy tix ahead of time"
-            },
-            {
-                "name": "Gothic Quarter",
-                "places_id": "ChIJgQYekPiipBIRr6fNOMV-5bc",
-                "note": ""
-            },
-            {
-                "name": "Mercat de la Boqueria",
-                "places_id": "ChIJAVoetfeipBIR1a1z3FTGCoY",
-                "note": "Awesome market"
-            }
-        ]
-       },
-       {
-        "location": "Malaga",
-        "spots": [
-            {
-                "name": "Alcazaba fort",
-                "places_id": "ChIJu-I1TgCZpBIRww8UMWCBUwk",
-                "note": "Ancient Moorish fort"
-            },
-            {
-                "name": "Picasso museum",
-                "places_id": "ChIJgQYekPiipBIRr6fNOMV-5bc",
-                "note": "Pi"
-            },
-            {
-                "name": "Botanical garden",
-                "places_id": "ChIJAVoetfeipBIR1a1z3FTGCoY",
-                "note": "Awesome market"
-            }
-        ]
-       }
-      ],
       "notes": [
         {
           "title": "Maps!",
-          "body": "<a href='https://maps.apple.com/guides?user=CgpTcGFpbiAyMDI1Eg4Irk0QovDIg8SVrZ7vARIOCK5NEMTRqu%2Butd2WogESDQiuTRCcx9eO3Pb85CISDAiuTRCJm6qX9MONEBINCK5NEK%2Fg0piC%2B4TCcBIOCK5NEOPBzK%2B7jbW0qQESDQiuTRCS%2FvO6%2Fo%2FD034SDQiuTRDdtpvjqrnzsjASbBo7QXZlbmlkYSBkZSBFeHRyZW1hZHVyYSwgMiwgNDE5NzAgU2FudGlwb25jZSwgU2V2aWxsYSwgU3BhaW4iEgneza7W5LhCQBGctpCR%2FS0YwCoZSXRhbGljYSBSb21hbiBSdWluIG11c2V1bRIOCK5NEP%2BB1Oul9se3qQESDgiuTRC%2BztTnq8fOrroBEg4Irk0Q8N2uqoOxgcnmARINCK5NEKrEr6er24%2F8exIOCK5NEJm0rrSb0MDvkQESDQiuTRCi3r%2FimvCj4wMSDgiuTRD2wMSYypjb0rwBEg4Irk0Qn%2B%2Fz5aHympzKARIOCK5NEJm2xMzB%2B7THjwESDQiuTRCpifrU6OPfmGoSDQiuTRCo5o%2FH%2BLu01F8SDgiuTRDo%2Fqe%2FvObuqOkBEg4Irk0QksXw3OSGnY%2FbARIOCK5NEOXZ7arPpLvmggESDgiuTRDStbahoJjRz8sBEl4aL0NhbGxlIGRlIE1vbGluYSBMYXJpbywgMjIsIDI5MDE1IE3DoWxhZ2EsIFNwYWluIhIJtJ97xQlcQkARlU0UfC6uEcAqF%2FCfj6ggSG90ZWwgTW9saW5hIExhcmlvEmQaLENhcnJlciBkJ0FyYWfDsywgMzAwLCAwODAwOSBCYXJjZWxvbmEsIFNwYWluIhIJax1meWiyREARXMJG%2FgVXAUAqIPCfj6ggRXVyb3N0YXJzIEJhcmNlbG9uYSBDZW50cmFsEmEaN1BsYcOnYSBkZWxzIFBhw69zb3MgQ2F0YWxhbnMsIDEsIDA4MDE0IEJhcmNlbG9uYSwgU3BhaW4iEgmQVmsXibBEQBFADSlQ1R4BQCoS8J%2BaiSBUcmFpbiBzdGF0aW9u'>Apple Maps guide</a>"
+          "body": "<a href='https://maps.apple.com/guides?user=CgpTcGFpbiAyMDI1Eg4Irk0QksXw3OSGnY%2FbARIOCK5NEOXZ7arPpLvmggESDgiuTRDStbahoJjRz8sBEl4aL0NhbGxlIGRlIE1vbGluYSBMYXJpbywgMjIsIDI5MDE1IE3DoWxhZ2EsIFNwYWluIhIJtJ97xQlcQkARlU0UfC6uEcAqF%2FCfj6ggSG90ZWwgTW9saW5hIExhcmlvEmQaLENhcnJlciBkJ0FyYWfDsywgMzAwLCAwODAwOSBCYXJjZWxvbmEsIFNwYWluIhIJax1meWiyREARXMJG%2FgVXAUAqIPCfj6ggRXVyb3N0YXJzIEJhcmNlbG9uYSBDZW50cmFsEmgaN1BsYcOnYSBkZWxzIFBhw69zb3MgQ2F0YWxhbnMsIDEsIDA4MDE0IEJhcmNlbG9uYSwgU3BhaW4iEgmQVmsXibBEQBFADSlQ1R4BQCoZ8J%2BaiSBUcmFpbiBzdGF0aW9uIE1hbGFnYQ%3D%3D'>Apple Maps guide</a>"
         },
         {
           "title": "Things to do in Barcelona",
@@ -80,7 +38,6 @@
           "vendor_name": "Air Canada",
           "origin": "Montreal",
           "destination": "Barcelona",
-          "address": "boul. Roméo-Vachon N Arrivées, Dorval, QC H4Y 1H1",
           "departure_date": "2025-09-16",
           "departure_time": "6:30 PM",
           "arrival_date": "2025-09-17",
@@ -96,7 +53,6 @@
           "vendor_name": "Westjet",
           "origin": "Kelowna",
           "destination": "Calgary",
-          "address": "5533 Airport Way, Kelowna, BC V1V 1S1",
           "departure_date": "2025-09-16",
           "departure_time": "14:00",
           "arrival_date": "2025-09-16",
@@ -198,7 +154,6 @@
           "origin": "Seville",
           "flight_number": "VY2213",
           "vendor_name": "Vueling",
-          "address": "A-4, Km. 532, 41020 Sevilla, Spain",
           "destination": "Barcelona",
           "departure_date": "2025-09-30",
           "departure_time": "06:30",
@@ -214,7 +169,6 @@
           "origin": "Seville",
           "flight_number": "VY2219",
           "vendor_name": "Vueling",
-          "address": "A-4, Km. 532, 41020 Sevilla, Spain",
           "destination": "Barcelona",
           "departure_date": "2025-09-30",
           "departure_time": "13:05",
@@ -229,7 +183,6 @@
           "type": "Flight",
           "flight_number": "AC823",
           "vendor_name": "Air Canada",
-          "address": "08820 El Prat de Llobregat, Barcelona, Spain",
           "origin": "Barcelona",
           "destination": "Montreal",
           "departure_date": "2025-09-30",
@@ -259,7 +212,6 @@
           "type": "Flight",
           "flight_number": "WS 7",
           "vendor_name": "WestJet",
-          "address": "08820 El Prat de Llobregat, Barcelona, Spain",
           "origin": "Barcelona",
           "destination": "Calgary",
           "departure_date": "2025-10-01",
