@@ -9,6 +9,7 @@
       "name": "Spanish vacation 2025",
       "description": "A multi-city trip through Spain, including Barcelona, Malaga, and Seville.",
       "currency": "EUR",
+      "timeline": ["2025-09-16","2025-10-01"],
       "timezone": "Europe/Madrid",
       "travel_groups": [{"1": ["Sim", "Kel", "Oph"]},{"2": ["Steve", "Brenda"]}],
       "notes": [
@@ -243,6 +244,7 @@
       "name": "Simon @ WhereTo Vancouver",
       "description": "WhereTo Conference",
       "currency": "CAD",
+      "timeline": ["2025-09-30","2025-10-03"],
       "timezone": "America/Vancouver",
       "notes": [
         {
@@ -310,6 +312,7 @@
       "name": "Birthday in Japan 2025",
       "description": "A birthday trip to Japan!",
       "currency": "JPY",
+      "timeline": ["2025-12-05","2025-12-16"],
       "timezone": "Asia/Tokyo",
       "notes": [],
       "segments": [

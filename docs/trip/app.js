@@ -361,6 +361,18 @@ function renderTimelineView(view) {
   });
 
   view.appendChild(timeline);
+
+  // Scroll to the current date if it exists in the timeline
+  const today = new Date().toISOString().slice(0, 10);
+  const todayIndex = allDays.indexOf(today);
+  if (todayIndex !== -1) {
+    setTimeout(() => {
+      const todayLabel = timeline.querySelector(`.calendar-day-label:nth-child(${todayIndex + 1})`);
+      if (todayLabel) {
+        todayLabel.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+      }
+    }, 0); // Ensure this runs after the DOM update
+  }
 }
 
 
@@ -831,6 +843,21 @@ function loadItinerary(jsonFile) {
       if (data && data.trips && Array.isArray(data.trips)) {
         allTrips = data.trips;
 
+        // Sort trips: current -> future -> past
+        const today = new Date();
+        allTrips.sort((a, b) => {
+          const [aStart, aEnd] = a.timeline.map(date => new Date(date));
+          const [bStart, bEnd] = b.timeline.map(date => new Date(date));
+
+          if (today >= aStart && today <= aEnd) return -1; // Current trips first
+          if (today >= bStart && today <= bEnd) return 1;
+
+          if (aStart > today && bStart > today) return aStart - bStart; // Future trips next
+          if (aEnd < today && bEnd < today) return bEnd - aEnd; // Past trips last
+
+          return 0;
+        });
+
         // Extract and store profile data for timezone and currency widgets
         if (data.profile) {
           window.homeTz = data.profile.timezone || 'America/Toronto';
@@ -867,29 +894,29 @@ function loadItinerary(jsonFile) {
  * Get current trip ID (for detecting which trip is currently active)
  */
 function getCurrentTripId() {
-  // This could be enhanced to detect current trip based on dates
   const today = new Date();
+
+  // Find the current trip based on the timeline
   const currentTrip = allTrips.find(trip => {
-    if (!trip.segments || trip.segments.length === 0) return false;
+    if (!trip.timeline || trip.timeline.length !== 2) return false;
 
-    const tripDates = trip.segments.map(seg => {
-      const startDate = new Date(seg.departure_date || seg.check_in_date);
-      const endDate = new Date(seg.arrival_date || seg.check_out_date);
-      return { start: startDate, end: endDate };
-    });
-
-    const tripStart = new Date(Math.min(...tripDates.map(d => d.start)));
-    const tripEnd = new Date(Math.max(...tripDates.map(d => d.end)));
-
-    return today >= tripStart && today <= tripEnd;
+    const [startDate, endDate] = trip.timeline.map(date => new Date(date));
+    return today >= startDate && today <= endDate;
   });
 
-  return currentTrip ? currentTrip.id : null;
+  if (currentTrip) return currentTrip.id;
+
+  // If no current trip, find the next trip
+  const nextTrip = allTrips.find(trip => {
+    if (!trip.timeline || trip.timeline.length !== 2) return false;
+
+    const [startDate] = trip.timeline.map(date => new Date(date));
+    return startDate > today;
+  });
+
+  return nextTrip ? nextTrip.id : null;
 }
 
-/**
- * Load a specific trip by ID
- */
 function loadTrip(tripId) {
 //   console.log('loadTrip called with tripId:', tripId);
   console.log('Available trips:', allTrips.map(t => ({ id: t.id, name: t.name })));
@@ -1526,6 +1553,7 @@ function submitTripForm(event, isEdit) {
   // For new trips, generate ID from name if not already set
   if (!isEdit && !tripId) {
     tripId = generateTripId(formData.get('name').trim());
+
   }
 
   const tripData = {
