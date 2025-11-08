@@ -343,6 +343,88 @@
         "note": "Booking ref: A5N3RX"
         }
       ]
+    },
+    {
+      "id": "pnp-nov",
+      "name": "Simon @ PNP",
+      "description": "PNP November Summit, Sunnyvale",
+      "currency": "USD",
+      "timeline": ["2025-11-17","2025-11-21"],
+      "timezone": "America/Vancouver",
+      "notes": [
+        {
+          "places_id": "",
+          "title": "",
+          "body": ""
+        }
+      ],
+      "segments": [
+        {
+          "name": "",
+          "type": "Flight",
+          "flight_number": "UA 3414",
+          "vendor_name": "United",
+          "origin": "Montreal",
+          "destination": "Washington",
+          "departure_date": "2025-11-17",
+          "departure_time": "14:13",
+          "arrival_date": "2025-11-17",
+          "arrival_time": "16:21",
+          "note": ""
+        },
+         {
+          "name": "",
+          "type": "Flight",
+          "flight_number": "UA 1757",
+          "vendor_name": "United",
+          "origin": "Washington",
+          "destination": "San Francisco",
+          "departure_date": "2025-11-17",
+          "departure_time": "18:30",
+          "arrival_date": "2025-11-17",
+          "arrival_time": "21:05",
+          "note": ""
+        },
+        {
+          "places_id": "",
+          "name": "Wild Palms Sunnyvale",
+          "type": "Hotel",
+          "vendor_name": "Hyatt",
+          "address": "",
+          "destination": "Sunnyvale",
+          "check_in_date": "2025-11-17",
+          "check_in_time": "3:00 PM",
+          "check_out_date": "2025-11-20",
+          "check_out_time": "11:00 AM",
+          "note": ""
+        },
+        {
+          "name": "",
+          "type": "Flight",
+          "flight_number": "AC 4021",
+          "vendor_name": "Air Canada",
+          "origin": "San Francisco",
+          "destination": "Calgary",
+          "departure_date": "2025-11-20",
+          "departure_time": "08:38",
+          "arrival_date": "2025-11-20",
+          "arrival_time": "12:26",
+          "note": ""
+        },
+        {
+          "name": "",
+          "type": "Flight",
+          "flight_number": "AC 326",
+          "vendor_name": "Air Canada",
+          "origin": "Calgary",
+          "destination": "Montreal",
+          "departure_date": "2025-11-20",
+          "departure_time": "16:50",
+          "arrival_date": "2025-11-20",
+          "arrival_time": "23:09",
+          "note": ""
+        }
+        ]
     }
   ]
 }
