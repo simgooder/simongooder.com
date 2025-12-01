@@ -330,6 +330,42 @@
         "note": "Booking ref: A5N3RX"
         },
         {
+        "name": "KOKO HOTEL Residence Asakusa Tawaramachi",
+        "type": "Hotel",
+        "vendor_name": "KOKO HOTEL Residence Asakusa Tawaramachi",
+        "address": "2-8 Kotobuki, Tokyo, 111-0042 Japan",
+        "destination": "Tokyo",
+        "check_in_date": "2025-12-06",
+        "check_in_time": "15:00",
+        "check_out_date": "2025-12-11",
+        "check_out_time": "11:00",
+        "note": ""
+        },
+        {
+        "name": "Rakuten STAY Nikko Hoden",
+        "type": "Hotel",
+        "vendor_name": "Rakuten STAY Nikko Hoden",
+        "address": "23-1 Hoden, Nikko, Tochigi, 321-1422 Japan",
+        "destination": "Nikko",
+        "check_in_date": "2025-12-11",
+        "check_in_time": "15:00",
+        "check_out_date": "2025-12-13",
+        "check_out_time": "10:00",
+        "note": ""
+        },
+        {
+        "name": "KOKO HOTEL Residence Asakusa Kappabashi",
+        "type": "Hotel",
+        "vendor_name": "KOKO HOTEL Residence Asakusa Kappabashi",
+        "address": "3-chome-24-2 Nishiasakusa, Tokyo, 111-0035 Japan",
+        "destination": "Tokyo",
+        "check_in_date": "2025-12-13",
+        "check_in_time": "15:00",
+        "check_out_date": "2025-12-16",
+        "check_out_time": "11:00",
+        "note": ""
+        },
+        {
         "type": "Flight",
         "name": "NRT → YUL",
         "vendor_name": "Air Canada",
