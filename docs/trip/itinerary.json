@@ -5,13 +5,100 @@
   },
   "trips": [
     {
+      "id": "port-retreat-2026",
+      "name": "Porto Retreat 2026",
+      "description": "A work retreat to Porto.",
+      "currency": "EUR",
+      "timeline": ["2026-02-07","2026-02-14"],
+      "timezone": "Europe/Lisbon",
+      "segments":[
+        {
+            "name": "Bus to Montreal",
+            "type": "bus",
+            "vendor_name": "Limocar",
+            "origin": "Bromont",
+            "destination": "Montréal",
+            "departure_date": "2026-02-07",
+            "departure_time": "16:05 PM",
+            "arrival_date": "2026-02-07",
+            "arrival_time": "17:20 PM",
+            "note": "Flexible ticket"
+        },
+        {   "name": "Bus to Bromont",
+            "type": "bus",
+            "vendor_name": "Limocar",
+            "origin": "Montréal",
+            "destination": "Bromont",
+            "departure_date": "2026-02-14",
+            "departure_time": "4:30 PM",
+            "arrival_date": "2026-02-14",
+            "arrival_time": "5:45 PM",
+            "note": "Flexible ticket"
+        },
+        {
+            "name": "Flight to Munich",
+            "type": "flight",
+            "vendor_name": "Air Canada",
+            "flight_number": "AC 9098",
+            "origin": "Montreal",
+            "destination": "Munich",
+            "departure_date": "2025-02-07",
+            "departure_time": "08:10 PM",
+            "arrival_date": "2025-02-08",
+            "arrival_time": "09:30 AM",
+            "note": "1:25 layover in MUC"
+        },
+        {
+            "name": "Flight to Porto",
+            "type": "flight",
+            "vendor_name": "Lufthansa",
+            "flight_number": "LH 1782",
+            "origin": "Munich",
+            "destination": "Porto",
+            "departure_date": "2025-02-08",
+            "departure_time": "10:55 AM",
+            "arrival_date": "2025-02-08",
+            "arrival_time": "12:50 PM",
+            "note": ""
+        },
+        {
+            "name": "Flight to Lisbon",
+            "type": "flight",
+            "vendor_name": "Air Canada",
+            "flight_number": "AC 2638",
+            "origin": "Porto",
+            "destination": "Lisbon",
+            "departure_date": "2025-02-14",
+            "departure_time": "08:55 AM",
+            "arrival_date": "2025-02-14",
+            "arrival_time": "09:55 AM",
+            "note": "AC 813"
+        },
+        {
+            "name": "Flight to Montreal",
+            "type": "flight",
+            "vendor_name": "Air Canada",
+            "flight_number": "AC A13",
+            "origin": "Lisbon",
+            "destination": "Montreal",
+            "departure_date": "2025-02-14",
+            "departure_time": "11:20 AM",
+            "arrival_date": "2025-02-14",
+            "arrival_time": "2:05 PM",
+            "note": "AC 813"
+        }
+
+      ]
+    },
+    {
       "id": "spanish-vacation-2025",
       "name": "Spanish vacation 2025",
       "description": "A multi-city trip through Spain, including Barcelona, Malaga, and Seville.",
       "currency": "EUR",
       "timeline": ["2025-09-16","2025-10-01"],
       "timezone": "Europe/Madrid",
-      "travel_groups": [{"1": ["Sim", "Kel", "Oph"]},{"2": ["Steve", "Brenda"]}],
+      "travel_groups": [{"1": ["Sim",
+      "Kel", "Oph"]},{"2": ["Steve", "Brenda"]}],
       "notes": [
         {
           "title": "Maps!",
