@@ -549,6 +549,145 @@
           "note": ""
         }
         ]
+    },
+    {
+      "id": "eurotrip-fall-2026",
+      "name": "EuroTrip Fall 2026",
+      "description": "Paris, Vienna, Prague autumn trip.",
+      "currency": "EUR",
+      "timeline": ["2026-10-02","2026-10-13"],
+      "timezone": "Europe/Paris",
+      "travel_groups": [{"1": ["Sim",
+      "Kel", "Oph"]},{"2": ["Steve", "Brenda"]}],
+      "notes": [],
+      "segments": [
+        {
+          "type": "Flight",
+          "name": "Flight to Paris",
+          "vendor_name": "Airline",
+          "origin": "Montreal",
+          "destination": "Paris",
+          "departure_date": "2026-10-02",
+          "departure_time": "07:00",
+          "arrival_date": "2026-10-02",
+          "arrival_time": "20:00",
+          "travellers": ["1"],
+          "note": ""
+        },
+         {
+          "type": "Flight",
+          "name": "Flight to Paris",
+          "vendor_name": "Airline",
+          "origin": "Montreal",
+          "destination": "Paris",
+          "departure_date": "2026-10-02",
+          "departure_time": "07:00",
+          "arrival_date": "2026-10-02",
+          "arrival_time": "20:00",
+          "travellers": ["2"],
+          "note": ""
+        },
+        {
+          "type": "Hotel",
+          "name": "Hotel in Paris",
+          "vendor_name": "Hotel",
+          "address": "Paris, France",
+          "destination": "Paris",
+          "check_in_date": "2026-10-02",
+          "check_in_time": "15:00",
+          "check_out_date": "2026-10-05",
+          "check_out_time": "11:00",
+          "note": ""
+        },
+        {
+          "type": "Flight",
+          "name": "Paris to Vienna",
+          "vendor_name": "Airline",
+          "origin": "Paris",
+          "destination": "Vienna",
+          "departure_date": "2026-10-05",
+          "departure_time": "09:00",
+          "arrival_date": "2026-10-05",
+          "arrival_time": "11:30",
+          "note": ""
+        },
+        {
+          "type": "Hotel",
+          "name": "Hotel in Vienna",
+          "vendor_name": "Hotel",
+          "address": "Vienna, Austria",
+          "destination": "Vienna",
+          "check_in_date": "2026-10-05",
+          "check_in_time": "15:00",
+          "check_out_date": "2026-10-08",
+          "check_out_time": "11:00",
+          "note": ""
+        },
+        {
+          "type": "Train",
+          "name": "Vienna to Prague",
+          "vendor_name": "ÖBB",
+          "origin": "Vienna",
+          "destination": "Prague",
+          "departure_date": "2026-10-08",
+          "departure_time": "08:10",
+          "arrival_date": "2026-10-08",
+          "arrival_time": "12:23",
+          "note": "1st class, Sparschiene. Trains: EC 206, EC 280 via Breclav & Brno. Booking ref: CIV 1181. Price: EUR 33.60"
+        },
+        {
+          "type": "Hotel",
+          "name": "Hotel in Prague",
+          "vendor_name": "Hotel",
+          "address": "Prague, Czechia",
+          "destination": "Prague",
+          "check_in_date": "2026-10-08",
+          "check_in_time": "15:00",
+          "check_out_date": "2026-10-13",
+          "check_out_time": "11:00",
+          "travellers": ["1"],
+          "note": ""
+        },
+        {
+          "type": "Hotel",
+          "name": "Hotel in Prague",
+          "vendor_name": "Hotel",
+          "address": "Prague, Czechia",
+          "destination": "Prague",
+          "check_in_date": "2026-10-08",
+          "check_in_time": "15:00",
+          "check_out_date": "2026-10-13",
+          "check_out_time": "11:00",
+          "travellers": ["2"],
+          "note": ""
+        },
+        {
+          "type": "Flight",
+          "name": "Return Flight",
+          "vendor_name": "Airline",
+          "origin": "Prague",
+          "destination": "Montreal",
+          "departure_date": "2026-10-13",
+          "departure_time": "12:00",
+          "arrival_date": "2026-10-13",
+          "arrival_time": "20:00",
+          "travellers": ["1"],
+          "note": ""
+        },
+        {
+          "type": "Flight",
+          "name": "Return Flight",
+          "vendor_name": "Airline",
+          "origin": "Prague",
+          "destination": "Montreal",
+          "departure_date": "2026-10-13",
+          "departure_time": "12:00",
+          "arrival_date": "2026-10-13",
+          "arrival_time": "20:00",
+          "travellers": ["2"],
+          "note": ""
+        }
+      ]
     }
   ]
 }

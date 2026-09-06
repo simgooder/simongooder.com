@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "workspace": {
+    "name": "itinerary",
+    "createdAt": 1788728927106,
+    "preset": "starter"
+  },
+  "authorizedRoots": [
+    "/Users/simongooder/Sites/itinerary"
+  ],
+  "reload": null
+}
