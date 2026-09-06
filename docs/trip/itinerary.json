@@ -555,7 +555,7 @@
       "name": "EuroTrip Fall 2026",
       "description": "Paris, Vienna, Prague autumn trip.",
       "currency": "EUR",
-      "timeline": ["2026-10-02","2026-10-13"],
+      "timeline": ["2026-10-02","2026-10-14"],
       "timezone": "Europe/Paris",
       "travel_groups": [{"1": ["Sim",
       "Kel", "Oph"]},{"2": ["Steve", "Brenda"]}],
@@ -564,28 +564,16 @@
         {
           "type": "Flight",
           "name": "Flight to Paris",
-          "vendor_name": "Airline",
+          "vendor_name": "Air Canada",
+          "flight_number": "AC 870",
           "origin": "Montreal",
           "destination": "Paris",
           "departure_date": "2026-10-02",
-          "departure_time": "07:00",
-          "arrival_date": "2026-10-02",
-          "arrival_time": "20:00",
+          "departure_time": "9:35 PM",
+          "arrival_date": "2026-10-03",
+          "arrival_time": "10:20 AM",
           "travellers": ["1"],
-          "note": ""
-        },
-         {
-          "type": "Flight",
-          "name": "Flight to Paris",
-          "vendor_name": "Airline",
-          "origin": "Montreal",
-          "destination": "Paris",
-          "departure_date": "2026-10-02",
-          "departure_time": "07:00",
-          "arrival_date": "2026-10-02",
-          "arrival_time": "20:00",
-          "travellers": ["2"],
-          "note": ""
+          "note": "Boeing 777-300ER, 6h 45m, Economy. Seats: Simon 38A (Window), Kelly 38B (Middle), Ophelia 38C (Aisle)"
         },
         {
           "type": "Hotel",
@@ -602,14 +590,15 @@
         {
           "type": "Flight",
           "name": "Paris to Vienna",
-          "vendor_name": "Airline",
+          "vendor_name": "Austrian Airlines",
+          "flight_number": "OS 362",
           "origin": "Paris",
           "destination": "Vienna",
           "departure_date": "2026-10-05",
           "departure_time": "09:00",
           "arrival_date": "2026-10-05",
           "arrival_time": "11:30",
-          "note": ""
+          "note": "Economy Light. Booking: 7QG479. Departs CDG Terminal 1, arrives Vienna Terminal 3"
         },
         {
           "type": "Hotel",
@@ -664,28 +653,16 @@
         {
           "type": "Flight",
           "name": "Return Flight",
-          "vendor_name": "Airline",
-          "origin": "Prague",
+          "vendor_name": "Air Canada",
+          "flight_number": "AC 875",
+          "origin": "Paris",
           "destination": "Montreal",
-          "departure_date": "2026-10-13",
-          "departure_time": "12:00",
-          "arrival_date": "2026-10-13",
-          "arrival_time": "20:00",
+          "departure_date": "2026-10-14",
+          "departure_time": "10:05 AM",
+          "arrival_date": "2026-10-14",
+          "arrival_time": "11:45 AM",
           "travellers": ["1"],
-          "note": ""
-        },
-        {
-          "type": "Flight",
-          "name": "Return Flight",
-          "vendor_name": "Airline",
-          "origin": "Prague",
-          "destination": "Montreal",
-          "departure_date": "2026-10-13",
-          "departure_time": "12:00",
-          "arrival_date": "2026-10-13",
-          "arrival_time": "20:00",
-          "travellers": ["2"],
-          "note": ""
+          "note": "Boeing 787-9, 7h 40m, Economy. Seats: Simon 25B (Middle), Kelly 25A (Window), Ophelia 25C (Aisle)"
         }
       ]
     }
