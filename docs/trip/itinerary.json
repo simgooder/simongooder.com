@@ -577,15 +577,15 @@
         },
         {
           "type": "Hotel",
-          "name": "Hotel in Paris",
-          "vendor_name": "Hotel",
-          "address": "Paris, France",
+          "name": "Hotel La Finca",
+          "vendor_name": "Hotel La Finca",
+          "address": "44 Boulevard Richard-Lenoir, 75011 Paris",
           "destination": "Paris",
-          "check_in_date": "2026-10-02",
-          "check_in_time": "15:00",
+          "check_in_date": "2026-10-03",
+          "check_in_time": "3:00 PM",
           "check_out_date": "2026-10-05",
-          "check_out_time": "11:00",
-          "note": ""
+          "check_out_time": "12:00 PM",
+          "note": "Ref: K2ZN8W. 2 nights, 2 rooms. Phone: 0147005277"
         },
         {
           "type": "Flight",
@@ -602,21 +602,22 @@
         },
         {
           "type": "Hotel",
-          "name": "Hotel in Vienna",
-          "vendor_name": "Hotel",
-          "address": "Vienna, Austria",
+          "name": "Max Brown 7th District",
+          "vendor_name": "Max Brown Hotels",
+          "address": "Schottenfeldgasse 74, 1070 Wien, Austria",
           "destination": "Vienna",
           "check_in_date": "2026-10-05",
-          "check_in_time": "15:00",
+          "check_in_time": "3:00 PM",
           "check_out_date": "2026-10-08",
           "check_out_time": "11:00",
-          "note": ""
+          "note": "Itinerary: 18895B0232441"
         },
         {
           "type": "Train",
           "name": "Vienna to Prague",
           "vendor_name": "ÖBB",
           "origin": "Vienna",
+          "address": "Am Hbf 1, 1100 Wien, Austria",
           "destination": "Prague",
           "departure_date": "2026-10-08",
           "departure_time": "08:10",
@@ -626,29 +627,15 @@
         },
         {
           "type": "Hotel",
-          "name": "Hotel in Prague",
-          "vendor_name": "Hotel",
-          "address": "Prague, Czechia",
+          "name": "Malostranská Residence",
+          "vendor_name": "Malostranská Residence",
+          "address": "Malostranské nám. 38/24, 118 00 Malá Strana, Czechia",
           "destination": "Prague",
           "check_in_date": "2026-10-08",
-          "check_in_time": "15:00",
+          "check_in_time": "2:00 PM",
           "check_out_date": "2026-10-13",
-          "check_out_time": "11:00",
-          "travellers": ["1"],
-          "note": ""
-        },
-        {
-          "type": "Hotel",
-          "name": "Hotel in Prague",
-          "vendor_name": "Hotel",
-          "address": "Prague, Czechia",
-          "destination": "Prague",
-          "check_in_date": "2026-10-08",
-          "check_in_time": "15:00",
-          "check_out_date": "2026-10-13",
-          "check_out_time": "11:00",
-          "travellers": ["2"],
-          "note": ""
+          "check_out_time": "11:00 AM",
+          "note": "Reception: 8:00 AM - 9:00 PM"
         },
         {
           "type": "Flight",
