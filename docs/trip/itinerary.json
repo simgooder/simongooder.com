@@ -672,7 +672,11 @@
           "departure_time": "08:05",
           "arrival_date": "2026-09-11",
           "arrival_time": "09:00",
-          "note": ""
+          "note": "",
+          "images": [
+            {"src": "img/oph-bromont-mtl.png", "caption": "Ophelia - Limocar Bromont to Montreal"},
+            {"src": "img/sim-bromont-mtl.png", "caption": "Simon - Limocar Bromont to Montreal"}
+          ]
         },
         {
           "type": "Train",
@@ -684,7 +688,11 @@
           "departure_time": "10:49",
           "arrival_date": "2026-09-11",
           "arrival_time": "16:18",
-          "note": "Train VIA65, Car 4, Seat 4B. Economy class"
+          "note": "Train VIA65, Car 4, Seat 4B. Economy class",
+          "images": [
+            {"src": "img/ophelia-mtl-to.png", "caption": "Ophelia - VIA65 Montreal to Toronto"},
+            {"src": "img/simon-mtl-to.png", "caption": "Simon - VIA65 Montreal to Toronto"}
+          ]
         },
         {
           "type": "Hotel",
@@ -708,7 +716,11 @@
           "departure_time": "11:38",
           "arrival_date": "2026-09-12",
           "arrival_time": "17:05",
-          "note": ""
+          "note": "",
+          "images": [
+            {"src": "img/ophelia-to-mtl.png", "caption": "Ophelia - VIA64 Toronto to Montreal"},
+            {"src": "img/simon-to-mtl.png", "caption": "Simon - VIA64 Toronto to Montreal"}
+          ]
         },
         {
           "type": "Bus",
@@ -720,7 +732,11 @@
           "departure_time": "18:30",
           "arrival_date": "2026-09-12",
           "arrival_time": "19:30",
-          "note": ""
+          "note": "",
+          "images": [
+            {"src": "img/oph-mtl-bromont.png", "caption": "Ophelia - Limocar Montreal to Bromont"},
+            {"src": "img/sim-mtl-bromont.png", "caption": "Simon - Limocar Montreal to Bromont"}
+          ]
         }
       ]
     }

@@ -126,6 +126,37 @@ Segment `type` is one of: `Flight`, `Train`, `Bus`, `Drive`, `Hotel`.
 | `note` | Optional free text (seat numbers, booking refs, contact info, etc.). |
 | `travellers` | Optional array of travel-group ids, e.g. `["1", "2"]`. Only meaningful if the trip has `travel_groups`. |
 | `places_id` | Optional; leave `""` unless a real value exists. |
+| `images` | Optional array of image objects for tickets, boarding passes, booking confirmations, etc. |
+
+### Attaching images to segments
+
+Use the `images` field to attach ticket screenshots, QR codes, booking confirmations, or other documents to a segment. Images are stored in the repo and referenced by relative path.
+
+**Folder convention:**
+- **`temp/`** — Import working files. Raw screenshots the user drops here for you to read and extract booking details. These are *not* shown in the app.
+- **`img/`** — Curated images attached to segments via the `images` field. These *are* displayed in the app (thumbnails in the detail modal, tap to view full-size). Use this for QR codes, ticket screenshots, or any image the user wants to see when viewing the trip.
+
+When the user provides screenshots, extract details from them into segment fields. If the user specifically wants an image shown in the app (e.g. a QR code for check-in), copy it to `img/` and reference it via the `images` field.
+
+**Image object format:**
+
+```json
+"images": [
+  { "src": "img/boarding-qr.png", "caption": "QR code for check-in" }
+]
+```
+
+| Field | Required | Notes |
+|---|---|---|
+| `src` | yes | Relative path to the image file from the repo root. |
+| `caption` | no | Short label shown below the thumbnail and in the lightbox view. |
+
+**Guidelines:**
+- Store curated images in `img/` (create if needed). Keep `temp/` for import-only files.
+- Supported formats: PNG, JPEG, GIF, WebP.
+- Keep images reasonable in size (aim for < 1 MB each) for offline caching.
+- A small 📷 icon appears on segment blocks that have images.
+- Tapping a thumbnail opens a full-screen lightbox view.
 
 ### Flight / Train / Bus / Drive fields
 
@@ -173,25 +204,26 @@ Segment `type` is one of: `Flight`, `Train`, `Bus`, `Drive`, `Hotel`.
 
 ## Screenshot input
 
-The user may attach screenshots of bookings (flight confirmations, hotel reservations, train tickets, boarding passes). Extract the details from them and build the segments from what you read:
+The user may attach screenshots of bookings (flight confirmations, hotel reservations, train tickets, boarding passes). These typically go in `temp/` for importing. Extract the details from them and build the segments from what you read:
 
 - **Flights:** airline, flight number, origin/destination airports, departure/arrival dates + times, booking reference, seat numbers.
 - **Hotels:** hotel name, address, check-in/check-out dates + times, confirmation number, contact info.
 - **Trains/buses:** operator, origin/destination stations, departure/arrival times, coach/seat numbers.
 
-Put extracted details into the segment `note` field (e.g. `"Booking ref: A5N3RX"`, `"Seats: 02A, 02B"`) and the structured fields. If a screenshot is unclear or a critical field is missing, ask the user rather than guessing.
+Put extracted details into the segment `note` field (e.g. `"Booking ref: A5N3RX"`, `"Seats: 02A, 02B"`) and the structured fields. If the user wants a specific image shown in the app (e.g. a QR code), copy it to `img/` and attach it via the `images` field. If a screenshot is unclear or a critical field is missing, ask the user rather than guessing.
 
 ## Workflow
 
 1. **Gather details.** Ask the user for: trip name, dates, currency, timezone, and the segments (flights, trains, buses, drives, hotels) with their times. Also ask about travel groups and notes if relevant. If the user attached screenshots, extract the details from them instead of asking.
 2. **Build the trip object.** Generate the `id` from the name, set `timeline` from the first/last segment dates, and list segments in chronological order.
-3. **Insert into `itinerary.json`.** Add the object to the `trips` array. Keep the file's existing key order and 2-space indentation.
-4. **Validate** (see checklist below).
-5. **Deploy.** Run `./update.sh` from the repo root to copy files to the production directory, bump the service worker cache version, and push to GitHub:
+3. **Attach images (if any).** If the user wants specific images shown in the app (QR codes, ticket screenshots), copy them to `img/` and add an `images` array to the relevant segment. Most screenshots in `temp/` are just for importing — only attach images the user explicitly wants displayed.
+4. **Insert into `itinerary.json`.** Add the object to the `trips` array. Keep the file's existing key order and 2-space indentation.
+5. **Validate** (see checklist below).
+6. **Deploy.** Run `./update.sh` from the repo root to copy files to the production directory, bump the service worker cache version, and push to GitHub:
    ```sh
    ./update.sh
    ```
-6. **Report.** Summarize what was added: trip name, id, date range, segment count. Confirm the deploy succeeded.
+7. **Report.** Summarize what was added: trip name, id, date range, segment count. Confirm the deploy succeeded.
 
 ## Validation checklist
 

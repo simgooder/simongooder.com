@@ -559,6 +559,10 @@ function createSegmentBlock(seg, idx) {
     }
   }
 
+  // Image indicator
+  const hasImages = Array.isArray(seg.images) && seg.images.length > 0;
+  const imageIndicator = hasImages ? `<span class="seg-image-indicator" title="${seg.images.length} image${seg.images.length > 1 ? 's' : ''}">📷</span>` : '';
+
   segDiv.style.position = 'relative';
   segDiv.innerHTML = `
     <div class="sticky left-0"><strong>${typeIcon} ${segmentName}</strong></div>
@@ -566,6 +570,7 @@ function createSegmentBlock(seg, idx) {
     <div class="flex items-start py-1">${logoUrl} ${routeDisplay}</div>
     ${extraDetails}
     ${avatarsHtml}
+    ${imageIndicator}
   `;
   segDiv.onclick = () => viewSegmentDetails(idx);
 
@@ -661,6 +666,22 @@ function viewSegmentDetails(idx) {
     }
   }
 
+  // Image gallery
+  let imagesHtml = '';
+  if (Array.isArray(seg.images) && seg.images.length > 0) {
+    const imgTags = seg.images.map((img, i) => {
+      const src = typeof img === 'string' ? img : img.src;
+      const caption = (typeof img === 'object' && img.caption) ? img.caption : '';
+      return `<img src="${escapeHtml(src)}" alt="${escapeHtml(caption || 'Ticket')}" onclick="openLightbox('${escapeHtml(src)}', '${escapeHtml(caption)}')" title="${escapeHtml(caption || 'Tap to view')}">`;
+    }).join('');
+    imagesHtml = `
+      <div class="detail-row" style="margin-top:0.5em;">
+        <strong>Tickets &amp; docs:</strong>
+        <div class="seg-images">${imgTags}</div>
+      </div>
+    `;
+  }
+
   modal.innerHTML = `
     <div style="background:#fff;padding:2em 2em 1em 2em;border-radius:12px;max-width:420px;min-width:260px;box-shadow:0 2px 16px #0003;position:relative;" onclick="event.stopPropagation()">
       <h2 class="text-lg font-bold mb-2">${typeIcon} ${segmentName}</h2>
@@ -681,6 +702,7 @@ function viewSegmentDetails(idx) {
         <div class="detail-row" style="margin-top:0.5em;">
             <strong>Note:</strong><br>${note ? escapeHtml(note) : '<em>No note for this segment.</em>'}
         </div>
+        ${imagesHtml}
       <button onclick="closeSegmentModal()" style="position:absolute;top:10px;right:10px;background:none;border:none;font-size:1.5em;cursor:pointer;">&times;</button>
     </div>
   `;
@@ -693,6 +715,27 @@ function viewSegmentDetails(idx) {
  */
 function closeSegmentModal() {
   document.getElementById('segmentModal')?.remove();
+}
+
+/**
+ * Opens a full-screen lightbox to view an image.
+ * @param {string} src Image URL/path
+ * @param {string} caption Optional caption text
+ */
+function openLightbox(src, caption) {
+  const existing = document.getElementById('imageLightbox');
+  if (existing) existing.remove();
+
+  const lightbox = document.createElement('div');
+  lightbox.id = 'imageLightbox';
+  lightbox.className = 'image-lightbox';
+  lightbox.innerHTML = `
+    <button class="lightbox-close">&times;</button>
+    <img src="${src}" alt="${caption || 'Ticket image'}">
+    ${caption ? `<div class="lightbox-caption">${caption}</div>` : ''}
+  `;
+  lightbox.onclick = () => lightbox.remove();
+  document.body.appendChild(lightbox);
 }
 
 /**

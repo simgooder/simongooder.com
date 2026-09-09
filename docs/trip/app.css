@@ -66,3 +66,83 @@ body {
     color: #2c3e50;
     padding: 0.2em 0;
 }
+
+/* Segment image gallery */
+.seg-images {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 8px 0;
+    -webkit-overflow-scrolling: touch;
+}
+
+.seg-images img {
+    height: 120px;
+    width: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    cursor: pointer;
+    object-fit: cover;
+    flex-shrink: 0;
+    transition: transform 0.15s;
+}
+
+.seg-images img:hover {
+    transform: scale(1.03);
+}
+
+/* Image caption */
+.seg-image-caption {
+    font-size: 0.85em;
+    color: #888;
+    margin-top: -4px;
+    margin-bottom: 4px;
+}
+
+/* Lightbox overlay */
+.image-lightbox {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.92);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.image-lightbox img {
+    max-width: 92vw;
+    max-height: 85vh;
+    border-radius: 8px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+}
+
+.image-lightbox .lightbox-caption {
+    color: #ccc;
+    font-size: 0.95em;
+    margin-top: 12px;
+    text-align: center;
+}
+
+.image-lightbox .lightbox-close {
+    position: absolute;
+    top: 16px; right: 20px;
+    color: #fff;
+    font-size: 2em;
+    cursor: pointer;
+    background: none;
+    border: none;
+    line-height: 1;
+}
+
+/* Camera indicator on segment block */
+.seg-image-indicator {
+    position: absolute;
+    bottom: 6px;
+    right: 8px;
+    font-size: 0.75em;
+    opacity: 0.5;
+}
