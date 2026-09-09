@@ -652,6 +652,77 @@
           "note": "Boeing 787-9, 7h 40m, Economy. Seats: Simon 25B (Middle), Kelly 25A (Window), Ophelia 25C (Aisle)"
         }
       ]
+    },
+    {
+      "id": "toronto-fall-2026",
+      "name": "Toronto Fall 2026",
+      "description": "Toronto weekend trip via Montreal.",
+      "currency": "CAD",
+      "timeline": ["2026-09-11", "2026-09-12"],
+      "timezone": "America/Toronto",
+      "notes": [],
+      "segments": [
+        {
+          "type": "Bus",
+          "name": "Bromont to Montreal",
+          "vendor_name": "Limocar",
+          "origin": "Bromont",
+          "destination": "Montreal",
+          "departure_date": "2026-09-11",
+          "departure_time": "08:05",
+          "arrival_date": "2026-09-11",
+          "arrival_time": "09:00",
+          "note": ""
+        },
+        {
+          "type": "Train",
+          "name": "Montreal to Toronto",
+          "vendor_name": "VIA Rail",
+          "origin": "Montreal",
+          "destination": "Toronto",
+          "departure_date": "2026-09-11",
+          "departure_time": "10:49",
+          "arrival_date": "2026-09-11",
+          "arrival_time": "16:18",
+          "note": "Train VIA65, Car 4, Seat 4B. Economy class"
+        },
+        {
+          "type": "Hotel",
+          "name": "SpringHill Suites by Marriott Toronto Vaughan",
+          "vendor_name": "Marriott",
+          "address": "612 Applewood Crescent, Vaughan, ON L4K 4B4",
+          "destination": "Vaughan",
+          "check_in_date": "2026-09-11",
+          "check_in_time": "4:00 PM",
+          "check_out_date": "2026-09-12",
+          "check_out_time": "12:00 PM",
+          "note": "1 night"
+        },
+        {
+          "type": "Train",
+          "name": "Toronto to Montreal",
+          "vendor_name": "VIA Rail",
+          "origin": "Toronto",
+          "destination": "Montreal",
+          "departure_date": "2026-09-12",
+          "departure_time": "11:38",
+          "arrival_date": "2026-09-12",
+          "arrival_time": "17:05",
+          "note": ""
+        },
+        {
+          "type": "Bus",
+          "name": "Montreal to Bromont",
+          "vendor_name": "Limocar",
+          "origin": "Montreal",
+          "destination": "Bromont",
+          "departure_date": "2026-09-12",
+          "departure_time": "18:30",
+          "arrival_date": "2026-09-12",
+          "arrival_time": "19:30",
+          "note": ""
+        }
+      ]
     }
   ]
 }
