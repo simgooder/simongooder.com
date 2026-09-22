@@ -639,6 +639,33 @@
         },
         {
           "type": "Flight",
+          "name": "Prague to Paris",
+          "vendor_name": "SmartWings",
+          "flight_number": "QS 1034",
+          "origin": "Prague",
+          "destination": "Paris",
+          "departure_date": "2026-10-13",
+          "departure_time": "12:20",
+          "arrival_date": "2026-10-13",
+          "arrival_time": "14:15",
+          "travellers": ["1"],
+          "note": "Operated by SmartWings. LITE class. Seat: Simon 05D. Booking ref: XMT7YM. Ticket: 797 2404472811. Departs Prague Terminal 2, arrives CDG Terminal 2d. Duration: 1h55"
+        },
+        {
+          "type": "Hotel",
+          "name": "Novotel Paris CDG Airport",
+          "vendor_name": "Novotel",
+          "address": "Rue de Paris, Roissypole Gare RER, 93290 Tremblay-en-France",
+          "destination": "Paris",
+          "check_in_date": "2026-10-13",
+          "check_in_time": "3:00 PM",
+          "check_out_date": "2026-10-14",
+          "check_out_time": "12:00 PM",
+          "travellers": ["1"],
+          "note": "Ref: QRHLFLXM. 1 night, 2 adults 1 child. Phone: +33 1/49192727. Email: H1014@accor.com"
+        },
+        {
+          "type": "Flight",
           "name": "Return Flight",
           "vendor_name": "Air Canada",
           "flight_number": "AC 875",
