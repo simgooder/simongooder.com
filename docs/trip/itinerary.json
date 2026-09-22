@@ -563,6 +563,34 @@
       "segments": [
         {
           "type": "Flight",
+          "name": "Kelowna to Calgary",
+          "vendor_name": "WestJet",
+          "flight_number": "WS 190",
+          "origin": "Kelowna",
+          "destination": "Calgary",
+          "departure_date": "2026-10-02",
+          "departure_time": "15:15",
+          "arrival_date": "2026-10-02",
+          "arrival_time": "17:20",
+          "travellers": ["2"],
+          "note": "Premium Economy, PremiumFlex. Seats: Steve 03D, Brenda 03F"
+        },
+        {
+          "type": "Flight",
+          "name": "Calgary to Paris",
+          "vendor_name": "WestJet",
+          "flight_number": "WS 10",
+          "origin": "Calgary",
+          "destination": "Paris",
+          "departure_date": "2026-10-02",
+          "departure_time": "19:10",
+          "arrival_date": "2026-10-03",
+          "arrival_time": "12:00",
+          "travellers": ["2"],
+          "note": "Business, BusinessFlex. Aerogare 2 Terminal C. Seats: Steve 03D, Brenda 03F"
+        },
+        {
+          "type": "Flight",
           "name": "Flight to Paris",
           "vendor_name": "Air Canada",
           "flight_number": "AC 870",
@@ -636,6 +664,48 @@
           "check_out_date": "2026-10-13",
           "check_out_time": "11:00 AM",
           "note": "Reception: 8:00 AM - 9:00 PM"
+        },
+        {
+          "type": "Flight",
+          "name": "Prague to Paris",
+          "vendor_name": "WestJet",
+          "flight_number": "WS 5106",
+          "origin": "Prague",
+          "destination": "Paris",
+          "departure_date": "2026-10-12",
+          "departure_time": "06:30",
+          "arrival_date": "2026-10-12",
+          "arrival_time": "08:25",
+          "travellers": ["2"],
+          "note": "Operated by Air France. Business, BusinessFlex. Terminal 2 → Aerogare 2 Terminal F. Confirmation: CEBXCU. Seats: Check-in required"
+        },
+        {
+          "type": "Flight",
+          "name": "Paris to Calgary",
+          "vendor_name": "WestJet",
+          "flight_number": "WS 9",
+          "origin": "Paris",
+          "destination": "Calgary",
+          "departure_date": "2026-10-12",
+          "departure_time": "14:00",
+          "arrival_date": "2026-10-12",
+          "arrival_time": "15:10",
+          "travellers": ["2"],
+          "note": "Business, BusinessFlex. Aerogare 2 Terminal C. Seats: Steve 02D, Brenda 01D"
+        },
+        {
+          "type": "Flight",
+          "name": "Calgary to Kelowna",
+          "vendor_name": "WestJet",
+          "flight_number": "WS 191",
+          "origin": "Calgary",
+          "destination": "Kelowna",
+          "departure_date": "2026-10-12",
+          "departure_time": "19:15",
+          "arrival_date": "2026-10-12",
+          "arrival_time": "19:25",
+          "travellers": ["2"],
+          "note": "Economy, EconoFlex. Seats: Steve 04D, Brenda 04E"
         },
         {
           "type": "Flight",
@@ -764,88 +834,6 @@
             {"src": "img/oph-mtl-bromont.png", "caption": "Ophelia - Limocar Montreal to Bromont"},
             {"src": "img/sim-mtl-bromont.png", "caption": "Simon - Limocar Montreal to Bromont"}
           ]
-        }
-      ]
-    },
-    {
-      "id": "kelowna-to-paris-2026",
-      "name": "Kelowna to Paris 2026",
-      "description": "Kelowna to Paris via Calgary, with Prague return.",
-      "currency": "CAD",
-      "timeline": ["2026-10-02", "2026-10-12"],
-      "timezone": "America/Vancouver",
-      "travel_groups": [{"1": ["Steve", "Brenda"]}],
-      "notes": [],
-      "segments": [
-        {
-          "type": "Flight",
-          "name": "Kelowna to Calgary",
-          "vendor_name": "WestJet",
-          "flight_number": "WS 190",
-          "origin": "Kelowna",
-          "destination": "Calgary",
-          "departure_date": "2026-10-02",
-          "departure_time": "15:15",
-          "arrival_date": "2026-10-02",
-          "arrival_time": "17:20",
-          "travellers": ["1"],
-          "note": "Premium Economy, PremiumFlex. Seats: Steve 03D, Brenda 03F"
-        },
-        {
-          "type": "Flight",
-          "name": "Calgary to Paris",
-          "vendor_name": "WestJet",
-          "flight_number": "WS 10",
-          "origin": "Calgary",
-          "destination": "Paris",
-          "departure_date": "2026-10-02",
-          "departure_time": "19:10",
-          "arrival_date": "2026-10-03",
-          "arrival_time": "12:00",
-          "travellers": ["1"],
-          "note": "Business, BusinessFlex. Aerogare 2 Terminal C. Seats: Steve 03D, Brenda 03F"
-        },
-        {
-          "type": "Flight",
-          "name": "Prague to Paris",
-          "vendor_name": "WestJet",
-          "flight_number": "WS 5106",
-          "origin": "Prague",
-          "destination": "Paris",
-          "departure_date": "2026-10-12",
-          "departure_time": "06:30",
-          "arrival_date": "2026-10-12",
-          "arrival_time": "08:25",
-          "travellers": ["1"],
-          "note": "Operated by Air France. Business, BusinessFlex. Terminal 2 → Aerogare 2 Terminal F. Confirmation: CEBXCU. Seats: Check-in required"
-        },
-        {
-          "type": "Flight",
-          "name": "Paris to Calgary",
-          "vendor_name": "WestJet",
-          "flight_number": "WS 9",
-          "origin": "Paris",
-          "destination": "Calgary",
-          "departure_date": "2026-10-12",
-          "departure_time": "14:00",
-          "arrival_date": "2026-10-12",
-          "arrival_time": "15:10",
-          "travellers": ["1"],
-          "note": "Business, BusinessFlex. Aerogare 2 Terminal C. Seats: Steve 02D, Brenda 01D"
-        },
-        {
-          "type": "Flight",
-          "name": "Calgary to Kelowna",
-          "vendor_name": "WestJet",
-          "flight_number": "WS 191",
-          "origin": "Calgary",
-          "destination": "Kelowna",
-          "departure_date": "2026-10-12",
-          "departure_time": "19:15",
-          "arrival_date": "2026-10-12",
-          "arrival_time": "19:25",
-          "travellers": ["1"],
-          "note": "Economy, EconoFlex. Seats: Steve 04D, Brenda 04E"
         }
       ]
     }
