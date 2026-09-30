@@ -616,6 +616,25 @@
           "note": "Ref: K2ZN8W. 2 nights, 2 rooms. Phone: 0147005277"
         },
         {
+          "type": "Event",
+          "name": "Louvre Museum",
+          "vendor_name": "Musée du Louvre",
+          "address": "Palais-Royal / Musée du Louvre Pyramides, Paris",
+          "destination": "Paris",
+          "departure_date": "2026-10-04",
+          "departure_time": "11:30",
+          "arrival_date": "2026-10-04",
+          "note": "Permanent collections, full rate non-EEE (32 EUR each, Ophelia under 18 free). Total 128 EUR. Order C262710011418. Tickets - Simon 75126078578660350, Kelly 75126078578660435, Steve 75126078578660506, Brenda 75126078578660667, Ophelia 75126078578660760. Nominative and non-transferable, single entry only - bring photo ID. Entry via Carrousel or Pyramid, or Porte des Lions until 17:15.",
+          "travellers": ["1", "2"],
+          "documents": [
+            {
+              "src": "img/louvre-tix.pdf",
+              "thumbnail": "img/louvre-tix-p1.png",
+              "caption": "Louvre tickets - 5 holders, 04/10/2026 11:30"
+            }
+          ]
+        },
+        {
           "type": "Flight",
           "name": "Paris to Vienna",
           "vendor_name": "Austrian Airlines",
@@ -719,7 +738,12 @@
           "arrival_date": "2026-10-13",
           "arrival_time": "14:15",
           "travellers": ["1"],
-          "note": "Operated by SmartWings. LITE class. Seat: Simon 05D. Booking ref: XMT7YM. Ticket: 797 2404472811. Departs Prague Terminal 2, arrives CDG Terminal 2d. Duration: 1h55"
+          "documents": [
+            {"src": "img/plane-simon-prague-paris.pdf", "thumbnail": "img/plane-simon-prague-paris-p1.png", "caption": "Gooder Simon - QS1034 Prague to Paris, seat 05D, ticket 797 2404472811"},
+            {"src": "img/plane-kelly-prague-paris.pdf", "thumbnail": "img/plane-kelly-prague-paris-p1.png", "caption": "Rogan Kelly - QS1034 Prague to Paris, seat 05E, ticket 797 2404472812"},
+            {"src": "img/plane-ophelia-prague-paris.pdf", "thumbnail": "img/plane-ophelia-prague-paris-p1.png", "caption": "Gooder Ophelia - QS1034 Prague to Paris, seat 05F, ticket 797 2404472810"}
+          ],
+          "note": "Operated by SmartWings. LITE class. Seats: Simon 05D, Kelly Rogan 05E, Ophelia Gooder 05F. Booking ref: XMT7YM. Tickets: 797 2404472811 (Simon), 797 2404472812 (Kelly), 797 2404472810 (Ophelia). Cabin only (0PC). Photo ID required at check-in. Departs Prague Terminal 2, arrives CDG Terminal 2d. Duration: 1h55"
         },
         {
           "type": "Hotel",
@@ -769,11 +793,7 @@
           "departure_time": "08:05",
           "arrival_date": "2026-09-11",
           "arrival_time": "09:00",
-          "note": "",
-          "images": [
-            {"src": "img/oph-bromont-mtl.png", "caption": "Ophelia - Limocar Bromont to Montreal"},
-            {"src": "img/sim-bromont-mtl.png", "caption": "Simon - Limocar Bromont to Montreal"}
-          ]
+          "note": ""
         },
         {
           "type": "Train",
@@ -785,11 +805,7 @@
           "departure_time": "10:49",
           "arrival_date": "2026-09-11",
           "arrival_time": "16:18",
-          "note": "Train VIA65, Car 4, Seat 4B. Economy class",
-          "images": [
-            {"src": "img/ophelia-mtl-to.png", "caption": "Ophelia - VIA65 Montreal to Toronto"},
-            {"src": "img/simon-mtl-to.png", "caption": "Simon - VIA65 Montreal to Toronto"}
-          ]
+          "note": "Train VIA65, Car 4, Seat 4B. Economy class"
         },
         {
           "type": "Hotel",
@@ -813,11 +829,7 @@
           "departure_time": "11:38",
           "arrival_date": "2026-09-12",
           "arrival_time": "17:05",
-          "note": "",
-          "images": [
-            {"src": "img/ophelia-to-mtl.png", "caption": "Ophelia - VIA64 Toronto to Montreal"},
-            {"src": "img/simon-to-mtl.png", "caption": "Simon - VIA64 Toronto to Montreal"}
-          ]
+          "note": ""
         },
         {
           "type": "Bus",
@@ -829,13 +841,34 @@
           "departure_time": "18:30",
           "arrival_date": "2026-09-12",
           "arrival_time": "19:30",
-          "note": "",
-          "images": [
-            {"src": "img/oph-mtl-bromont.png", "caption": "Ophelia - Limocar Montreal to Bromont"},
-            {"src": "img/sim-mtl-bromont.png", "caption": "Simon - Limocar Montreal to Bromont"}
-          ]
+          "note": ""
         }
       ]
+    },
+    {
+      "id": "flight-centre-retreat-2026",
+      "name": "Flight Centre Retreat 2026",
+      "description": "A retreat in Mexico City.",
+      "currency": "MXN",
+      "timeline": ["2026-10-18", "2026-10-23"],
+      "timezone": "America/Mexico_City",
+      "notes": [],
+      "segments": []
+    },
+    {
+      "id": "plug-play-november-2026",
+      "name": "Plug & Play November 2026",
+      "description": "Plug and Play Silicon Valley Summit, Sunnyvale.",
+      "currency": "USD",
+      "timeline": ["2026-11-02", "2026-11-05"],
+      "timezone": "America/Los_Angeles",
+      "notes": [
+        {
+          "title": "Summit",
+          "body": "Plug and Play Tech Center, 440 N Wolfe Rd, Sunnyvale, CA 94085. Summit runs Nov 3-5, 2026."
+        }
+      ],
+      "segments": []
     }
   ]
 }

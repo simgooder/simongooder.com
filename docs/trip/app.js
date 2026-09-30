@@ -1,3 +1,60 @@
+// --- Shared Modal (Bottom Sheet) Logic ---
+/**
+ * Opens a modal as a bottom sheet.
+ * @param {string} id - Unique id for the modal element.
+ * @param {string} innerHtml - HTML for the sheet body (without the sheet wrapper).
+ * @param {object} [options]
+ * @param {string} [options.maxWidth] - Max width of the sheet on desktop (default '480px').
+ * @param {boolean} [options.closeOnBackdrop] - Close when the backdrop is clicked (default true).
+ * @returns {HTMLElement} The modal overlay element.
+ */
+function openModal(id, innerHtml, options = {}) {
+  const { maxWidth = '480px', closeOnBackdrop = true } = options;
+
+  const modal = document.createElement('div');
+  modal.id = id;
+  modal.className = 'modal-overlay';
+
+  const sheet = document.createElement('div');
+  sheet.className = 'modal-sheet';
+  sheet.style.maxWidth = maxWidth;
+  sheet.innerHTML = innerHtml;
+
+  modal.appendChild(sheet);
+
+  if (closeOnBackdrop) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal(id);
+    });
+  }
+
+  document.body.appendChild(modal);
+  return modal;
+}
+
+/**
+ * Closes a modal opened with openModal().
+ * @param {string} id - The id of the modal element to remove.
+ */
+function closeModal(id) {
+  document.getElementById(id)?.remove();
+}
+
+// --- Segment types ---
+
+// Icon per segment type. Single source of truth: both the day-view block and the
+// detail modal read from this, so a new type only needs adding once.
+const TYPE_ICONS = {
+  'Hotel': '🏨', 'Flight': '✈️', 'Train': '🚉',
+  'Drive': '🚙', 'Bus': '🚌', 'Event': '🏛️'
+};
+
+// Types that travel between an origin and a destination.
+const TRANSIT_TYPES = ['Flight', 'Train', 'Bus', 'Drive'];
+
+// Types that happen at a single place: no origin field, rendered as 📍 place.
+const FIXED_PLACE_TYPES = ['Hotel', 'Event'];
+
 // --- Currency Widget Logic ---
 /**
  * Renders the currency widget showing conversion from base to trip currency for preset amounts.
@@ -5,26 +62,13 @@
  * @param {string} symbol - Trip currency (e.g. 'EUR').
  */
 function showCurrencyModal() {
-  const modal = document.createElement('div');
-  modal.id = 'currencyModal';
-  modal.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:#0008;z-index:100;display:flex;align-items:center;justify-content:center;';
-
-  modal.innerHTML = `
-    <div style="background:#fff;padding:2em;border-radius:12px;max-width:420px;min-width:300px;box-shadow:0 2px 16px #0003;position:relative;" onclick="event.stopPropagation()">
-      <h2 class="text-lg font-bold mb-4">💱 Currency Converter</h2>
-      <div id="currencyWidget"><span>Loading currency...</span></div>
-      <button onclick="closeCurrencyModal()" style="position:absolute;top:10px;right:10px;background:none;border:none;font-size:1.5em;cursor:pointer;">&times;</button>
-    </div>
-  `;
-
-  modal.onclick = closeCurrencyModal;
-  document.body.appendChild(modal);
+  openModal('currencyModal', `
+    <h2 class="text-lg font-bold mb-4">💱 Currency Converter</h2>
+    <div id="currencyWidget"><span>Loading currency...</span></div>
+    <button onclick="closeModal('currencyModal')" class="modal-close">&times;</button>
+  `);
 
   renderCurrencyWidget(window.baseCurrency, window.tripCurrency);
-}
-
-function closeCurrencyModal() {
-  document.getElementById('currencyModal')?.remove();
 }
 
 function renderCurrencyWidget(base, symbol) {
@@ -97,26 +141,13 @@ function renderCurrencyWidget(base, symbol) {
  */
 // Live time widget: fetch once, then update every minute using JS
 function showTimeModal() {
-  const modal = document.createElement('div');
-  modal.id = 'timeModal';
-  modal.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:#0008;z-index:100;display:flex;align-items:center;justify-content:center;';
-
-  modal.innerHTML = `
-    <div style="background:#fff;padding:2em;border-radius:12px;max-width:420px;min-width:300px;box-shadow:0 2px 16px #0003;position:relative;" onclick="event.stopPropagation()">
-      <h2 class="text-lg font-bold mb-4">🕒 Time Zones</h2>
-      <div id="timeWidget"><span>Loading times...</span></div>
-      <button onclick="closeTimeModal()" style="position:absolute;top:10px;right:10px;background:none;border:none;font-size:1.5em;cursor:pointer;">&times;</button>
-    </div>
-  `;
-
-  modal.onclick = closeTimeModal;
-  document.body.appendChild(modal);
+  openModal('timeModal', `
+    <h2 class="text-lg font-bold mb-4">🕒 Time Zones</h2>
+    <div id="timeWidget"><span>Loading times...</span></div>
+    <button onclick="closeModal('timeModal')" class="modal-close">&times;</button>
+  `);
 
   renderTimeWidget(window.homeTz, window.destTz);
-}
-
-function closeTimeModal() {
-  document.getElementById('timeModal')?.remove();
 }
 
 function renderTimeWidget(homeTz, destTz) {
@@ -190,26 +221,13 @@ function renderTimeWidget(homeTz, destTz) {
  * Shows the notes modal for the current trip
  */
 function showNotesModal() {
-  const modal = document.createElement('div');
-  modal.id = 'notesModal';
-  modal.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:#0008;z-index:100;display:flex;align-items:center;justify-content:center;';
-
-  modal.innerHTML = `
-    <div style="background:#fff;padding:2em;border-radius:12px;max-width:500px;min-width:350px;max-height:80vh;overflow-y:auto;box-shadow:0 2px 16px #0003;position:relative;" onclick="event.stopPropagation()">
-      <h2 class="text-lg font-bold mb-4">📔 Trip Notes</h2>
-      <div id="notesWidget"><span>Loading notes...</span></div>
-      <button onclick="closeNotesModal()" style="position:absolute;top:10px;right:10px;background:none;border:none;font-size:1.5em;cursor:pointer;">&times;</button>
-    </div>
-  `;
-
-  modal.onclick = closeNotesModal;
-  document.body.appendChild(modal);
+  openModal('notesModal', `
+    <h2 class="text-lg font-bold mb-4">📔 Trip Notes</h2>
+    <div id="notesWidget"><span>Loading notes...</span></div>
+    <button onclick="closeModal('notesModal')" class="modal-close">&times;</button>
+  `, { maxWidth: '500px' });
 
   renderNotesWidget();
-}
-
-function closeNotesModal() {
-  document.getElementById('notesModal')?.remove();
 }
 
 function renderNotesWidget() {
@@ -492,7 +510,7 @@ function createSegmentBlock(seg, idx) {
   const segDiv = document.createElement('div');
   segDiv.className = 'segment-block shadow-md';
 
-  const typeIcons = { 'Hotel': '🏨', 'Flight': '✈️', 'Train': '🚉', 'Drive': '🚙', 'Bus': '🚌' };
+  const typeIcons = TYPE_ICONS;
   const typeIcon = typeIcons[seg.type] || '';
 
   // Apply default name if empty
@@ -507,7 +525,7 @@ function createSegmentBlock(seg, idx) {
   }
 
   let routeDisplay = '';
-  if (seg.type === 'Hotel') {
+  if (FIXED_PLACE_TYPES.includes(seg.type)) {
     routeDisplay = `📍 ${seg.destination}`;
   } else if (seg.type === 'Flight') {
     routeDisplay = seg.origin ? `${seg.origin} → ${seg.destination}` : `${seg.destination}`;
@@ -524,7 +542,16 @@ function createSegmentBlock(seg, idx) {
         (seg.check_out_time ? `Check-out: ${seg.check_out_time}` : '') +
         `</div>`;
     }
-  } else if (["Flight", "Train", "Bus"].includes(seg.type)) {
+  } else if (seg.type === 'Event') {
+    // Events are a point in time: show the start, plus an end only if it differs.
+    if (seg.departure_time || seg.arrival_time) {
+      extraDetails = `<div style="font-size:0.92em;color:#555;">` +
+        (seg.departure_time ? `Starts: ${seg.departure_time}` : '') +
+        (seg.departure_time && seg.arrival_time && seg.arrival_time !== seg.departure_time ? ' &nbsp;|&nbsp; ' : '') +
+        (seg.arrival_time && seg.arrival_time !== seg.departure_time ? `Ends: ${seg.arrival_time}` : '') +
+        `</div>`;
+    }
+  } else if (TRANSIT_TYPES.includes(seg.type)) {
     if (seg.departure_time || seg.arrival_time) {
       extraDetails = `<div style="font-size:0.92em;color:#555;">` +
         (seg.departure_time ? `Dep: ${seg.departure_time}` : '') +
@@ -534,7 +561,8 @@ function createSegmentBlock(seg, idx) {
     }
   }
 
-  if (seg.vendor_name && seg.type != 'Hotel') {
+  // Only transit vendors get a logo.dev mark; landmarks and hotels don't.
+  if (seg.vendor_name && TRANSIT_TYPES.includes(seg.type)) {
     logoUrl = `<img width="20" style="margin-right:8px" src=${createLogoUrl(seg.vendor_name)}>`
   }
 
@@ -559,9 +587,15 @@ function createSegmentBlock(seg, idx) {
     }
   }
 
-  // Image indicator
-  const hasImages = Array.isArray(seg.images) && seg.images.length > 0;
-  const imageIndicator = hasImages ? `<span class="seg-image-indicator" title="${seg.images.length} image${seg.images.length > 1 ? 's' : ''}">📷</span>` : '';
+  // Attachment indicator: camera for images, document glyph for PDFs etc.
+  const imgCount = Array.isArray(seg.images) ? seg.images.length : 0;
+  const docCount = Array.isArray(seg.documents) ? seg.documents.length : 0;
+  let imageIndicator = '';
+  if (docCount > 0) {
+    imageIndicator = `<span class="seg-image-indicator" title="${docCount} document${docCount > 1 ? 's' : ''}">📄</span>`;
+  } else if (imgCount > 0) {
+    imageIndicator = `<span class="seg-image-indicator" title="${imgCount} image${imgCount > 1 ? 's' : ''}">📷</span>`;
+  }
 
   segDiv.style.position = 'relative';
   segDiv.innerHTML = `
@@ -586,9 +620,11 @@ function viewSegmentDetails(idx) {
   const seg = itinerary[idx];
   if (!seg) return;
 
-  const typeIcons = { 'Hotel': '🏨', 'Flight': '✈️', 'Train': '🚉', 'Drive': '🚙', 'Bus': '🚌' };
+  const typeIcons = TYPE_ICONS;
   const typeIcon = typeIcons[seg.type] || '';
-  const routeDisplay = seg.origin ? `${seg.origin} → ${seg.destination}` : seg.destination;
+  const routeDisplay = FIXED_PLACE_TYPES.includes(seg.type)
+    ? `📍 ${seg.destination}`
+    : (seg.origin ? `${seg.origin} → ${seg.destination}` : seg.destination);
   const note = seg.note || '';
   const flightNumber = seg.flight_number || '';
 
@@ -633,6 +669,15 @@ function viewSegmentDetails(idx) {
         <strong>Check-out:</strong><br/> ${seg.check_out_date || ''}${seg.check_out_time ? ' at ' + seg.check_out_time : ''}
       </div>
     `;
+  } else if (seg.type === 'Event') {
+    // Single date; the end time is only shown when it differs from the start.
+    const start = seg.departure_time || '';
+    const end = seg.arrival_time && seg.arrival_time !== start ? seg.arrival_time : '';
+    dateTimeDetails = `
+      <div class="detail-row">
+        <strong>Date:</strong><br/> ${seg.departure_date || ''}${start ? ' at ' + start : ''}${end ? ' – ' + end : ''}
+      </div>
+    `;
   } else {
     dateTimeDetails = `
       <div class="detail-row">
@@ -643,10 +688,6 @@ function viewSegmentDetails(idx) {
       </div>
     `;
   }
-
-  const modal = document.createElement('div');
-  modal.id = 'segmentModal';
-  modal.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:#0008;z-index:100;display:flex;align-items:center;justify-content:center;';
 
   // Apply default name if empty
   const segmentName = seg.name?.trim() ? seg.name : getDefaultName(seg.type, seg.destination);
@@ -682,39 +723,55 @@ function viewSegmentDetails(idx) {
     `;
   }
 
-  modal.innerHTML = `
-    <div style="background:#fff;padding:2em 2em 1em 2em;border-radius:12px;max-width:420px;min-width:260px;box-shadow:0 2px 16px #0003;position:relative;" onclick="event.stopPropagation()">
-      <h2 class="text-lg font-bold mb-2">${typeIcon} ${segmentName}</h2>
+  // Document gallery (PDF tickets and other files)
+  let documentsHtml = '';
+  if (Array.isArray(seg.documents) && seg.documents.length > 0) {
+    const docTiles = seg.documents.map(doc => {
+      const src = typeof doc === 'string' ? doc : doc.src;
+      const caption = (typeof doc === 'object' && doc.caption) ? doc.caption : '';
+      const thumb = (typeof doc === 'object' && doc.thumbnail) ? doc.thumbnail : '';
+      const label = src.split('/').pop();
+      // src/caption go in data-* attributes rather than an inline onclick, so
+      // quotes in captions can't break the generated markup.
+      const visual = thumb
+        ? `<img class="doc-thumb-img" src="${escapeHtml(thumb)}" alt="${escapeHtml(caption || label)}">`
+        : `<span class="doc-thumb-icon">📄</span>`;
+      return `<button type="button" class="doc-tile" data-doc-src="${escapeHtml(src)}" ` +
+             `data-doc-caption="${escapeHtml(caption)}" data-doc-label="${escapeHtml(label)}" ` +
+             `onclick="openDocumentViewer(this)" title="${escapeHtml(caption || label)}">` +
+             `${visual}<span class="doc-tile-label">📄 ${escapeHtml(label)}</span></button>`;
+    }).join('');
+    documentsHtml = `
+      <div class="detail-row" style="margin-top:0.5em;">
+        <strong>Documents:</strong>
+        <div class="seg-images">${docTiles}</div>
+      </div>
+    `;
+  }
 
-      <div style="display:flex;flex-direction:column;gap:0.5em;">
-        ${seg.origin ? `<div class="detail-row">
-            <strong>Origin:</strong><br/> ${seg.origin || '<em>Not specified</em>'}
-        </div>` : ''}
-        <div class="detail-row">
-            <strong>Destination:</strong><br/> ${seg.destination}
-        </div>
-        ${seg.address ? `<div class="detail-row">
-            <strong>Address:</strong><br/> <a href="https://maps.google.com/?q=${encodeURIComponent(seg.address)}" target="_blank" rel="noopener noreferrer" class="text-[#0000f7] underline">${seg.address}</a>
-        </div>` : ''}
-        ${flightLinkHtml}
-        ${dateTimeDetails}
-        ${travellersHtml}
-        <div class="detail-row" style="margin-top:0.5em;">
-            <strong>Note:</strong><br>${note ? escapeHtml(note) : '<em>No note for this segment.</em>'}
-        </div>
-        ${imagesHtml}
-      <button onclick="closeSegmentModal()" style="position:absolute;top:10px;right:10px;background:none;border:none;font-size:1.5em;cursor:pointer;">&times;</button>
-    </div>
-  `;
-  modal.onclick = closeSegmentModal;
-  document.body.appendChild(modal);
-}
+  openModal('segmentModal', `
+    <h2 class="text-lg font-bold mb-2">${typeIcon} ${segmentName}</h2>
 
-/**
- * Closes the currently open segment details modal.
- */
-function closeSegmentModal() {
-  document.getElementById('segmentModal')?.remove();
+    <div style="display:flex;flex-direction:column;gap:0.5em;">
+      ${seg.origin ? `<div class="detail-row">
+          <strong>Origin:</strong><br/> ${seg.origin || '<em>Not specified</em>'}
+      </div>` : ''}
+      <div class="detail-row">
+          <strong>Destination:</strong><br/> ${seg.destination}
+      </div>
+      ${seg.address ? `<div class="detail-row">
+          <strong>Address:</strong><br/> <a href="https://maps.google.com/?q=${encodeURIComponent(seg.address)}" target="_blank" rel="noopener noreferrer" class="text-[#0000f7] underline">${seg.address}</a>
+      </div>` : ''}
+      ${flightLinkHtml}
+      ${dateTimeDetails}
+      ${travellersHtml}
+      <div class="detail-row" style="margin-top:0.5em;">
+          <strong>Note:</strong><br>${note ? escapeHtml(note) : '<em>No note for this segment.</em>'}
+      </div>
+      ${imagesHtml}
+      ${documentsHtml}
+    <button onclick="closeModal('segmentModal')" class="modal-close">&times;</button>
+  `, { maxWidth: '420px' });
 }
 
 /**
@@ -739,6 +796,37 @@ function openLightbox(src, caption) {
 }
 
 /**
+ * Opens an in-app viewer for a document (PDF, etc.) attached to a segment.
+ * Uses an <iframe> so the file is fetched as a subresource rather than a
+ * navigation - the service worker's navigate handler would otherwise answer
+ * with index.html for anything under the base path.
+ * @param {HTMLElement} trigger The tile button carrying the data-doc-* attributes.
+ */
+function openDocumentViewer(trigger) {
+  const src = trigger.dataset.docSrc;
+  const caption = trigger.dataset.docCaption || '';
+  const label = trigger.dataset.docLabel || src;
+  if (!src) return;
+
+  const isPdf = /\.pdf$/i.test(src);
+  const viewer = isPdf
+    ? `<iframe class="doc-viewer-frame" src="${escapeHtml(src)}" title="${escapeHtml(caption || label)}"></iframe>`
+    : `<div class="doc-viewer-fallback">No in-app preview for this file type.</div>`;
+
+  openModal('documentModal', `
+    <div class="doc-viewer-head">
+      <strong>${escapeHtml(caption || label)}</strong>
+    </div>
+    ${viewer}
+    <div class="doc-viewer-actions">
+      <a class="doc-viewer-open" href="${escapeHtml(src)}" target="_blank" rel="noopener noreferrer">Open full screen ↗</a>
+      <a class="doc-viewer-download" href="${escapeHtml(src)}" download="${escapeHtml(label)}">Download</a>
+    </div>
+    <button onclick="closeModal('documentModal')" class="modal-close">&times;</button>
+  `, { maxWidth: '720px' });
+}
+
+/**
  * Determines the start and end date for a segment based on its type and fields.
  * @param {object} seg The segment object.
  * @returns {{start: Date|null, end: Date|null}} Object containing start and end Date objects.
@@ -753,7 +841,7 @@ function getSegmentDateRange(seg) {
   if (seg.type === 'Hotel') {
     if (seg.check_in_date) startDate = new Date(seg.check_in_date + 'T12:00:00Z');
     if (seg.check_out_date) endDate = new Date(seg.check_out_date + 'T12:00:00Z');
-  } else if (["Flight", "Train", "Bus", "Drive"].includes(seg.type)) {
+  } else if (TRANSIT_TYPES.includes(seg.type) || seg.type === 'Event') {
     if (seg.departure_date) startDate = new Date(seg.departure_date + 'T12:00:00Z');
     if (seg.arrival_date) endDate = new Date(seg.arrival_date + 'T12:00:00Z');
   }
@@ -834,6 +922,7 @@ function formatSegmentDate(seg) {
 function getDefaultName(type, destination) {
   if (!destination) return type; // Fallback if no destination
   if (type === 'Hotel') return `Stay in ${destination}`;
+  if (type === 'Event') return `Visit ${destination}`;
   return `${type} to ${destination}`;
 }
 
@@ -850,9 +939,10 @@ function getCurrentSegment() {
   // Find a segment that is currently active
   const activeSegment = itinerary.find(s => {
     const { start, end } = getSegmentDateRange(s);
-    // Adjust end date to include the whole day for "hotel" segments, assuming check-out time is not midnight
+    // Hotels and events are day-scoped: treat the end as the end of that day,
+    // since check-out / event end times are rarely midnight.
     const adjustedEnd = new Date(end);
-    if (s.type === 'Hotel') {
+    if (s.type === 'Hotel' || s.type === 'Event') {
       adjustedEnd.setHours(23, 59, 59, 999);
     }
     return start && adjustedEnd && now >= start && now <= adjustedEnd;
@@ -1002,10 +1092,6 @@ function loadTrip(tripId) {
  * Show trips menu modal
  */
 function showTripsMenu() {
-  const modal = document.createElement('div');
-  modal.id = 'tripsModal';
-  modal.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:#0008;z-index:100;display:flex;align-items:center;justify-content:center;';
-
   const tripsList = allTrips.map(trip => {
     const isActive = trip.id === currentTripId;
     return `
@@ -1017,43 +1103,28 @@ function showTripsMenu() {
     `;
   }).join('');
 
-  modal.innerHTML = `
-    <div style="background:#fff;padding:2em;border-radius:12px;max-width:420px;min-width:300px;box-shadow:0 2px 16px #0003;position:relative;max-height:80vh;overflow-y:auto;" onclick="event.stopPropagation()">
-      <h2 class="text-lg font-bold mb-4">📋 Select Trip</h2>
-      <div>
-        ${tripsList}
-      </div>
-        <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #e5e7eb;">
-          ${window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? `
-            <button onclick="showNewTripForm()" style="width: 100%; padding: 0.75rem; margin-bottom: 0.5rem; background: #0000f7; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">➕ New Trip</button>
-            <button onclick="showEditTripForm()" style="width: 100%; padding: 0.75rem; background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; border-radius: 6px; font-weight: bold; cursor: pointer;">✏️ Edit Current Trip</button>
-          ` : ''}
-        </div>
-      <button onclick="closeTripsModal()" style="position:absolute;top:10px;right:10px;background:none;border:none;font-size:1.5em;cursor:pointer;">&times;</button>
+  openModal('tripsModal', `
+    <h2 class="text-lg font-bold mb-4">📋 Select Trip</h2>
+    <div>
+      ${tripsList}
     </div>
-  `;
-
-  modal.onclick = closeTripsModal;
-  document.body.appendChild(modal);
+      <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #e5e7eb;">
+        ${window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? `
+          <button onclick="showNewTripForm()" style="width: 100%; padding: 0.75rem; margin-bottom: 0.5rem; background: #0000f7; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">➕ New Trip</button>
+          <button onclick="showEditTripForm()" style="width: 100%; padding: 0.75rem; background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; border-radius: 6px; font-weight: bold; cursor: pointer;">✏️ Edit Current Trip</button>
+        ` : ''}
+      </div>
+    <button onclick="closeModal('tripsModal')" class="modal-close">&times;</button>
+  `, { maxWidth: '420px' });
 }
 
 /**
  * Select a trip from the menu
  */
 function selectTrip(tripId) {
-  closeTripsModal();
+  closeModal('tripsModal');
   if (tripId !== currentTripId) {
     loadTrip(tripId);
-  }
-}
-
-/**
- * Close trips menu modal
- */
-function closeTripsModal() {
-  const modal = document.getElementById('tripsModal');
-  if (modal) {
-    modal.remove();
   }
 }
 
@@ -1061,60 +1132,42 @@ function closeTripsModal() {
  * Show new trip form
  */
 function showNewTripForm() {
-  closeTripsModal();
-  const modal = document.createElement('div');
-  modal.id = 'tripFormModal';
-  modal.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:#0008;z-index:100;display:flex;align-items:center;justify-content:center;';
-
-  modal.innerHTML = `
-    <div style="background:#fff;padding:2em;border-radius:12px;max-width:500px;min-width:300px;max-height:90vh;overflow-y:auto;box-shadow:0 2px 16px #0003;position:relative;" onclick="event.stopPropagation()">
-      <h2 class="text-lg font-bold mb-4">➕ New Trip</h2>
-      <form id="tripForm" onsubmit="submitTripForm(event, false)">
-        ${generateTripFormFields()}
-        <div style="margin-top: 1.5rem; display: flex; gap: 0.5rem;">
-          <button type="submit" style="flex: 1; padding: 0.75rem; background: #0000f7; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">Create Trip</button>
-          <button type="button" onclick="closeTripFormModal()" style="flex: 1; padding: 0.75rem; background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; border-radius: 6px; font-weight: bold; cursor: pointer;">Cancel</button>
-        </div>
-      </form>
-      <button onclick="closeTripFormModal()" style="position:absolute;top:10px;right:10px;background:none;border:none;font-size:1.5em;cursor:pointer;">&times;</button>
-    </div>
-  `;
-
-  modal.onclick = closeTripFormModal;
-  document.body.appendChild(modal);
+  closeModal('tripsModal');
+  openModal('tripFormModal', `
+    <h2 class="text-lg font-bold mb-4">➕ New Trip</h2>
+    <form id="tripForm" onsubmit="submitTripForm(event, false)">
+      ${generateTripFormFields()}
+      <div style="margin-top: 1.5rem; display: flex; gap: 0.5rem;">
+        <button type="submit" style="flex: 1; padding: 0.75rem; background: #0000f7; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">Create Trip</button>
+        <button type="button" onclick="closeModal('tripFormModal')" style="flex: 1; padding: 0.75rem; background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; border-radius: 6px; font-weight: bold; cursor: pointer;">Cancel</button>
+      </div>
+    </form>
+    <button onclick="closeModal('tripFormModal')" class="modal-close">&times;</button>
+  `, { maxWidth: '500px' });
 }
 
 /**
  * Show edit trip form for current trip
  */
 function showEditTripForm() {
-  closeTripsModal();
+  closeModal('tripsModal');
   const currentTrip = allTrips.find(trip => trip.id === currentTripId);
   if (!currentTrip) {
     alert('No trip selected to edit');
     return;
   }
 
-  const modal = document.createElement('div');
-  modal.id = 'tripFormModal';
-  modal.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:#0008;z-index:100;display:flex;align-items:center;justify-content:center;';
-
-  modal.innerHTML = `
-    <div style="background:#fff;padding:2em;border-radius:12px;max-width:500px;min-width:300px;max-height:90vh;overflow-y:auto;box-shadow:0 2px 16px #0003;position:relative;" onclick="event.stopPropagation()">
-      <h2 class="text-lg font-bold mb-4">✏️ Edit Trip</h2>
-      <form id="tripForm" onsubmit="submitTripForm(event, true)">
-        ${generateTripFormFields(currentTrip)}
-        <div style="margin-top: 1.5rem; display: flex; gap: 0.5rem;">
-          <button type="submit" style="flex: 1; padding: 0.75rem; background: #0000f7; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">Update</button>
-          <button type="button" onclick="closeTripFormModal()" style="flex: 1; padding: 0.75rem; background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; border-radius: 6px; font-weight: bold; cursor: pointer;">Cancel</button>
-        </div>
-      </form>
-      <button onclick="closeTripFormModal()" style="position:absolute;top:10px;right:10px;background:none;border:none;font-size:1.5em;cursor:pointer;">&times;</button>
-    </div>
-  `;
-
-  modal.onclick = closeTripFormModal;
-  document.body.appendChild(modal);
+  openModal('tripFormModal', `
+    <h2 class="text-lg font-bold mb-4">✏️ Edit Trip</h2>
+    <form id="tripForm" onsubmit="submitTripForm(event, true)">
+      ${generateTripFormFields(currentTrip)}
+      <div style="margin-top: 1.5rem; display: flex; gap: 0.5rem;">
+        <button type="submit" style="flex: 1; padding: 0.75rem; background: #0000f7; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">Update</button>
+        <button type="button" onclick="closeModal('tripFormModal')" style="flex: 1; padding: 0.75rem; background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; border-radius: 6px; font-weight: bold; cursor: pointer;">Cancel</button>
+      </div>
+    </form>
+    <button onclick="closeModal('tripFormModal')" class="modal-close">&times;</button>
+  `, { maxWidth: '500px' });
 }
 
 /**
@@ -1271,6 +1324,7 @@ function generateSegmentForm(segment = {}, index = 0) {
             <option value="Bus" ${segmentType === 'Bus' ? 'selected' : ''}>🚌 Bus</option>
             <option value="Drive" ${segmentType === 'Drive' ? 'selected' : ''}>🚙 Drive</option>
             <option value="Hotel" ${segmentType === 'Hotel' ? 'selected' : ''}>🏨 Hotel</option>
+            <option value="Event" ${segmentType === 'Event' ? 'selected' : ''}>🏛️ Event</option>
           </select>
         </div>
 
@@ -1323,7 +1377,7 @@ function generateSegmentTypeFields(segment = {}, index = 0) {
   // Location fields
   html += '<div class="input-group" id="location-fields">';
 
-  if (type !== 'Hotel') {
+  if (!FIXED_PLACE_TYPES.includes(type)) {
     html += `
       <div class="input-group">
         <label class="input-label">Origin:</label>
@@ -1333,7 +1387,7 @@ function generateSegmentTypeFields(segment = {}, index = 0) {
       </div>
     `;
   } else {
-    // html += '<div></div>'; // Empty for hotels
+    // html += '<div></div>'; // Empty for hotels and events
   }
 
   html += `
@@ -1347,8 +1401,8 @@ function generateSegmentTypeFields(segment = {}, index = 0) {
 
   html += '</div>';
 
-  // Address field for hotels and trains
-  if (type === 'Hotel' || type === 'Train') {
+  // Address field for hotels, trains and events (landmarks have a street address)
+  if (['Hotel', 'Train', 'Event'].includes(type)) {
     html += `
       <div class="input-group">
         <label class="input-label">Address:</label>
@@ -1384,6 +1438,29 @@ function generateSegmentTypeFields(segment = {}, index = 0) {
                  style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px;">
         </div>
       </div>
+    `;
+  } else if (type === 'Event') {
+    // Events happen on a single date. Only the date is required; the times are
+    // optional and the end defaults to the start.
+    html += `
+      <div class="input-group">
+        <div class="input-group">
+          <label class="input-label">Date:</label>
+          <input type="date" name="segments[${index}][departure_date]" value="${segment.departure_date || ''}" required
+                 style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px;">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Start Time:</label>
+          <input type="time" name="segments[${index}][departure_time]" value="${segment.departure_time || ''}"
+                 style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px;">
+        </div>
+        <div class="input-group">
+          <label class="input-label">End Time (optional):</label>
+          <input type="time" name="segments[${index}][arrival_time]" value="${segment.arrival_time || ''}"
+                 style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px;">
+        </div>
+      </div>
+      <input type="hidden" name="segments[${index}][arrival_date]" value="${segment.arrival_date || segment.departure_date || ''}">
     `;
   } else {
     html += `
@@ -1423,16 +1500,6 @@ function generateSegmentTypeFields(segment = {}, index = 0) {
   `;
 
   return html;
-}
-
-/**
- * Close trip form modal
- */
-function closeTripFormModal() {
-  const modal = document.getElementById('tripFormModal');
-  if (modal) {
-    modal.remove();
-  }
 }
 
 /**
@@ -1611,6 +1678,10 @@ function submitTripForm(event, isEdit) {
 
   // Process segments data
   const segmentForms = document.querySelectorAll('.segment-form');
+  // The edit form only exposes a subset of segment fields. Carry over
+  // attachments (images, documents) from the segments being replaced, which
+  // the form cannot round-trip - otherwise editing a trip would drop them.
+  const existingSegments = (isEdit && allTrips.find(t => t.id === tripId))?.segments || [];
   segmentForms.forEach((form, index) => {
     const segmentData = {};
     const inputs = form.querySelectorAll('input, select, textarea');
@@ -1625,11 +1696,23 @@ function submitTripForm(event, isEdit) {
       }
     });
 
+    const original = existingSegments[index];
+    if (original) {
+      if (Array.isArray(original.images) && original.images.length) segmentData.images = original.images;
+      if (Array.isArray(original.documents) && original.documents.length) segmentData.documents = original.documents;
+    }
+
     // Only add segment if it has required fields
     if (segmentData.type && segmentData.destination) {
       // Ensure required fields are present based on type
       if (segmentData.type === 'Hotel') {
         if (segmentData.check_in_date && segmentData.check_out_date) {
+          tripData.segments.push(segmentData);
+        }
+      } else if (segmentData.type === 'Event') {
+        // Single date at one place: no origin, and the end date defaults to the start.
+        if (segmentData.departure_date) {
+          if (!segmentData.arrival_date) segmentData.arrival_date = segmentData.departure_date;
           tripData.segments.push(segmentData);
         }
       } else {
@@ -1664,7 +1747,7 @@ function submitTripForm(event, isEdit) {
     } else {
       createTrip(tripData);
     }
-    closeTripFormModal();
+    closeModal('tripFormModal');
   } catch (error) {
     alert('Error saving trip: ' + error.message);
   }

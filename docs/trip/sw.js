@@ -2,16 +2,26 @@
 const isProduction = self.location.hostname !== 'localhost' && self.location.hostname !== '127.0.0.1';
 const BASE_PATH = isProduction ? '/trip' : '';
 
-const CACHE_NAME = 'travlr-cache-v47';
+const CACHE_NAME = 'travlr-cache-v50';
 const OFFLINE_URL = BASE_PATH + '/offline.html';
 const urlsToCache = [
     BASE_PATH + '/',
     BASE_PATH + '/index.html',
-    BASE_PATH + '/app.js',
-    BASE_PATH + '/app.css',
+    BASE_PATH + '/app.js?v=2',
+    BASE_PATH + '/app.css?v=2',
     BASE_PATH + '/js/db.js',
     BASE_PATH + '/manifest.json',
     BASE_PATH + '/itinerary.json',
+    // Tickets and their thumbnails. Pre-cached so they open without a network
+    // (useful at a museum gate). Keep total weight modest.
+    BASE_PATH + '/img/louvre-tix.pdf',
+    BASE_PATH + '/img/louvre-tix-p1.png',
+    BASE_PATH + '/img/plane-simon-prague-paris.pdf',
+    BASE_PATH + '/img/plane-simon-prague-paris-p1.png',
+    BASE_PATH + '/img/plane-kelly-prague-paris.pdf',
+    BASE_PATH + '/img/plane-kelly-prague-paris-p1.png',
+    BASE_PATH + '/img/plane-ophelia-prague-paris.pdf',
+    BASE_PATH + '/img/plane-ophelia-prague-paris-p1.png',
     'https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4',
     'https://cdn.jsdelivr.net/npm/dayjs@1.11.10/dayjs.min.js',
   'https://cdn.jsdelivr.net/npm/dayjs@1.11.10/plugin/advancedFormat.js'
@@ -24,7 +34,23 @@ self.addEventListener('install', (event) => {
     caches.open(CACHE_NAME)
       .then((cache) => {
         console.log('Caching app shell');
-        return cache.addAll(urlsToCache);
+        // Cache entries individually rather than with addAll(): addAll() rejects
+        // as a unit, so a single 404 on any optional asset would abort the whole
+        // install and leave the app with no offline support at all.
+        return Promise.allSettled(
+          urlsToCache.map(url =>
+            fetch(new Request(url, { cache: 'reload' })).then((response) => {
+              if (response && response.ok) {
+                return cache.put(url, response);
+              }
+              console.warn('Skipping non-OK asset:', url, response && response.status);
+              return null;
+            }).catch((err) => {
+              console.warn('Skipping failed asset:', url, err);
+              return null;
+            })
+          )
+        );
       })
       .then(() => {
         console.log('Service Worker installed');
@@ -70,8 +96,12 @@ self.addEventListener('fetch', (event) => {
   if (event.request.mode === 'navigate') {
     const url = new URL(event.request.url);
 
+    // Real files (PDFs, images, json, js, ...) must be served as themselves.
+    // Without this, opening a ticket PDF in a new tab would return index.html.
+    const isAssetRequest = /\.[a-z0-9]+$/i.test(url.pathname);
+
     // For any navigation to /trip/* paths, serve index.html
-    if (url.pathname.startsWith('/trip')) {
+    if (url.pathname.startsWith('/trip') && !isAssetRequest) {
       event.respondWith(
         caches.match(BASE_PATH + '/index.html')
           .then((response) => {

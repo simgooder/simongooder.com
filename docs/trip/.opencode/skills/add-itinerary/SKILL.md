@@ -113,13 +113,13 @@ Examples: `"Porto Retreat 2026"` → `porto-retreat-2026`, `"Birthday in Japan 2
 
 ## Segment schema
 
-Segment `type` is one of: `Flight`, `Train`, `Bus`, `Drive`, `Hotel`.
+Segment `type` is one of: `Flight`, `Train`, `Bus`, `Drive`, `Hotel`, `Event`.
 
 ### Common fields (all types)
 
 | Field | Notes |
 |---|---|
-| `type` | Required. `Flight` \| `Train` \| `Bus` \| `Drive` \| `Hotel`. |
+| `type` | Required. `Flight` \| `Train` \| `Bus` \| `Drive` \| `Hotel` \| `Event`. |
 | `name` | Optional display name. If empty, the app derives one from type + destination. |
 | `vendor_name` | e.g. "Air Canada", "Renfe", "Marriott". |
 | `destination` | Required. City/place name. |
@@ -127,6 +127,7 @@ Segment `type` is one of: `Flight`, `Train`, `Bus`, `Drive`, `Hotel`.
 | `travellers` | Optional array of travel-group ids, e.g. `["1", "2"]`. Only meaningful if the trip has `travel_groups`. |
 | `places_id` | Optional; leave `""` unless a real value exists. |
 | `images` | Optional array of image objects for tickets, boarding passes, booking confirmations, etc. |
+| `documents` | Optional array of document objects (PDF tickets, confirmations). See "Attaching documents" below. |
 
 ### Attaching images to segments
 
@@ -157,6 +158,42 @@ When the user provides screenshots, extract details from them into segment field
 - Keep images reasonable in size (aim for < 1 MB each) for offline caching.
 - A small 📷 icon appears on segment blocks that have images.
 - Tapping a thumbnail opens a full-screen lightbox view.
+
+### Attaching documents (PDFs)
+
+PDF tickets and other files use a separate `documents` field — do **not** put them in `images`, because the gallery renders everything there with `<img>`, and a PDF will not display.
+
+```json
+"documents": [
+  {
+    "src": "img/louvre-tix.pdf",
+    "thumbnail": "img/louvre-tix-p1.png",
+    "caption": "Louvre tickets - 5 holders, 04/10/2026 11:30"
+  }
+]
+```
+
+| Field | Required | Notes |
+|---|---|---|
+| `src` | yes | Relative path to the file. PDFs render in an in-app iframe viewer. |
+| `thumbnail` | no | PNG/JPG of page 1. Without it the tile falls back to a 📄 icon. |
+| `caption` | no | Shown in the tile tooltip and the viewer header. |
+
+- The viewer offers "Open full screen" (native browser PDF viewer, best on iOS at a gate) and "Download".
+- A segment with documents shows a 📄 icon on the timeline block.
+- Documents are **not** precached by the service worker. The PDF is cached on first open, so open it once while online before you need it offline.
+- Generate thumbnails with Ghostscript (`gs`):
+  ```sh
+  gs -q -dNOPAUSE -dBATCH -sDEVICE=png16m -r60 -dFirstPage=1 -dLastPage=1 \
+     -sOutputFile=img/<name>-p1.png img/<name>.pdf
+  ```
+- To read a PDF's text without a PDF library (no `pdftotext` needed):
+  ```sh
+  gs -q -dNOPAUSE -dBATCH -sDEVICE=txtwrite -sOutputFile=- file.pdf
+  ```
+- Large PDFs bloat the repo and the offline cache. `gs -sDEVICE=pdfwrite -dPDFSETTINGS=/prepress -dLinearize=true`
+  typically shrinks a scan-quality ticket PDF by ~90% with text still selectable — worth doing before committing.
+- If you add a new segment `type`, update `TYPE_ICONS`, `TRANSIT_TYPES` and `FIXED_PLACE_TYPES` in `app.js`, plus the type switches in the segment block, the detail modal, `getSegmentDateRange`, `getDefaultName`, `generateSegmentTypeFields`, and the submit-time validation. A type missing from `getSegmentDateRange` renders with no dates and silently disappears from the day view.
 
 ### Flight / Train / Bus / Drive fields
 
@@ -200,6 +237,32 @@ When the user provides screenshots, extract details from them into segment field
 ```
 
 - Hotels use `check_in_date`/`check_in_time`/`check_out_date`/`check_out_time` instead of departure/arrival.
+
+### Event fields
+
+Events are things you *do* at one place — museum visits, tours, meals, meetings. Like hotels they have no origin, but they use departure/arrival dates (a single date in practice).
+
+```json
+{
+  "type": "Event",
+  "name": "Louvre Museum",
+  "vendor_name": "Musée du Louvre",
+  "address": "Palais-Royal / Musée du Louvre Pyramides, Paris",
+  "destination": "Paris",
+  "departure_date": "2026-10-04",
+  "departure_time": "11:30",
+  "arrival_date": "2026-10-04",
+  "note": "Order C262710011418. Bring photo ID.",
+  "documents": [
+    { "src": "img/louvre-tix.pdf", "thumbnail": "img/louvre-tix-p1.png", "caption": "Louvre tickets" }
+  ]
+}
+```
+
+- `departure_time` / `arrival_time` are both optional for events. The UI labels them Start/End and only shows an end time when it differs from the start.
+- `arrival_date` should equal `departure_date`; set `arrival_date` to the same date so the segment occupies exactly one day.
+- Events are treated as day-scoped for "current segment" detection, like hotels.
+- Put booking refs, ticket numbers and entry instructions in `note`; attach the ticket itself under `documents`.
 - No `origin` for hotels.
 
 ## Screenshot input
