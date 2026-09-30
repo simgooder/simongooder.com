@@ -629,8 +629,28 @@
           "documents": [
             {
               "src": "img/louvre-tix.pdf",
-              "thumbnail": "img/louvre-tix-p1.png",
-              "caption": "Louvre tickets - 5 holders, 04/10/2026 11:30"
+              "thumbnail": "img/louvre-tix-simon-p1.png",
+              "caption": "Simon Gooder - ticket ...350, 32 EUR (p.1)"
+            },
+            {
+              "src": "img/louvre-tix.pdf#page=2",
+              "thumbnail": "img/louvre-tix-kelly-p1.png",
+              "caption": "Kelly Rogan - ticket ...435, 32 EUR (p.2)"
+            },
+            {
+              "src": "img/louvre-tix.pdf#page=3",
+              "thumbnail": "img/louvre-tix-steve-p1.png",
+              "caption": "Steve Gooder - ticket ...506, 32 EUR (p.3)"
+            },
+            {
+              "src": "img/louvre-tix.pdf#page=4",
+              "thumbnail": "img/louvre-tix-brenda-p1.png",
+              "caption": "Brenda Gooder - ticket ...667, 32 EUR (p.4)"
+            },
+            {
+              "src": "img/louvre-tix.pdf#page=5",
+              "thumbnail": "img/louvre-tix-ophelia-p1.png",
+              "caption": "Ophelia Gooder - ticket ...760, free u/18 (p.5)"
             }
           ]
         },

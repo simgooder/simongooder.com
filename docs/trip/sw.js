@@ -2,7 +2,7 @@
 const isProduction = self.location.hostname !== 'localhost' && self.location.hostname !== '127.0.0.1';
 const BASE_PATH = isProduction ? '/trip' : '';
 
-const CACHE_NAME = 'travlr-cache-v50';
+const CACHE_NAME = 'travlr-cache-v51';
 const OFFLINE_URL = BASE_PATH + '/offline.html';
 const urlsToCache = [
     BASE_PATH + '/',
@@ -15,7 +15,11 @@ const urlsToCache = [
     // Tickets and their thumbnails. Pre-cached so they open without a network
     // (useful at a museum gate). Keep total weight modest.
     BASE_PATH + '/img/louvre-tix.pdf',
-    BASE_PATH + '/img/louvre-tix-p1.png',
+    BASE_PATH + '/img/louvre-tix-simon-p1.png',
+    BASE_PATH + '/img/louvre-tix-kelly-p1.png',
+    BASE_PATH + '/img/louvre-tix-steve-p1.png',
+    BASE_PATH + '/img/louvre-tix-brenda-p1.png',
+    BASE_PATH + '/img/louvre-tix-ophelia-p1.png',
     BASE_PATH + '/img/plane-simon-prague-paris.pdf',
     BASE_PATH + '/img/plane-simon-prague-paris-p1.png',
     BASE_PATH + '/img/plane-kelly-prague-paris.pdf',

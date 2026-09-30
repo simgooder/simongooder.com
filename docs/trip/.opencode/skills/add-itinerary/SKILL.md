@@ -176,8 +176,27 @@ PDF tickets and other files use a separate `documents` field — do **not** put 
 | Field | Required | Notes |
 |---|---|---|
 | `src` | yes | Relative path to the file. PDFs render in an in-app iframe viewer. |
-| `thumbnail` | no | PNG/JPG of page 1. Without it the tile falls back to a 📄 icon. |
+| `thumbnail` | no | PNG/JPG preview. Without it the tile falls back to a 📄 icon. |
 | `caption` | no | Shown in the tile tooltip and the viewer header. |
+
+**Multi-page PDFs (one ticket per page).** Don't split a multi-page PDF into separate files just to give each ticket its own tile: every extracted page re-embeds the fonts and colour profile, so N single-page PDFs cost far more than the one original (measured: a 578 KB 5-page ticket became 5 × 548 KB). Instead, attach one tile per ticket, all pointing at the same file with a `#page=N` fragment:
+
+```json
+"documents": [
+  { "src": "img/louvre-tix.pdf",         "thumbnail": "img/louvre-tix-simon-p1.png",  "caption": "Simon Gooder - ticket ...350, 32 EUR (p.1)" },
+  { "src": "img/louvre-tix.pdf#page=2", "thumbnail": "img/louvre-tix-kelly-p1.png",  "caption": "Kelly Rogan - ticket ...435, 32 EUR (p.2)" },
+  { "src": "img/louvre-tix.pdf#page=3", "thumbnail": "img/louvre-tix-steve-p1.png",  "caption": "Steve Gooder - ticket ...506, 32 EUR (p.3)" }
+]
+```
+
+The app strips the fragment when labelling tiles and shows "· page N" in the viewer header. Precache the PDF once, plus each distinct thumbnail — not the file once per fragment.
+
+Generate per-page thumbnails from the combined PDF (verify the page mapping by extracting each page's text before naming the files):
+
+```sh
+gs -q -dNOPAUSE -dBATCH -sDEVICE=png16m -r40 -dFirstPage=N -dLastPage=N \
+   -dTextAlphaBits=4 -dGraphicsAlphaBits=4 -sOutputFile=img/<name>-p<N>.png img/<file>.pdf
+```
 
 - The viewer offers "Open full screen" (native browser PDF viewer, best on iOS at a gate) and "Download".
 - A segment with documents shows a 📄 icon on the timeline block.
@@ -254,7 +273,8 @@ Events are things you *do* at one place — museum visits, tours, meals, meeting
   "arrival_date": "2026-10-04",
   "note": "Order C262710011418. Bring photo ID.",
   "documents": [
-    { "src": "img/louvre-tix.pdf", "thumbnail": "img/louvre-tix-p1.png", "caption": "Louvre tickets" }
+    { "src": "img/louvre-tix.pdf#page=1", "thumbnail": "img/louvre-tix-simon-p1.png", "caption": "Simon Gooder - ticket ...350 (p.1)" },
+    { "src": "img/louvre-tix.pdf#page=2", "thumbnail": "img/louvre-tix-kelly-p1.png", "caption": "Kelly Rogan - ticket ...435 (p.2)" }
   ]
 }
 ```

@@ -730,7 +730,9 @@ function viewSegmentDetails(idx) {
       const src = typeof doc === 'string' ? doc : doc.src;
       const caption = (typeof doc === 'object' && doc.caption) ? doc.caption : '';
       const thumb = (typeof doc === 'object' && doc.thumbnail) ? doc.thumbnail : '';
-      const label = src.split('/').pop();
+      // A src may carry a '#page=N' fragment to deep-link into a multi-page PDF;
+      // show the file name without it so tile labels stay readable.
+      const label = src.split('/').pop().split('#')[0];
       // src/caption go in data-* attributes rather than an inline onclick, so
       // quotes in captions can't break the generated markup.
       const visual = thumb
@@ -808,14 +810,18 @@ function openDocumentViewer(trigger) {
   const label = trigger.dataset.docLabel || src;
   if (!src) return;
 
-  const isPdf = /\.pdf$/i.test(src);
+  // Test the path without any '#page=N' fragment before deciding it's a PDF.
+  const isPdf = /\.pdf$/i.test(src.split('#')[0]);
+  // A single PDF shared by several tiles: show which page you're on.
+  const pageMatch = src.match(/#page=(\d+)/);
+  const pageInfo = pageMatch ? ` · page ${pageMatch[1]}` : '';
   const viewer = isPdf
     ? `<iframe class="doc-viewer-frame" src="${escapeHtml(src)}" title="${escapeHtml(caption || label)}"></iframe>`
     : `<div class="doc-viewer-fallback">No in-app preview for this file type.</div>`;
 
   openModal('documentModal', `
     <div class="doc-viewer-head">
-      <strong>${escapeHtml(caption || label)}</strong>
+      <strong>${escapeHtml(caption || label)}</strong>${pageInfo}
     </div>
     ${viewer}
     <div class="doc-viewer-actions">
