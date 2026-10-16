@@ -884,7 +884,10 @@
           "departure_time": "6:15 PM",
           "arrival_date": "2026-10-17",
           "arrival_time": "7:40 PM",
-          "note": "Ticket: A689DT. From Bromont (Autoparc 74), 2000 rue Pierre-Laporte to 800 de la Gauchetière Ouest."
+          "note": "Ticket: A689DT. From Bromont (Autoparc 74), 2000 rue Pierre-Laporte to 800 de la Gauchetière Ouest.",
+          "images": [
+            { "src": "img/bus-ticket-bromont-montreal.png", "caption": "Bus ticket A689DT - Bromont to Montreal" }
+          ]
         },
         {
           "name": "Aloft Montreal Airport",
@@ -912,6 +915,18 @@
           "note": "Booking ref: DTIBIE"
         },
         {
+          "name": "Fiesta Americana Reforma",
+          "type": "Hotel",
+          "vendor_name": "Fiesta Americana",
+          "address": "Av. P.º de la Reforma 80, Juárez, Cuauhtémoc, 06600 Ciudad de México, CDMX, Mexico",
+          "destination": "Mexico City",
+          "check_in_date": "2026-10-18",
+          "check_in_time": "3:00 PM",
+          "check_out_date": "2026-10-23",
+          "check_out_time": "12:00 PM",
+          "note": ""
+        },
+        {
           "name": "Return Flight",
           "type": "Flight",
           "flight_number": "AM 680",
@@ -934,7 +949,10 @@
           "departure_time": "10:30 AM",
           "arrival_date": "2026-10-23",
           "arrival_time": "12:00 PM",
-          "note": "Ticket: CQUWG3. From 800 de la Gauchetière Ouest to Bromont (Autoparc 74), 2000 rue Pierre-Laporte."
+          "note": "Ticket: CQUWG3. From 800 de la Gauchetière Ouest to Bromont (Autoparc 74), 2000 rue Pierre-Laporte.",
+          "images": [
+            { "src": "img/bus-ticket-montreal-bromont.png", "caption": "Bus ticket CQUWG3 - Montreal to Bromont" }
+          ]
         }
       ]
     },
