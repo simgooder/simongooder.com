@@ -283,6 +283,23 @@ button{font:inherit;color:inherit}
 .stat__num .unit{color:var(--orange)}
 .stat__lbl{font-size:16px;color:var(--on-ink-2);margin-top:8px}
 
+/* ---- Evidence figures ---- */
+.figures{display:grid;gap:0;margin-top:48px}
+.figure{padding:28px 0;border-top:1px solid var(--line)}
+.figure:last-child{border-bottom:1px solid var(--line)}
+.figure__n{font-family:var(--font-serif);font-weight:400;font-size:clamp(3.5rem,6vw,5rem);line-height:1;color:var(--orange);letter-spacing:-.01em}
+.figure__n .unit{font-size:.5em;color:var(--ink)}
+.figure p{margin:12px 0 0;color:var(--grey-700);font-size:1.0625rem}
+.figure__src{display:block;margin-top:14px;font-size:.875rem;color:var(--grey-600)}
+.figure__src a{color:var(--grey-700);font-weight:600;text-decoration:underline;text-decoration-color:var(--orange);text-decoration-thickness:2px;text-underline-offset:4px}
+.figure__src a:hover{text-decoration-color:var(--orange-hover)}
+@media (min-width:900px){
+  .figures{grid-template-columns:repeat(3,1fr)}
+  .figure{padding:0 32px;border-top:0;border-bottom:0}
+  .figure:first-child{padding-left:0}
+  .figure+.figure{border-left:1px solid var(--line)}
+}
+
 /* ---- Guardrails ---- */
 .guards{list-style:none;margin:40px 0 0;padding:0;display:grid;gap:0;max-width:52rem}
 .guard{display:grid;grid-template-columns:auto 1fr;gap:24px;padding:28px 0;border-top:1px solid var(--line);align-items:start}
@@ -609,11 +626,39 @@ a.card:hover{border-color:var(--orange)}
     </div>
   </section>
 
-  <!-- Tutor mode in three steps (paper) -->
-  <section class="band" id="tutor" aria-labelledby="tutor-title">
+  <!-- The evidence (paper) -->
+  <section class="band" id="evidence" aria-labelledby="evidence-title">
     <div class="container">
       <div class="section-head reveal">
-        <span class="eyebrow">Tutor mode</span>
+        <span class="eyebrow">The evidence</span>
+        <h2 id="evidence-title">AI is already <em class="serif-accent">in the room.</em></h2>
+        <p class="lead">Students aren’t waiting for schools to decide. The research says most are already using AI for schoolwork — with no one teaching them how.</p>
+      </div>
+      <div class="figures reveal">
+        <div class="figure">
+          <span class="figure__n od-nowrap">27<span class="unit">%</span></span>
+          <p>of teens say a teacher has <em>ever</em> talked with them about using AI safely. <span style="font-weight:600;color:var(--ink)">73% have not.</span></p>
+          <small class="figure__src">Common Sense Media, <cite>Teens in the AI Era</cite> (Aug&nbsp;2026) · <a href="https://www.commonsensemedia.org/research/teens-in-the-ai-era-schoolwork-and-skills-that-matter" target="_blank" rel="noopener">report</a></small>
+        </div>
+        <div class="figure">
+          <span class="figure__n od-nowrap">70<span class="unit">%</span></span>
+          <p>of US teens used generative AI for schoolwork — up from 79% in January&nbsp;2025.</p>
+          <small class="figure__src">College Board (May&nbsp;2025) · <a href="https://newsroom.collegeboard.org/new-research-majority-high-school-students-use-generative-ai-schoolwork" target="_blank" rel="noopener">research</a></small>
+        </div>
+        <div class="figure">
+          <span class="figure__n od-nowrap">44<span class="unit">%</span></span>
+          <p>have hit a school AI ban — and <span style="font-weight:600;color:var(--ink)">59%</span> of those just switched to a personal device.</p>
+          <small class="figure__src">Common Sense Media, <cite>Teens in the AI Era</cite> (Aug&nbsp;2026) · <a href="https://www.commonsensemedia.org/research/teens-in-the-ai-era-schoolwork-and-skills-that-matter" target="_blank" rel="noopener">full&nbsp;PDF</a></small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tutor mode in three steps (paper) -->
+  <section class="band band--alt" id="tutor" aria-labelledby="tutor-title">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">The solution</span>
         <h2 id="tutor-title">A tutor, <em class="serif-accent">not an answer machine.</em></h2>
       </div>
       <ol class="steps reveal" style="margin-top:24px;max-width:52rem">
@@ -626,7 +671,7 @@ a.card:hover{border-color:var(--orange)}
   </section>
 
   <!-- Example (paper-2) -->
-  <section class="band band--alt" id="example" aria-labelledby="example-title">
+  <section class="band" id="example" aria-labelledby="example-title">
     <div class="container">
       <div class="section-head reveal">
         <span class="eyebrow">Example</span>
@@ -649,7 +694,7 @@ a.card:hover{border-color:var(--orange)}
   </section>
 
   <!-- Learning modes (paper) -->
-  <section class="band" id="modes" aria-labelledby="modes-title">
+  <section class="band band--alt" id="modes" aria-labelledby="modes-title">
     <div class="container">
       <div class="section-head reveal">
         <span class="eyebrow">Learning modes</span>
@@ -705,7 +750,7 @@ a.card:hover{border-color:var(--orange)}
   </section>
 
   <!-- Trust strip (paper-2) -->
-  <section class="band band--alt" id="trust" aria-labelledby="trust-title">
+  <section class="band" id="trust" aria-labelledby="trust-title">
     <div class="container">
       <div class="section-head reveal">
         <span class="eyebrow">Trust</span>
@@ -746,7 +791,7 @@ a.card:hover{border-color:var(--orange)}
   </section>
 
   <!-- Role router (paper) -->
-  <section class="band" id="roles" aria-labelledby="roles-title">
+  <section class="band band--alt" id="roles" aria-labelledby="roles-title">
     <div class="container">
       <div class="section-head reveal">
         
